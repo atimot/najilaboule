@@ -1,0 +1,142 @@
+body {
+    background-color: #241816;
+    color: #f8f8f8;
+    font-family: "Shippori Mincho", serif;
+    overflow-x: hidden;
+}
+
+/* カスタムカーソル */
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+}
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+}
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* 縦書き */
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.2em;
+    font-feature-settings: "palt";
+}
+
+/* スクロールバー非表示（高級感のため） */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #241816; 
+}
+::-webkit-scrollbar-thumb {
+    background: #443330; 
+    border-radius: 4px;
+}
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.blur-reveal img {
+    transition: filter 1.5s ease;
+    filter: grayscale(100%) brightness(0.6);
+}
+.blur-reveal:hover img {
+    filter: grayscale(0%) brightness(1);
+}
+
+/* 9色のドットアニメーション */
+.brand-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 2px;
+    opacity: 0; 
+    animation: dotFadeIn 1s forwards;
+}
+@keyframes dotFadeIn {
+    to { opacity: 1; }
+}
+
+/* フェードインアニメーション定義 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 背景画像のゆっくりズーム */
+@keyframes slowZoom {
+    from { transform: scale(1.1); }
+    to { transform: scale(1.2); }
+}
+
+/* 画像プレースホルダーのスタイル調整 */
+.img-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #1a1110;
+}
+
+/* 言語切り替えボタンのアクティブスタイル */
+.lang-active {
+    font-weight: bold;
+    color: #C8A67B;
+    border-bottom: 1px solid #C8A67B;
+}
+
+/* カルーセル用のカーソルスタイル */
+.cursor-grab {
+    cursor: grab;
+    cursor: -webkit-grab;
+}
+.cursor-grabbing {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+}
+
+/* Philosophy Slider Transition */
+.philo-slide {
+    transition: opacity 2s ease-in-out;
+}
+
+/* テキストのスタック用スタイル (Gridで重ねる) */
+.philo-text-stack {
+    display: grid;
+    grid-template-areas: "stack";
+}
+.philo-text-item {
+    grid-area: stack;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none; /* 重なっている非表示要素が邪魔しないように */
+}
+.philo-text-item.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.philo-text-item.inactive {
+    opacity: 0;
+}
+
