@@ -41,8 +41,8 @@
         </div>
         
         <div class="flex flex-col items-end gap-6">
-            <!-- 言語切り替えスイッチ -->
-            <div class="flex space-x-4 text-xs tracking-widest font-serif pointer-events-auto">
+            <!-- 言語切り替えスイッチ（PC時のみ表示） -->
+            <div class="hidden md:flex space-x-4 text-xs tracking-widest font-serif pointer-events-auto">
                 <button id="lang-jp" class="lang-active hover:opacity-70 transition pb-1" onclick="switchLanguage('ja')">JP</button>
                 <span class="opacity-50">|</span>
                 <button id="lang-en" class="hover:opacity-70 transition pb-1" onclick="switchLanguage('en')">EN</button>
@@ -54,18 +54,43 @@
                     <li><a href="#menu" class="hover:text-accent transition">Menu</a></li>
                     <li><a href="#access" class="hover:text-accent transition">Access</a></li>
                     <li>
-                        <a href="#" class="border border-white/50 px-6 py-2 hover:bg-accent hover:border-accent hover:text-base transition duration-500 text-xs">RESERVATION</a>
+                        <a href="#" class="border border-white/50 px-6 py-2 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-xs">RESERVATION</a>
                     </li>
                 </ul>
             </nav>
         </div>
 
-        <!-- モバイル用ハンバーガー（簡易） -->
-        <div class="md:hidden space-y-2 cursor-pointer mt-1">
-            <div class="w-8 h-px bg-white"></div>
-            <div class="w-8 h-px bg-white"></div>
-        </div>
     </header>
+
+    <!-- モバイル用ハンバーガーメニュー（ヘッダーのtransformの影響を受けないよう、header外に配置） -->
+    <div class="md:hidden fixed top-6 right-6 z-[60]">
+        <input type="checkbox" id="menu-toggle" class="hidden" aria-label="メニューを開く" aria-expanded="false">
+        <label for="menu-toggle" class="relative flex flex-col justify-center items-center w-10 h-10 cursor-pointer z-[60]">
+            <span class="hamburger-line w-7 h-[1px] bg-white transition-all duration-300"></span>
+            <span class="hamburger-line w-7 h-[1px] bg-white mt-2 transition-all duration-300"></span>
+        </label>
+
+        <!-- モバイルナビゲーションメニュー -->
+        <nav id="mobile-nav" class="fixed inset-0 z-50 bg-base/80 backdrop-blur-[28px] backdrop-saturate-150 opacity-0 pointer-events-none transition-opacity duration-500 overflow-y-auto overscroll-contain">
+            <div class="min-h-[100dvh] flex flex-col items-center justify-center py-20 px-6">
+                <ul class="flex flex-col items-center space-y-8 text-lg tracking-widest">
+                    <li><a href="#philosophy" class="hover:text-accent transition">Philosophy</a></li>
+                    <li><a href="#menu" class="hover:text-accent transition">Menu</a></li>
+                    <li><a href="#access" class="hover:text-accent transition">Access</a></li>
+                    <li class="mt-4">
+                        <a href="#" class="border border-white/50 px-8 py-3 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-sm">RESERVATION</a>
+                    </li>
+                </ul>
+                
+                <!-- 言語切り替えスイッチ（モバイルメニュー内） -->
+                <div class="flex space-x-6 text-sm tracking-widest font-serif mt-12">
+                    <button id="lang-jp-mobile" class="lang-active hover:opacity-70 transition pb-1" onclick="switchLanguage('ja')">JP</button>
+                    <span class="opacity-50">|</span>
+                    <button id="lang-en-mobile" class="hover:opacity-70 transition pb-1" onclick="switchLanguage('en')">EN</button>
+                </div>
+            </div>
+        </nav>
+    </div>
 
     <!-- メインコンテンツ -->
     <main>
@@ -108,12 +133,12 @@
 
         <!-- Philosophy Section (Updated: Layout Shift Fix) -->
         <section id="philosophy" class="py-24 md:py-40 px-6 md:px-20 relative">
-            <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="max-w-6xl mx-auto md:flex md:flex-row md:items-center md:justify-between">
                 <!-- 左側：画像スライダー -->
-                <div class="md:w-1/2 mb-16 md:mb-0 fade-up">
-                    <div class="relative aspect-[3/4] md:aspect-[4/5] overflow-hidden" id="philosophy-slider">
+                <div class="philo-bg absolute inset-0 w-full md:static md:w-1/2 md:mb-0 fade-up pointer-events-none z-0">
+                    <div class="absolute inset-0 overflow-hidden md:relative md:inset-auto md:aspect-[4/5]" id="philosophy-slider">
                         <!-- 装飾としてのドット -->
-                        <div class="absolute -top-10 -left-10 w-2 h-2 rounded-full bg-dot-red blur-[1px] z-10"></div>
+                        <div class="hidden md:block absolute -top-10 -left-10 w-2 h-2 rounded-full bg-dot-red blur-[1px] z-10"></div>
                         
                         <!-- Slide 1: Rice (Hand/Craft) -->
                         <img src="https://images.unsplash.com/photo-1516684732162-798a0062be99?auto=format&fit=crop&q=80&w=2000" 
@@ -129,66 +154,78 @@
                          <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2000" 
                              alt="Pouring Sake" 
                              class="philo-slide absolute inset-0 w-full h-full object-cover opacity-0 brightness-75">
+
+                        <!-- SP時：背景画像を読みやすくするオーバーレイ -->
+                        <div class="absolute inset-0 md:hidden bg-gradient-to-b from-base/85 via-base/50 to-base/85 z-10"></div>
                     </div>
                 </div>
 
                 <!-- 右側：テキスト（スタックレイアウトで位置ズレ防止） -->
-                <div class="md:w-1/2 md:pl-20 text-center md:text-left fade-up" style="transition-delay: 0.2s;">
+                <div class="relative z-10 w-full md:w-1/2 md:pl-20 text-center md:text-left fade-up" style="transition-delay: 0.2s;">
                     
-                    <div class="philo-text-stack">
-                        <!-- Text 0: Rice -->
-                        <div id="philo-text-0" class="philo-text-item active">
-                            <h3 id="philo-title-0" class="text-2xl md:text-3xl font-serif tracking-widest mb-12 leading-relaxed">
-                                掌の宇宙、<br>
-                                一粒の輝き。
-                            </h3>
-                            <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
-                                <p id="philo-body-0">
-                                    厳選された米、清冽な水、<br>
-                                    そして職人の掌（たなごころ）。<br>
-                                    一粒一粒が立ち上がる瞬間、<br>
-                                    そこには無限の物語が宿ります。
-                                </p>
+                    <!-- SP時：背景上での可読性を確保（ぼかしはテキストの外周ギリギリ） -->
+                    <div class="mx-auto max-w-xl md:max-w-none">
+                        <div class="philo-text-stack">
+                            <!-- Text 0: Rice -->
+                            <div id="philo-text-0" class="philo-text-item active">
+                                <div class="mx-auto max-w-[92vw] md:max-w-none">
+                                    <h3 id="philo-title-0" class="text-2xl md:text-3xl font-serif tracking-widest mb-8 md:mb-12 leading-relaxed">
+                                        掌の宇宙、<br>
+                                        一粒の輝き。
+                                    </h3>
+                                    <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
+                                        <p id="philo-body-0">
+                                            厳選された米、清冽な水、<br>
+                                            そして職人の掌（たなごころ）。<br>
+                                            一粒一粒が立ち上がる瞬間、<br>
+                                            そこには無限の物語が宿ります。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Text 1: Soup -->
+                            <div id="philo-text-1" class="philo-text-item inactive">
+                                <div class="mx-auto max-w-[92vw] md:max-w-none">
+                                    <h3 id="philo-title-1" class="text-2xl md:text-3xl font-serif tracking-widest mb-8 md:mb-12 leading-relaxed">
+                                        湯気に咲く、<br>
+                                        静寂。
+                                    </h3>
+                                    <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
+                                        <p id="philo-body-1">
+                                            黄金色の出汁が、<br>
+                                            銀座の喧騒を優しく解きほぐす。<br>
+                                            心身を温める食べる宝石です。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Text 2: Sake -->
+                            <div id="philo-text-2" class="philo-text-item inactive">
+                                <div class="mx-auto max-w-[92vw] md:max-w-none">
+                                    <h3 id="philo-title-2" class="text-2xl md:text-3xl font-serif tracking-widest mb-8 md:mb-12 leading-relaxed">
+                                        宵に溶ける、<br>
+                                        至福。
+                                    </h3>
+                                    <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
+                                        <p id="philo-body-2">
+                                            米から生まれた酒と、<br>
+                                            米から生まれた料理。<br>
+                                            互いに引き立て合う「出会い」が、<br>
+                                            夜の時間をより濃密に彩ります。
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Text 1: Soup -->
-                        <div id="philo-text-1" class="philo-text-item inactive">
-                            <h3 id="philo-title-1" class="text-2xl md:text-3xl font-serif tracking-widest mb-12 leading-relaxed">
-                                湯気に咲く、<br>
-                                静寂。
-                            </h3>
-                            <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
-                                <p id="philo-body-1">
-                                    黄金色の出汁が、<br>
-                                    銀座の喧騒を優しく解きほぐす。<br>
-                                    心身を温める食べる宝石です。
-                                </p>
-                            </div>
+                        <!-- インタラクティブなドット -->
+                        <div id="philosophy-dots" class="mt-16 flex justify-center md:justify-start gap-4">
+                            <div class="w-2 h-2 rounded-full bg-dot-white opacity-100 scale-125 cursor-pointer transition-all duration-300"></div>
+                            <div class="w-2 h-2 rounded-full bg-dot-white opacity-30 cursor-pointer transition-all duration-300 hover:opacity-70"></div>
+                            <div class="w-2 h-2 rounded-full bg-dot-white opacity-30 cursor-pointer transition-all duration-300 hover:opacity-70"></div>
                         </div>
-
-                        <!-- Text 2: Sake -->
-                        <div id="philo-text-2" class="philo-text-item inactive">
-                            <h3 id="philo-title-2" class="text-2xl md:text-3xl font-serif tracking-widest mb-12 leading-relaxed">
-                                宵に溶ける、<br>
-                                至福。
-                            </h3>
-                            <div class="space-y-8 text-sm md:text-base leading-loose tracking-wider text-gray-300 font-light">
-                                <p id="philo-body-2">
-                                    米から生まれた酒と、<br>
-                                    米から生まれた料理。<br>
-                                    互いに引き立て合う「出会い」が、<br>
-                                    夜の時間をより濃密に彩ります。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- インタラクティブなドット -->
-                    <div id="philosophy-dots" class="mt-16 flex justify-center md:justify-start gap-4">
-                        <div class="w-2 h-2 rounded-full bg-dot-white opacity-100 scale-125 cursor-pointer transition-all duration-300"></div>
-                        <div class="w-2 h-2 rounded-full bg-dot-white opacity-30 cursor-pointer transition-all duration-300 hover:opacity-70"></div>
-                        <div class="w-2 h-2 rounded-full bg-dot-white opacity-30 cursor-pointer transition-all duration-300 hover:opacity-70"></div>
                     </div>
                 </div>
             </div>
@@ -320,30 +357,34 @@
                     <div class="space-y-6">
                         <div>
                             <p class="text-xs text-gray-500 tracking-widest mb-1">ADDRESS</p>
-                            <p class="font-serif" data-translate="address_text">〒104-0061<br>東京都中央区銀座6-10-1<br>GINZA SIX 13F</p>
+                            <p class="font-serif" data-translate="address_text">東京都中央区銀座6-12-12<br>銀座ステラビル2階</p>
                         </div>
                         <div>
                             <p class="text-xs text-gray-500 tracking-widest mb-1">HOURS</p>
                             <p class="font-serif" data-translate="hours_text">
-                                Lunch: 11:30 - 14:00 (L.O. 13:30)<br>
-                                Dinner: 18:00 - 23:00 (L.O. 22:00)<br>
-                                <span class="text-xs text-gray-500">水曜定休</span>
+                                営業時間: 18:30 - 23:30<br>
+                                <span class="text-xs text-gray-500">定休日: 土日祝日</span>
                             </p>
                         </div>
                     </div>
                     <div class="space-y-6">
-                         <div>
-                            <p class="text-xs text-gray-500 tracking-widest mb-1">CONTACT</p>
-                            <p class="font-serif text-xl tracking-widest">03-1234-5678</p>
-                        </div>
-                        <a href="#" class="block w-full py-4 bg-white/5 border border-white/20 text-center hover:bg-white hover:text-base transition duration-300 tracking-widest text-sm">
+                        <a href="#" class="block w-full py-4 bg-white/5 border border-white/20 text-center hover:bg-white hover:text-[#241816] transition duration-300 tracking-widest text-sm">
                             RESERVATION
                         </a>
                     </div>
                 </div>
                 
-                <div class="w-full h-64 grayscale invert-[.85] contrast-125 opacity-50 fade-up">
-                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479754683745!2d139.76125661625024!3d35.66856573882046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188be70188c447%3A0x6c6e838e41794285!2sGINZA%20SIX!5e0!3m2!1sja!2sjp!4v1647846522165!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <div class="w-full h-64 fade-up">
+                     <iframe
+                         title="Google Map"
+                         src="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%AD%E5%A4%AE%E5%8C%BA%E9%8A%80%E5%BA%A76-12-12%20%E9%8A%80%E5%BA%A7%E3%82%B9%E3%83%86%E3%83%A9%E3%83%93%E3%83%AB2%E9%9A%8E&output=embed&hl=ja"
+                         width="100%"
+                         height="100%"
+                         style="border:0;"
+                         allowfullscreen=""
+                         loading="lazy"
+                         referrerpolicy="no-referrer-when-downgrade"
+                     ></iframe>
                 </div>
             </div>
         </section>

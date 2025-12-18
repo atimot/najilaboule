@@ -16,8 +16,8 @@ const translations = {
         soupe_desc: '一番出汁の香りが、<br>銀座の夜の緊張を解きほぐす。<br>季節の食材を椀の中に閉じ込めました。<br>おにぎりとの調和をお楽しみください。',
         mariage_title: '酔いしれる。',
         mariage_desc: '米から生まれた酒、<br>土壌の記憶を持つワイン。<br>おにぎりの具材に合わせて、<br>ソムリエが至高の一杯を提案します。',
-        address_text: '〒104-0061<br>東京都中央区銀座6-10-1<br>GINZA SIX 13F',
-        hours_text: 'Lunch: 11:30 - 14:00 (L.O. 13:30)<br>Dinner: 18:00 - 23:00 (L.O. 22:00)<br><span class="text-xs text-gray-500">水曜定休</span>'
+        address_text: '東京都中央区銀座6-12-12<br>銀座ステラビル2階',
+        hours_text: '営業時間: 18:30 - 23:30<br><span class="text-xs text-gray-500">定休日: 土日祝日</span>'
     },
     en: {
         hero_title: 'Savoring Rice<br class="md:hidden">in the Ginza Night.',
@@ -33,8 +33,8 @@ const translations = {
         soupe_desc: 'The aroma of the first dashi broth<br>unwinds the tension of the Ginza night.<br>Seasonal ingredients sealed in a bowl.<br>Enjoy the harmony with Onigiri.',
         mariage_title: 'Intoxicated by Harmony.',
         mariage_desc: 'Sake born from rice,<br>Wine holding memories of the soil.<br>Our sommelier proposes the supreme cup<br>to match your Onigiri ingredients.',
-        address_text: 'GINZA SIX 13F<br>6-10-1 Ginza, Chuo-ku, Tokyo<br>104-0061 Japan',
-        hours_text: 'Lunch: 11:30 - 14:00 (L.O. 13:30)<br>Dinner: 18:00 - 23:00 (L.O. 22:00)<br><span class="text-xs text-gray-500">Closed on Wednesdays</span>'
+        address_text: 'Ginza Stella Building 2F<br>6-12-12 Ginza, Chuo-ku, Tokyo, Japan',
+        hours_text: 'Hours: 18:30 - 23:30<br><span class="text-xs text-gray-500">Closed: Weekends & National Holidays</span>'
     }
 };
 
@@ -101,13 +101,17 @@ function switchLanguage(lang) {
     // Update Philosophy Text immediately
     updateAllTextResources();
 
+    // PC用とモバイル用の両方のボタンを更新
+    const langJpButtons = [document.getElementById('lang-jp'), document.getElementById('lang-jp-mobile')];
+    const langEnButtons = [document.getElementById('lang-en'), document.getElementById('lang-en-mobile')];
+
     if (lang === 'ja') {
-        document.getElementById('lang-jp').classList.add('lang-active');
-        document.getElementById('lang-en').classList.remove('lang-active');
+        langJpButtons.forEach(btn => btn && btn.classList.add('lang-active'));
+        langEnButtons.forEach(btn => btn && btn.classList.remove('lang-active'));
         document.documentElement.lang = 'ja';
     } else {
-        document.getElementById('lang-jp').classList.remove('lang-active');
-        document.getElementById('lang-en').classList.add('lang-active');
+        langJpButtons.forEach(btn => btn && btn.classList.remove('lang-active'));
+        langEnButtons.forEach(btn => btn && btn.classList.add('lang-active'));
         document.documentElement.lang = 'en';
     }
 }
@@ -155,6 +159,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const walk = (x - startX) * 2; 
         slider.scrollLeft = scrollLeft - walk;
     });
+
+    // --- Mobile Menu Control ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (menuToggle && mobileNav) {
+        const mobileLinks = mobileNav.querySelectorAll('a');
+        const syncMenuState = () => {
+            const isOpen = menuToggle.checked;
+            menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            document.body.classList.toggle('overflow-hidden', isOpen);
+
+            // Menu visibility (Tailwind peer に依存せず、JSで確実に切り替える)
+            mobileNav.classList.toggle('opacity-0', !isOpen);
+            mobileNav.classList.toggle('opacity-100', isOpen);
+            mobileNav.classList.toggle('pointer-events-none', !isOpen);
+            mobileNav.classList.toggle('pointer-events-auto', isOpen);
+        };
+
+        menuToggle.addEventListener('change', syncMenuState);
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!menuToggle.checked) return;
+                menuToggle.checked = false;
+                syncMenuState();
+            });
+        });
+
+        mobileNav.addEventListener('click', (event) => {
+            if (event.target === mobileNav) {
+                menuToggle.checked = false;
+                syncMenuState();
+            }
+        });
+
+        syncMenuState();
+    }
     
     // --- Philosophy Section Slide Show ---
     const philoImages = document.querySelectorAll('#philosophy-slider img');
@@ -251,4 +292,5 @@ window.addEventListener('load', () => {
         document.getElementById('loader').style.transition = 'opacity 1s ease';
     }, 2000);
 });
+
 

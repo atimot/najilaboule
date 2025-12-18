@@ -122,6 +122,23 @@ body {
     transition: opacity 2s ease-in-out;
 }
 
+/* SP時：Philosophy背景をセクション全体で“弱め”にぼかす */
+@media (max-width: 767px) {
+    #philosophy-slider .philo-slide {
+        filter: blur(6px);
+        transform: scale(1.06);
+        will-change: filter, transform;
+    }
+}
+
+/* SP時：Philosophyの背景スライダーは常に表示し、fade-upのtransformで見切れないようにする */
+@media (max-width: 767px) {
+    .philo-bg.fade-up {
+        opacity: 1;
+        transform: none;
+    }
+}
+
 /* テキストのスタック用スタイル (Gridで重ねる) */
 .philo-text-stack {
     display: grid;
@@ -139,4 +156,19 @@ body {
 .philo-text-item.inactive {
     opacity: 0;
 }
+
+/* ハンバーガーメニュー（Tailwind peer と CSS :checked で制御） */
+#menu-toggle ~ label .hamburger-line {
+    transform-origin: center;
+}
+#menu-toggle:checked ~ label .hamburger-line {
+    margin-top: 0;
+}
+#menu-toggle:checked ~ label .hamburger-line:first-child {
+    transform: translateY(4px) rotate(45deg);
+}
+#menu-toggle:checked ~ label .hamburger-line:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+}
+
 
