@@ -69,7 +69,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 }}
               >
                 <a
-                  href="#"
+                  href="tel:03-6274-6608"
                   className="border border-white/50 px-8 py-3 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-sm"
                 >
                   RESERVATION

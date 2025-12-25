@@ -9,8 +9,8 @@ export function Access() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="access" className="py-20 md:py-32 bg-[#1f1513] relative" ref={sectionRef}>
-      <div className="max-w-4xl mx-auto px-6 text-center">
+    <section id="access" className="section-padding bg-base-dark relative" ref={sectionRef}>
+      <div className="content-wrapper text-center">
         <motion.div
           className="mb-12"
           initial={{ opacity: 0, y: 30 }}
@@ -18,8 +18,8 @@ export function Access() {
           transition={{ duration: 1 }}
         >
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
-          <h2 className="text-3xl md:text-4xl font-serif tracking-widest mb-2">Naji la boule</h2>
-          <p className="text-xs tracking-[0.3em] text-gray-500">GINZA</p>
+          <h2 className="text-heading-1 font-serif mb-2">Naji la boule</h2>
+          <p className="text-section-label text-gray-500">GINZA</p>
         </motion.div>
 
         <motion.div
@@ -41,6 +41,14 @@ export function Access() {
               </p>
             </div>
             <div>
+              <p className="text-xs text-gray-500 tracking-widest mb-1">TEL</p>
+              <p className="font-serif">
+                <a href="tel:03-6274-6608" className="hover:text-accent transition">
+                  03-6274-6608
+                </a>
+              </p>
+            </div>
+            <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">HOURS</p>
               <p className="font-serif">
                 {t.hours_text.split(' / ')[0]}
@@ -51,7 +59,7 @@ export function Access() {
           </div>
           <div className="space-y-6">
             <a
-              href="#"
+              href="tel:03-6274-6608"
               className="block w-full py-4 bg-white/5 border border-white/20 text-center hover:bg-white hover:text-[#241816] transition duration-300 tracking-widest text-sm"
             >
               RESERVATION

@@ -68,7 +68,7 @@ export function Header() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="tel:03-6274-6608"
                   className="border border-white/50 px-6 py-2 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-xs"
                 >
                   RESERVATION

@@ -13,21 +13,21 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1595458004128-d820526ce399?auto=format&fit=crop&q=80&w=2670',
+    image: 'menu_01.JPG',
     nameKey: 'menu_1_name',
     descKey: 'menu_1_desc',
     dotColor: 'bg-dot-white',
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&q=80&w=2574',
+    image: 'menu_02.JPG',
     nameKey: 'menu_2_name',
     descKey: 'menu_2_desc',
     dotColor: 'bg-dot-orange',
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80&w=2670',
+    image: 'menu_03.JPG',
     nameKey: 'menu_3_name',
     descKey: 'menu_3_desc',
     dotColor: 'bg-dot-red',
@@ -49,7 +49,7 @@ export function MenuCarousel() {
 
   useEffect(() => {
     // Duplicate items for infinite scroll effect
-    setItems([...menuItems, ...menuItems, ...menuItems]);
+    setItems([...menuItems]);
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -95,22 +95,24 @@ export function MenuCarousel() {
   };
 
   return (
-    <section id="menu" className="py-20 md:py-32 bg-[#2a1d1b] relative overflow-x-clip overflow-y-visible">
+    <section id="menu" className="py-24 md:py-40 bg-base-light relative overflow-x-clip overflow-y-visible">
       {/* Background Decoration */}
       <div className="absolute top-20 right-[-10%] w-[500px] h-[500px] bg-dot-blue opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
 
-      <motion.div
-        ref={titleRef}
-        className="px-6 md:px-20 mb-16"
-        initial={{ opacity: 0, y: 30 }}
-        animate={isTitleInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1 }}
-      >
-        <span className="text-accent text-xs tracking-[0.3em] block mb-2">MENU</span>
-        <h3 className="text-3xl md:text-4xl font-serif">{t.menu_riz_title}</h3>
-      </motion.div>
+      {/* タイトル部分 - コンテンツ横幅制限 */}
+      <div className="content-wrapper px-6 md:px-20 mb-16">
+        <motion.div
+          ref={titleRef}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isTitleInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1 }}
+        >
+          <span className="text-section-label block mb-2">MENU</span>
+          <h3 className="text-heading-1 font-serif">{t.menu_riz_title}</h3>
+        </motion.div>
+      </div>
 
-      {/* Carousel */}
+      {/* Carousel - 全幅スクロール */}
       <div
         ref={containerRef}
         className={`overflow-x-auto pb-10 px-6 md:px-20 no-scrollbar flex space-x-8 md:space-x-12 touch-pan-x ${

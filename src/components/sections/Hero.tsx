@@ -10,14 +10,14 @@ export function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80&w=2670"
+          src="sake_01.JPG"
           alt="Ginza Bar Atmosphere"
           className="w-full h-full object-cover opacity-50 grayscale scale-110 animate-slow-zoom"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-base/60 via-transparent to-base" />
       </div>
 
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center px-6 md:px-20">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -27,7 +27,7 @@ export function Hero() {
         </motion.div>
 
         <motion.h2
-          className="text-4xl md:text-7xl font-serif tracking-widest mb-6"
+          className="text-display font-serif mb-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 3.5, duration: 2 }}
@@ -45,7 +45,7 @@ export function Hero() {
         </motion.h2>
 
         <motion.p
-          className="text-sm md:text-base tracking-[0.3em] text-gray-400"
+          className="text-body-main text-gray-400"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 4, duration: 2 }}
@@ -54,7 +54,8 @@ export function Hero() {
         </motion.p>
       </div>
 
-      <motion.div
+      {/* スクロールやじるだけどダサいからいらないかも */}
+      {/* <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -75,7 +76,7 @@ export function Hero() {
         >
           <path d="M10 2v40M3 38l7 7 7-7" />
         </motion.svg>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 }

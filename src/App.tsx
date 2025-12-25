@@ -6,8 +6,7 @@ import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
 import { Philosophy } from './components/sections/Philosophy';
 import { MenuCarousel } from './components/sections/MenuCarousel';
-import { SoupeSection } from './components/sections/SoupeSection';
-import { MariageSection } from './components/sections/MariageSection';
+import { ExperienceSection } from './components/sections/ExperienceSection';
 import { Access } from './components/sections/Access';
 
 function App() {
@@ -26,13 +25,7 @@ function App() {
             <Hero />
             <Philosophy />
             <MenuCarousel />
-            
-            {/* Soupe & Mariage Section */}
-            <section className="py-24 md:py-40 px-6 md:px-20">
-              <SoupeSection />
-              <MariageSection />
-            </section>
-            
+            <ExperienceSection />
             <Access />
           </main>
           
