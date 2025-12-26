@@ -40,17 +40,18 @@ export function Philosophy() {
             <div className="hidden md:block absolute -top-10 -left-10 w-2 h-2 rounded-full bg-dot-red blur-[1px] z-10" />
 
             {/* Slides */}
-            {images.map((src, index) => (
+            <AnimatePresence mode="wait">
               <motion.img
-                key={src}
-                src={src}
-                alt={`Philosophy ${index + 1}`}
+                key={images[activeIndex]}
+                src={images[activeIndex]}
+                alt={`Philosophy ${activeIndex + 1}`}
                 className="philo-slide absolute inset-0 w-full h-full object-cover brightness-75"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: index === activeIndex ? 1 : 0 }}
-                transition={{ duration: 2 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1 }}
               />
-            ))}
+            </AnimatePresence>
 
             {/* Mobile Overlay */}
             <div className="absolute inset-0 md:hidden bg-gradient-to-b from-base/85 via-base/50 to-base/85 z-10" />
