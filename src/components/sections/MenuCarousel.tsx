@@ -42,7 +42,9 @@ export function MenuCarousel() {
   
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [isHorizontalDrag, setIsHorizontalDrag] = useState<boolean | null>(null);
 
   // Duplicate items for infinite scroll effect
   const [items, setItems] = useState<MenuItem[]>([]);
@@ -80,18 +82,42 @@ export function MenuCarousel() {
     if (!containerRef.current) return;
     setIsDragging(true);
     setStartX(e.touches[0].pageX - containerRef.current.offsetLeft);
+    setStartY(e.touches[0].pageY);
     setScrollLeft(containerRef.current.scrollLeft);
+    setIsHorizontalDrag(null); // Reset direction detection
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging || !containerRef.current) return;
+    
     const x = e.touches[0].pageX - containerRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    containerRef.current.scrollLeft = scrollLeft - walk;
+    const y = e.touches[0].pageY;
+    
+    // Determine drag direction on first move
+    if (isHorizontalDrag === null) {
+      const deltaX = Math.abs(x - startX);
+      const deltaY = Math.abs(y - startY);
+      
+      // If vertical movement is dominant, allow default scroll
+      if (deltaY > deltaX) {
+        setIsHorizontalDrag(false);
+        return;
+      } else {
+        setIsHorizontalDrag(true);
+      }
+    }
+    
+    // Only handle horizontal drag
+    if (isHorizontalDrag) {
+      e.preventDefault(); // Prevent vertical scroll only when horizontal dragging
+      const walk = (x - startX) * 2;
+      containerRef.current.scrollLeft = scrollLeft - walk;
+    }
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+    setIsHorizontalDrag(null);
   };
 
   return (
