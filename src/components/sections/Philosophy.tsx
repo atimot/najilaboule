@@ -21,7 +21,7 @@ export function Philosophy() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 8000);
+    const interval = setInterval(nextSlide, 10000);
     return () => clearInterval(interval);
   }, [nextSlide]);
 
@@ -41,16 +41,20 @@ export function Philosophy() {
 
             {/* Slides */}
             <AnimatePresence mode="wait">
-              <motion.img
-                key={images[activeIndex]}
-                src={images[activeIndex]}
-                alt={`Philosophy ${activeIndex + 1}`}
-                className="philo-slide absolute inset-0 w-full h-full object-cover brightness-75"
+              <motion.div
+                key={activeIndex}
+                className="absolute inset-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1 }}
-              />
+              >
+                <img
+                  src={images[activeIndex]}
+                  alt={`Philosophy ${activeIndex + 1}`}
+                  className="philo-slide w-full h-full object-cover brightness-75"
+                />
+              </motion.div>
             </AnimatePresence>
 
             {/* Mobile Overlay */}
