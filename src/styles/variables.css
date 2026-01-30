@@ -1,0 +1,34 @@
+/* =================================
+   Design Tokens (CSS Variables)
+   ================================= */
+:root {
+  /* Colors - Brand */
+  --color-base: #241816;
+  --color-base-dark: #1f1513;
+  --color-base-light: #2a1d1b;
+  --color-accent: #C8A67B;
+
+  /* Colors - Dot System */
+  --color-dot-white: #FFFFFF;
+  --color-dot-black: #000000;
+  --color-dot-red: #E60012;
+  --color-dot-blue: #0099CC;
+  --color-dot-yellow: #FFD700;
+  --color-dot-green: #009944;
+  --color-dot-orange: #F39800;
+  --color-dot-pink: #E6007F;
+  --color-dot-purple: #920783;
+
+  /* Typography */
+  --font-serif: "Playfair Display", "Shippori Mincho", serif;
+  --font-sans: "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing */
+  --section-padding-mobile: 6rem 1.5rem;
+  --section-padding-desktop: 10rem 5rem;
+  --content-max-width: 80rem;
+
+  /* Colors - Text */
+  --color-text-primary: #f8f8f8;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+}

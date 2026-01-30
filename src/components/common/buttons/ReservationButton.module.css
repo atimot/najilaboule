@@ -1,0 +1,48 @@
+.button {
+  display: inline-block;
+  text-align: center;
+  letter-spacing: 0.1em;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+/* Variants */
+.outline {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  color: inherit;
+}
+
+.outline:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-base);
+}
+
+.filled {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+}
+
+.filled:hover {
+  background-color: white;
+  color: var(--color-base);
+}
+
+/* Sizes */
+.sm {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+}
+
+.md {
+  padding: 0.75rem 2rem;
+  font-size: 0.875rem;
+}
+
+.lg {
+  padding: 1rem 2rem;
+  font-size: 0.875rem;
+  width: 100%;
+}

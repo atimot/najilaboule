@@ -1,0 +1,65 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 40;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: all 0.5s ease;
+  background: linear-gradient(to bottom, rgba(36, 24, 22, 0.9), transparent);
+  color: white;
+  backdrop-filter: blur(2px);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 2.5rem;
+  }
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .logo {
+    font-size: 1.5rem;
+  }
+}
+
+.logoSub {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  display: block;
+  margin-top: 0.25rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+@media (min-width: 768px) {
+  .logoSub {
+    font-size: 0.875rem;
+  }
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.languageSwitchDesktop {
+  display: none;
+  pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+  .languageSwitchDesktop {
+    display: flex;
+  }
+}

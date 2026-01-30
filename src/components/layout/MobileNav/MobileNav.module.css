@@ -1,0 +1,62 @@
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background-color: rgba(36, 24, 22, 0.8);
+  backdrop-filter: blur(28px) saturate(150%);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: none;
+  }
+}
+
+.content {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  font-size: 1.125rem;
+  letter-spacing: 0.1em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  /* individual item */
+}
+
+.link {
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+.reservationItem {
+  margin-top: 1rem;
+}
+
+.languageWrapper {
+  margin-top: 3rem;
+}
+
+.languageSwitch {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+}

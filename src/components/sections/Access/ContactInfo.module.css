@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.item {
+  /* block item */
+}
+
+.label {
+  font-size: 0.75rem;
+  color: rgba(107, 114, 128, 1);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.value {
+  font-family: var(--font-serif);
+}
+
+.link {
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+.subtext {
+  font-size: 0.75rem;
+  color: rgba(107, 114, 128, 1);
+}

@@ -1,0 +1,95 @@
+.section {
+  padding: 6rem 0;
+  background-color: var(--color-base-light);
+  position: relative;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 10rem 0;
+  }
+}
+
+.backgroundDecor {
+  position: absolute;
+  top: 5rem;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background-color: var(--color-dot-blue);
+  opacity: 0.03;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.header {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 0 5rem;
+  }
+}
+
+.label {
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-family: var(--font-serif);
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+}
+
+.carousel {
+  overflow-x: auto;
+  padding-bottom: 2.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  gap: 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 768px) {
+  .carousel {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    gap: 3rem;
+  }
+}
+
+/* No scrollbar utility */
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.grabbing {
+  cursor: grabbing;
+}
+
+.grab {
+  cursor: grab;
+}

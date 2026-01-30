@@ -1,10 +1,11 @@
-import { SITE_CONFIG } from '../../constants/config';
+import { SITE_CONFIG } from '../../../constants/config';
+import styles from './Footer.module.css';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-8 text-center text-[10px] tracking-widest text-gray-600 border-t border-white/5">
+    <footer className={styles.footer}>
       &copy; {currentYear} {SITE_CONFIG.name}. All Rights Reserved.
     </footer>
   );

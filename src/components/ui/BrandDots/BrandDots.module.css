@@ -1,0 +1,95 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Gap sizes */
+.gapSm {
+  gap: 0.5rem;
+}
+
+.gapMd {
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .gapMd {
+    gap: 1rem;
+  }
+}
+
+.gapLg {
+  gap: 0.5rem;
+}
+
+/* Dot sizes */
+.dotSm {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+
+.dotMd {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .dotMd {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.dotLg {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+/* Dot colors */
+.dotWhite {
+  background-color: var(--color-dot-white);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.dotBlack {
+  background-color: var(--color-dot-black);
+  border: 1px solid rgba(75, 85, 99, 1);
+}
+
+.dotRed {
+  background-color: var(--color-dot-red);
+  box-shadow: 0 0 10px rgba(230, 0, 18, 0.3);
+}
+
+.dotBlue {
+  background-color: var(--color-dot-blue);
+  box-shadow: 0 0 10px rgba(0, 153, 204, 0.3);
+}
+
+.dotYellow {
+  background-color: var(--color-dot-yellow);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.dotGreen {
+  background-color: var(--color-dot-green);
+  box-shadow: 0 0 10px rgba(0, 153, 68, 0.3);
+}
+
+.dotOrange {
+  background-color: var(--color-dot-orange);
+  box-shadow: 0 0 10px rgba(243, 152, 0, 0.3);
+}
+
+.dotPink {
+  background-color: var(--color-dot-pink);
+  box-shadow: 0 0 10px rgba(230, 0, 127, 0.3);
+}
+
+.dotPurple {
+  background-color: var(--color-dot-purple);
+  box-shadow: 0 0 10px rgba(146, 7, 131, 0.3);
+}

@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { motion, useSpring, useMotionValue } from 'motion/react';
+import styles from './CustomCursor.module.css';
 
 export function CustomCursor() {
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
-  
+
   const springConfig = { damping: 25, stiffness: 400 };
   const outlineX = useSpring(cursorX, springConfig);
   const outlineY = useSpring(cursorY, springConfig);
-  
+
   const outlineRef = useRef<HTMLDivElement>(null);
   const isHovering = useRef(false);
 
@@ -36,7 +37,6 @@ export function CustomCursor() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Add hover effects to interactive elements
     const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', handleMouseEnter);
@@ -52,7 +52,6 @@ export function CustomCursor() {
     };
   }, [cursorX, cursorY]);
 
-  // Re-attach listeners when DOM changes
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const interactiveElements = document.querySelectorAll('a, button, .cursor-pointer');
@@ -78,19 +77,17 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Cursor Dot */}
       <motion.div
-        className="cursor-dot hidden md:block"
+        className={styles.cursorDot}
         style={{
           left: cursorX,
           top: cursorY,
         }}
       />
-      
-      {/* Cursor Outline */}
+
       <motion.div
         ref={outlineRef}
-        className="cursor-outline hidden md:block"
+        className={styles.cursorOutline}
         style={{
           left: outlineX,
           top: outlineY,
@@ -99,4 +96,3 @@ export function CustomCursor() {
     </>
   );
 }
-

@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-family: var(--font-serif);
+}
+
+.button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  padding-bottom: 0.25rem;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+
+.active {
+  font-weight: bold;
+  color: var(--color-accent);
+  border-bottom: 1px solid var(--color-accent);
+}
+
+.separator {
+  opacity: 0.5;
+}

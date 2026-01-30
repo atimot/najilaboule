@@ -1,0 +1,88 @@
+.section {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transform: scale(1.1);
+  animation: slowZoom 20s infinite alternate;
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(36, 24, 22, 0.6),
+    transparent,
+    var(--color-base)
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: 0 5rem;
+  }
+}
+
+.dotsWrapper {
+  width: fit-content;
+  margin: 0 auto 2.5rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-family: var(--font-serif);
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3.5rem;
+  }
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  line-height: 2;
+  letter-spacing: 0.1em;
+  color: rgba(156, 163, 175, 1);
+}
+
+@media (min-width: 768px) {
+  .subtitle {
+    font-size: 1rem;
+  }
+}

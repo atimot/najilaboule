@@ -15,12 +15,12 @@ function App() {
   return (
     <>
       <Loader onComplete={() => setIsLoading(false)} />
-      
+
       {!isLoading && (
         <>
           <CustomCursor />
           <Header />
-          
+
           <main>
             <Hero />
             <Philosophy />
@@ -28,7 +28,7 @@ function App() {
             <ExperienceSection />
             <Access />
           </main>
-          
+
           <Footer />
         </>
       )}

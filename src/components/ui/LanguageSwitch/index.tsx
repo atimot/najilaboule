@@ -1,4 +1,5 @@
-import { useLanguage } from '../../context/LanguageContext';
+import { useLanguage } from '../../../context/LanguageContext';
+import styles from './LanguageSwitch.module.css';
 
 interface LanguageSwitchProps {
   className?: string;
@@ -8,16 +9,16 @@ export function LanguageSwitch({ className = '' }: LanguageSwitchProps) {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className={`flex space-x-4 text-xs tracking-widest font-serif ${className}`}>
+    <div className={`${styles.container} ${className}`}>
       <button
-        className={`hover:opacity-70 transition pb-1 ${language === 'ja' ? 'lang-active' : ''}`}
+        className={`${styles.button} ${language === 'ja' ? styles.active : ''}`}
         onClick={() => setLanguage('ja')}
       >
         JP
       </button>
-      <span className="opacity-50">|</span>
+      <span className={styles.separator}>|</span>
       <button
-        className={`hover:opacity-70 transition pb-1 ${language === 'en' ? 'lang-active' : ''}`}
+        className={`${styles.button} ${language === 'en' ? styles.active : ''}`}
         onClick={() => setLanguage('en')}
       >
         EN

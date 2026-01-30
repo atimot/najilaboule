@@ -1,0 +1,52 @@
+.wrapper {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 60;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    display: none;
+  }
+}
+
+.button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  z-index: 60;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.line {
+  position: absolute;
+  width: 1.75rem;
+  height: 1px;
+  background-color: white;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.lineTop {
+  transform: translateY(-4px);
+}
+
+.lineBottom {
+  transform: translateY(4px);
+}
+
+.lineTopOpen {
+  transform: translateY(0) rotate(45deg);
+}
+
+.lineBottomOpen {
+  transform: translateY(0) rotate(-45deg);
+}
