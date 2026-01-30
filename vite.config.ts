@@ -8,4 +8,7 @@ export default defineConfig({
   // GitHub Pages用: リポジトリ名を設定（例: /najilaboule/）
   // ルートドメインの場合は '/' のままでOK
   base: '/najilaboule/',
+  server: {
+    host: true, // LAN内の他デバイスからアクセス可能にする
+  },
 })
