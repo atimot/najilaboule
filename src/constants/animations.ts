@@ -10,20 +10,6 @@ export const fadeInUp = {
   transition: { duration: 1 },
 } as const;
 
-// フェードイン + 左方向からのスライド
-export const fadeInLeft = {
-  initial: { opacity: 0, x: -30 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1 },
-} as const;
-
-// フェードイン + 右方向からのスライド
-export const fadeInRight = {
-  initial: { opacity: 0, x: 30 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1 },
-} as const;
-
 // シンプルなフェードイン
 export const fadeIn = {
   initial: { opacity: 0 },
