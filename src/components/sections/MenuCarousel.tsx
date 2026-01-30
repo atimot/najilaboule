@@ -39,21 +39,19 @@ export function MenuCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef(null);
   const isTitleInView = useInView(titleRef, { once: true });
-  
+
+  // Mouse drag state (desktop only)
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [startY, setStartY] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [isHorizontalDrag, setIsHorizontalDrag] = useState<boolean | null>(null);
 
-  // Duplicate items for infinite scroll effect
   const [items, setItems] = useState<MenuItem[]>([]);
 
   useEffect(() => {
-    // Duplicate items for infinite scroll effect
     setItems([...menuItems]);
   }, []);
 
+  // Mouse events for desktop drag scrolling
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     setIsDragging(true);
@@ -77,49 +75,6 @@ export function MenuCarousel() {
     containerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // Touch events for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!containerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - containerRef.current.offsetLeft);
-    setStartY(e.touches[0].pageY);
-    setScrollLeft(containerRef.current.scrollLeft);
-    setIsHorizontalDrag(null); // Reset direction detection
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !containerRef.current) return;
-    
-    const x = e.touches[0].pageX - containerRef.current.offsetLeft;
-    const y = e.touches[0].pageY;
-    
-    // Determine drag direction on first move
-    if (isHorizontalDrag === null) {
-      const deltaX = Math.abs(x - startX);
-      const deltaY = Math.abs(y - startY);
-      
-      // If vertical movement is dominant, allow default scroll
-      if (deltaY > deltaX) {
-        setIsHorizontalDrag(false);
-        return;
-      } else {
-        setIsHorizontalDrag(true);
-      }
-    }
-    
-    // Only handle horizontal drag
-    if (isHorizontalDrag) {
-      e.preventDefault(); // Prevent vertical scroll only when horizontal dragging
-      const walk = (x - startX) * 2;
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    setIsHorizontalDrag(null);
-  };
-
   return (
     <section id="menu" className="py-24 md:py-40 bg-base-light relative overflow-x-clip overflow-y-visible">
       {/* Background Decoration */}
@@ -138,19 +93,17 @@ export function MenuCarousel() {
         </motion.div>
       </div>
 
-      {/* Carousel - 全幅スクロール */}
+      {/* Carousel - 全幅スクロール（モバイルはネイティブスクロール使用） */}
       <div
         ref={containerRef}
-        className={`overflow-x-auto pb-10 px-6 md:px-20 no-scrollbar flex space-x-8 md:space-x-12 touch-pan-x ${
+        className={`overflow-x-auto pb-10 px-6 md:px-20 no-scrollbar flex space-x-8 md:space-x-12 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         }`}
+        style={{ WebkitOverflowScrolling: 'touch' }}
         onMouseDown={handleMouseDown}
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         {items.map((item, index) => (
           <motion.div
