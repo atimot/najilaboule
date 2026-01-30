@@ -1,6 +1,8 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../../context/LanguageContext';
 import { BrandDots } from '../ui/BrandDots';
+import { renderWithSeparator } from '../../utils/renderMultiline';
+import { fadeIn } from '../../constants/animations';
 
 export function Hero() {
   const { t } = useLanguage();
@@ -19,8 +21,8 @@ export function Hero() {
 
       <div className="relative z-10 text-center px-6 md:px-20">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={fadeIn.initial}
+          animate={fadeIn.animate}
           transition={{ delay: 3, duration: 2 }}
         >
           <BrandDots size="md" className="w-fit mx-auto mb-10" />
@@ -32,52 +34,18 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 3.5, duration: 2 }}
         >
-          {t.hero_title.split('、').map((part, i, arr) => (
-            <span key={i}>
-              {part}
-              {i < arr.length - 1 && (
-                <>
-                  、<br className="md:hidden" />
-                </>
-              )}
-            </span>
-          ))}
+          {renderWithSeparator(t.hero_title, '、')}
         </motion.h2>
 
         <motion.p
           className="text-body-main text-gray-400"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={fadeIn.initial}
+          animate={fadeIn.animate}
           transition={{ delay: 4, duration: 2 }}
         >
           Riz et Soupe, et un peu d'alcool.
         </motion.p>
       </div>
-
-      {/* スクロールやじるだけどダサいからいらないかも */}
-      {/* <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 4.5, duration: 2 }}
-      >
-        <motion.svg
-          width="20"
-          height="48"
-          viewBox="0 0 20 48"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-white/50"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <path d="M10 2v40M3 38l7 7 7-7" />
-        </motion.svg>
-      </motion.div> */}
     </section>
   );
 }
-

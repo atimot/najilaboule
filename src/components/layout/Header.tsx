@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { useLanguage } from '../../context/LanguageContext';
 import { MobileNav } from './MobileNav';
+import { LanguageSwitch } from '../ui/LanguageSwitch';
+import { fadeIn } from '../../constants/animations';
+import { SITE_CONFIG, NAVIGATION } from '../../constants/config';
 
 export function Header() {
-  const { language, setLanguage } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollToTop = () => {
@@ -15,15 +16,15 @@ export function Header() {
     <>
       <motion.header
         className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start transition-all duration-500 bg-gradient-to-b from-base/90 to-transparent text-white backdrop-blur-[2px]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={fadeIn.initial}
+        animate={fadeIn.animate}
         transition={{ delay: 2.5, duration: 1 }}
       >
         <div
           className="logo font-serif text-xl md:text-2xl tracking-widest cursor-pointer"
           onClick={scrollToTop}
         >
-          Naji la boule
+          {SITE_CONFIG.name}
           <br />
           <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">
             ナジラブール
@@ -32,44 +33,22 @@ export function Header() {
 
         <div className="flex flex-col items-end gap-6">
           {/* Language Switch (PC) */}
-          <div className="hidden md:flex space-x-4 text-xs tracking-widest font-serif pointer-events-auto">
-            <button
-              className={`hover:opacity-70 transition pb-1 ${language === 'ja' ? 'lang-active' : ''}`}
-              onClick={() => setLanguage('ja')}
-            >
-              JP
-            </button>
-            <span className="opacity-50">|</span>
-            <button
-              className={`hover:opacity-70 transition pb-1 ${language === 'en' ? 'lang-active' : ''}`}
-              onClick={() => setLanguage('en')}
-            >
-              EN
-            </button>
-          </div>
+          <LanguageSwitch className="hidden md:flex pointer-events-auto" />
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <ul className="flex space-x-8 text-sm tracking-widest">
-              <li>
-                <a href="#philosophy" className="hover:text-accent transition">
-                  Philosophy
-                </a>
-              </li>
-              <li>
-                <a href="#menu" className="hover:text-accent transition">
-                  Menu
-                </a>
-              </li>
-              <li>
-                <a href="#access" className="hover:text-accent transition">
-                  Access
-                </a>
-              </li>
+              {NAVIGATION.sections.map((section) => (
+                <li key={section.id}>
+                  <a href={`#${section.id}`} className="hover:text-accent transition">
+                    {section.label}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a
-                  href="tel:03-6274-6608"
-                  className="border border-white/50 px-6 py-2 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-xs"
+                  href={SITE_CONFIG.phoneLink}
+                  className="border border-white/50 px-6 py-2 hover:bg-accent hover:border-accent hover:text-base transition duration-500 text-xs"
                 >
                   RESERVATION
                 </a>
@@ -104,4 +83,3 @@ export function Header() {
     </>
   );
 }
-

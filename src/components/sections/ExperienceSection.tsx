@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useLanguage } from '../../context/LanguageContext';
+import { renderMultiline } from '../../utils/renderMultiline';
+import { fadeInUp } from '../../constants/animations';
 
 export function ExperienceSection() {
   const { t } = useLanguage();
@@ -16,9 +18,9 @@ export function ExperienceSection() {
         <div ref={soupeRef} className="flex flex-col md:flex-row-reverse items-center gap-12">
           <motion.div
             className="md:w-1/2"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isSoupeInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1 }}
+            initial={fadeInUp.initial}
+            animate={isSoupeInView ? fadeInUp.animate : {}}
+            transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden">
               <img
@@ -32,19 +34,14 @@ export function ExperienceSection() {
 
           <motion.div
             className="w-full md:w-1/2 md:pr-10"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isSoupeInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.2 }}
+            initial={fadeInUp.initial}
+            animate={isSoupeInView ? fadeInUp.animate : {}}
+            transition={{ ...fadeInUp.transition, delay: 0.2 }}
           >
             <span className="text-section-label block mb-2">SOUPE</span>
             <h3 className="text-heading-1 font-serif mb-8">{t.soupe_title}</h3>
             <p className="text-body-main text-gray-400 font-light mb-8">
-              {t.soupe_desc.split('\n').map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < t.soupe_desc.split('\n').length - 1 && <br />}
-                </span>
-              ))}
+              {renderMultiline(t.soupe_desc)}
             </p>
           </motion.div>
         </div>
@@ -53,9 +50,9 @@ export function ExperienceSection() {
         <div ref={mariageRef} className="flex flex-col md:flex-row items-center gap-12">
           <motion.div
             className="md:w-1/2"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isMariageInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1 }}
+            initial={fadeInUp.initial}
+            animate={isMariageInView ? fadeInUp.animate : {}}
+            transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden">
               <img
@@ -69,19 +66,14 @@ export function ExperienceSection() {
 
           <motion.div
             className="w-full md:w-1/2 md:pl-10"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isMariageInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.2 }}
+            initial={fadeInUp.initial}
+            animate={isMariageInView ? fadeInUp.animate : {}}
+            transition={{ ...fadeInUp.transition, delay: 0.2 }}
           >
             <span className="text-section-label block mb-2">MARIAGE</span>
             <h3 className="text-heading-1 font-serif mb-8">{t.mariage_title}</h3>
             <p className="text-body-main text-gray-400 font-light mb-8">
-              {t.mariage_desc.split('\n').map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < t.mariage_desc.split('\n').length - 1 && <br />}
-                </span>
-              ))}
+              {renderMultiline(t.mariage_desc)}
             </p>
           </motion.div>
         </div>

@@ -1,14 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { useInView } from 'motion/react';
-import { useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useLanguage } from '../../context/LanguageContext';
+import { renderMultiline, renderWithSeparator } from '../../utils/renderMultiline';
+import { fadeInUp, fadeIn, TIMING } from '../../constants/animations';
 
-const images = [
-  'riz_01.JPG',
-  'counter_01.JPG',
-  'counter_02.JPG',
-];
+const images = ['riz_01.JPG', 'counter_01.JPG', 'counter_02.JPG'];
 
 export function Philosophy() {
   const { philoSlides } = useLanguage();
@@ -21,19 +17,25 @@ export function Philosophy() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 10000);
+    const interval = setInterval(nextSlide, TIMING.PHILOSOPHY_SLIDE_INTERVAL);
     return () => clearInterval(interval);
   }, [nextSlide]);
 
+  const currentSlide = philoSlides[activeIndex];
+
   return (
-    <section id="philosophy" className="section-padding min-h-screen md:min-h-0 relative flex items-center" ref={sectionRef}>
+    <section
+      id="philosophy"
+      ref={sectionRef}
+      className="section-padding min-h-screen md:min-h-0 relative flex items-center"
+    >
       <div className="content-wrapper w-full md:flex md:flex-row md:items-center md:justify-between md:gap-8">
         {/* Left: Image Slider */}
         <motion.div
           className="philo-bg absolute inset-0 w-full md:static md:w-[55%] md:mb-0 pointer-events-none z-0"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1 }}
+          initial={fadeInUp.initial}
+          animate={isInView ? fadeInUp.animate : {}}
+          transition={fadeInUp.transition}
         >
           <div className="absolute inset-0 overflow-hidden md:relative md:inset-auto md:h-[700px]">
             {/* Decorative Dot */}
@@ -44,10 +46,10 @@ export function Philosophy() {
               <motion.div
                 key={activeIndex}
                 className="absolute inset-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
+                initial={fadeIn.initial}
+                animate={fadeIn.animate}
+                exit={fadeIn.initial}
+                transition={fadeIn.transition}
               >
                 <img
                   src={images[activeIndex]}
@@ -65,42 +67,26 @@ export function Philosophy() {
         {/* Right: Text */}
         <motion.div
           className="relative z-10 w-full md:w-[45%] text-center md:text-left"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.2 }}
+          initial={fadeInUp.initial}
+          animate={isInView ? fadeInUp.animate : {}}
+          transition={{ ...fadeInUp.transition, delay: 0.2 }}
         >
           <div className="mx-auto md:max-w-none">
             <div className="philo-text-stack">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1 }}
+                  initial={fadeIn.initial}
+                  animate={fadeIn.animate}
+                  exit={fadeIn.initial}
+                  transition={fadeIn.transition}
                 >
                   <div className="mx-auto max-w-[92vw] md:max-w-none">
                     <h3 className="text-heading-2 font-serif mb-8 md:mb-12 leading-relaxed">
-                      {philoSlides[activeIndex]?.title.split('、').map((part, i, arr) => (
-                        <span key={i}>
-                          {part}
-                          {i < arr.length - 1 && (
-                            <>
-                              、<br />
-                            </>
-                          )}
-                        </span>
-                      ))}
+                      {currentSlide && renderWithSeparator(currentSlide.title, '、')}
                     </h3>
                     <div className="space-y-8 text-body-main text-gray-300 font-light">
-                      <p>
-                        {philoSlides[activeIndex]?.body.split('\n').map((line, i) => (
-                          <span key={i}>
-                            {line}
-                            {i < philoSlides[activeIndex]?.body.split('\n').length - 1 && <br />}
-                          </span>
-                        ))}
-                      </p>
+                      <p>{currentSlide && renderMultiline(currentSlide.body)}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -126,4 +112,3 @@ export function Philosophy() {
     </section>
   );
 }
-

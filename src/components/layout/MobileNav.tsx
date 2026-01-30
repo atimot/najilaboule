@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitch } from '../ui/LanguageSwitch';
+import { fadeIn } from '../../constants/animations';
+import { SITE_CONFIG, NAVIGATION } from '../../constants/config';
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -7,20 +9,14 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
-  const { language, setLanguage } = useLanguage();
-
-  const handleLinkClick = () => {
-    onClose();
-  };
-
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.nav
           className="fixed inset-0 z-50 bg-base/80 backdrop-blur-[28px] backdrop-saturate-150 overflow-y-auto overscroll-contain md:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={fadeIn.initial}
+          animate={fadeIn.animate}
+          exit={fadeIn.initial}
           transition={{ duration: 0.5 }}
           onClick={(e) => {
             if (e.target === e.currentTarget) onClose();
@@ -34,30 +30,24 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               variants={{
                 hidden: {},
                 visible: {
-                  transition: {
-                    staggerChildren: 0.1,
-                  },
+                  transition: { staggerChildren: 0.1 },
                 },
               }}
             >
-              {[
-                { href: '#philosophy', label: 'Philosophy' },
-                { href: '#menu', label: 'Menu' },
-                { href: '#access', label: 'Access' },
-              ].map((item) => (
+              {NAVIGATION.sections.map((section) => (
                 <motion.li
-                  key={item.href}
+                  key={section.id}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
                     visible: { opacity: 1, y: 0 },
                   }}
                 >
                   <a
-                    href={item.href}
+                    href={`#${section.id}`}
                     className="hover:text-accent transition"
-                    onClick={handleLinkClick}
+                    onClick={onClose}
                   >
-                    {item.label}
+                    {section.label}
                   </a>
                 </motion.li>
               ))}
@@ -69,8 +59,8 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 }}
               >
                 <a
-                  href="tel:03-6274-6608"
-                  className="border border-white/50 px-8 py-3 hover:bg-accent hover:border-accent hover:text-[#241816] transition duration-500 text-sm"
+                  href={SITE_CONFIG.phoneLink}
+                  className="border border-white/50 px-8 py-3 hover:bg-accent hover:border-accent hover:text-base transition duration-500 text-sm"
                 >
                   RESERVATION
                 </a>
@@ -79,24 +69,12 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
 
             {/* Language Switch */}
             <motion.div
-              className="flex space-x-6 text-sm tracking-widest font-serif mt-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={fadeIn.initial}
+              animate={fadeIn.animate}
               transition={{ delay: 0.5 }}
+              className="mt-12"
             >
-              <button
-                className={`hover:opacity-70 transition pb-1 ${language === 'ja' ? 'lang-active' : ''}`}
-                onClick={() => setLanguage('ja')}
-              >
-                JP
-              </button>
-              <span className="opacity-50">|</span>
-              <button
-                className={`hover:opacity-70 transition pb-1 ${language === 'en' ? 'lang-active' : ''}`}
-                onClick={() => setLanguage('en')}
-              >
-                EN
-              </button>
+              <LanguageSwitch className="space-x-6 text-sm" />
             </motion.div>
           </div>
         </motion.nav>
@@ -104,4 +82,3 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
     </AnimatePresence>
   );
 }
-

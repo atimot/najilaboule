@@ -2,65 +2,63 @@ import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useLanguage } from '../../context/LanguageContext';
 import { BrandDots } from '../ui/BrandDots';
+import { renderMultiline } from '../../utils/renderMultiline';
+import { fadeInUp } from '../../constants/animations';
+import { SITE_CONFIG } from '../../constants/config';
 
 export function Access() {
   const { t } = useLanguage();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
+  const [mainHours, closedInfo] = t.hours_text.split(' / ');
+
   return (
-    <section id="access" className="section-padding bg-base-dark relative" ref={sectionRef}>
+    <section id="access" ref={sectionRef} className="section-padding bg-base-dark relative">
       <div className="content-wrapper text-center">
         <motion.div
           className="mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1 }}
+          initial={fadeInUp.initial}
+          animate={isInView ? fadeInUp.animate : {}}
+          transition={fadeInUp.transition}
         >
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
-          <h2 className="text-heading-1 font-serif mb-2">Naji la boule</h2>
+          <h2 className="text-heading-1 font-serif mb-2">{SITE_CONFIG.name}</h2>
           <p className="text-section-label text-gray-500">GINZA</p>
         </motion.div>
 
         <motion.div
           className="grid md:grid-cols-2 gap-12 text-left mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.2 }}
+          initial={fadeInUp.initial}
+          animate={isInView ? fadeInUp.animate : {}}
+          transition={{ ...fadeInUp.transition, delay: 0.2 }}
         >
           <div className="space-y-6">
             <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">ADDRESS</p>
-              <p className="font-serif">
-                {t.address_text.split(' ').map((part, i, arr) => (
-                  <span key={i}>
-                    {part}
-                    {i < arr.length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
+              <p className="font-serif">{renderMultiline(t.address_text, ' ')}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">TEL</p>
               <p className="font-serif">
-                <a href="tel:03-6274-6608" className="hover:text-accent transition">
-                  03-6274-6608
+                <a href={SITE_CONFIG.phoneLink} className="hover:text-accent transition">
+                  {SITE_CONFIG.phone}
                 </a>
               </p>
             </div>
             <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">HOURS</p>
               <p className="font-serif">
-                {t.hours_text.split(' / ')[0]}
+                {mainHours}
                 <br />
-                <span className="text-xs text-gray-500">{t.hours_text.split(' / ')[1]}</span>
+                <span className="text-xs text-gray-500">{closedInfo}</span>
               </p>
             </div>
           </div>
           <div className="space-y-6">
             <a
-              href="tel:03-6274-6608"
-              className="block w-full py-4 bg-white/5 border border-white/20 text-center hover:bg-white hover:text-[#241816] transition duration-300 tracking-widest text-sm"
+              href={SITE_CONFIG.phoneLink}
+              className="block w-full py-4 bg-white/5 border border-white/20 text-center hover:bg-white hover:text-base transition duration-300 tracking-widest text-sm"
             >
               RESERVATION
             </a>
@@ -69,9 +67,9 @@ export function Access() {
 
         <motion.div
           className="w-full h-64"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.4 }}
+          initial={fadeInUp.initial}
+          animate={isInView ? fadeInUp.animate : {}}
+          transition={{ ...fadeInUp.transition, delay: 0.4 }}
         >
           <iframe
             title="Google Map"
@@ -88,4 +86,3 @@ export function Access() {
     </section>
   );
 }
-
