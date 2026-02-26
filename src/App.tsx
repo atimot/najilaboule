@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { Loader } from './components/ui/Loader';
-import { Header } from './components/layout/Header';
-import { Footer } from './components/layout/Footer';
-import { Hero } from './components/sections/Hero';
-import { Philosophy } from './components/sections/Philosophy';
-import { MenuCarousel } from './components/sections/MenuCarousel';
-import { ExperienceSection } from './components/sections/ExperienceSection';
-import { Access } from './components/sections/Access';
+import { Loader } from './components/Loader';
+import { Header } from './components/Header';
+import { Content } from './components/Content';
+import { Footer } from './components/Footer';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,11 +16,7 @@ function App() {
           <Header />
 
           <main>
-            <Hero />
-            <Philosophy />
-            <MenuCarousel />
-            <ExperienceSection />
-            <Access />
+            <Content />
           </main>
 
           <Footer />
