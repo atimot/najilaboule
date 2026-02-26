@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Loader } from './components/ui/Loader';
-import { CustomCursor } from './components/ui/CustomCursor';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
@@ -18,7 +17,6 @@ function App() {
 
       {!isLoading && (
         <>
-          <CustomCursor />
           <Header />
 
           <main>
