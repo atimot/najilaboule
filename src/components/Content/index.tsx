@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
-import { useLanguage } from '../../context';
+import { useLanguage } from '../../i18n';
 import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG, IMAGES } from '../../constants';
 import { BrandDots } from '../BrandDots';
 import { ReservationButton } from '../ReservationButton';

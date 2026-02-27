@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { fadeIn, SITE_CONFIG, NAVIGATION } from '../../constants';
-import { useLanguage } from '../../context';
+import { useLanguage } from '../../i18n';
 import { ReservationButton } from '../ReservationButton';
 
 function LanguageSwitch({ className = '' }: { className?: string }) {
