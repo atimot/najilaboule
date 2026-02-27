@@ -122,6 +122,7 @@ function PhilosophySection() {
                   src={IMAGES.philosophy.slides[activeIndex]}
                   alt={`Philosophy ${activeIndex + 1}`}
                   className="w-full h-full object-cover brightness-75 transition-opacity duration-[2s] ease-in-out"
+                  loading="lazy"
                 />
               </motion.div>
             </AnimatePresence>
@@ -217,6 +218,7 @@ function MenuSection() {
                   alt={t[item.nameKey]}
                   className="w-full h-full object-cover bg-[#1a1110] scale-100 group-hover:scale-105 transition-transform duration-700"
                   draggable={false}
+                  loading="lazy"
                 />
                 {item.dotColor !== 'white' && (
                   <div className={clsx('absolute bottom-0 right-0 size-20 opacity-20 blur-[24px]', MENU_DOT_COLORS[item.dotColor])} />
@@ -256,7 +258,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.soupe} alt="Soup" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" />
+              <img src={IMAGES.experience.soupe} alt="Soup" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -284,7 +286,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.mariage} alt="Sake" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" />
+              <img src={IMAGES.experience.mariage} alt="Sake" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
