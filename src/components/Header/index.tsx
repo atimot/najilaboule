@@ -44,13 +44,13 @@ function HamburgerButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => 
       >
         <span
           className={clsx(
-            'absolute w-7 h-px bg-white transition-all duration-300 origin-center',
+            'absolute w-7 h-px bg-white transition-transform duration-300 origin-center',
             isOpen ? 'translate-y-0 rotate-45' : '-translate-y-1',
           )}
         />
         <span
           className={clsx(
-            'absolute w-7 h-px bg-white transition-all duration-300 origin-center',
+            'absolute w-7 h-px bg-white transition-transform duration-300 origin-center',
             isOpen ? 'translate-y-0 -rotate-45' : 'translate-y-1',
           )}
         />
@@ -157,15 +157,15 @@ export function Header() {
   return (
     <>
       <motion.header
-        className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start transition-all duration-500 bg-gradient-to-b from-brand/90 to-transparent text-white backdrop-blur-[2px]"
+        className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start bg-gradient-to-b from-brand/90 to-transparent text-white backdrop-blur-[2px]"
         initial={fadeIn.initial}
         animate={fadeIn.animate}
         transition={{ delay: 2.5, duration: 1 }}
       >
-        <div className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer" onClick={scrollToTop}>
+        <button className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left bg-transparent border-none text-inherit p-0" onClick={scrollToTop}>
           {SITE_CONFIG.name}
           <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">ナジラブール</span>
-        </div>
+        </button>
 
         <div className="flex flex-col items-end gap-6">
           <LanguageSwitch className="hidden md:flex pointer-events-auto" />

@@ -33,7 +33,7 @@ const GAP_CLASSES = {
 
 export function BrandDots({ size = 'md', className = '', animated = false }: BrandDotsProps) {
   return (
-    <div className={clsx('grid grid-cols-3', GAP_CLASSES[size], className)}>
+    <div aria-hidden="true" className={clsx('grid grid-cols-3', GAP_CLASSES[size], className)}>
       {DOT_COLORS.map((colorClass, index) => {
         const dotClass = clsx('rounded-full', SIZE_CLASSES[size], colorClass);
         return animated ? (

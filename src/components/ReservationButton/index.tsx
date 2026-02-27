@@ -29,7 +29,7 @@ export function ReservationButton({
     <a
       href={SITE_CONFIG.phoneLink}
       className={clsx(
-        'inline-block text-center tracking-widest transition-all duration-500 cursor-pointer',
+        'inline-block text-center tracking-widest transition-[background-color,border-color,color] duration-500 cursor-pointer',
         variantClasses[variant],
         sizeClasses[size],
         className,

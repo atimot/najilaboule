@@ -40,6 +40,9 @@ function HeroSection() {
           src={IMAGES.hero.background}
           alt="Ginza Bar Atmosphere"
           className="w-full h-full object-cover opacity-50 grayscale scale-110 animate-slow-zoom"
+          width={1477}
+          height={1108}
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand/60 via-transparent to-brand" />
       </div>
@@ -69,7 +72,7 @@ function HeroSection() {
           animate={fadeIn.animate}
           transition={{ delay: 4, duration: 2 }}
         >
-          Riz et Soupe, et un peu d'alcool.
+          Riz et Soupe, et un peu d\u2019alcool.
         </motion.p>
       </div>
     </section>
@@ -122,6 +125,8 @@ function PhilosophySection() {
                   src={IMAGES.philosophy.slides[activeIndex]}
                   alt={`Philosophy ${activeIndex + 1}`}
                   className="w-full h-full object-cover brightness-75 transition-opacity duration-[2s] ease-in-out"
+                  width={1477}
+                  height={1108}
                   loading="lazy"
                 />
               </motion.div>
@@ -164,7 +169,7 @@ function PhilosophySection() {
                 <button
                   key={index}
                   className={clsx(
-                    'size-2 rounded-full bg-dot-white cursor-pointer transition-all duration-300 border-none p-0',
+                    'size-2 rounded-full bg-dot-white cursor-pointer transition-[opacity,transform] duration-300 border-none p-0',
                     index === activeIndex ? 'opacity-100 scale-125' : 'opacity-30 hover:opacity-70',
                   )}
                   onClick={() => setActiveIndex(index)}
@@ -217,6 +222,8 @@ function MenuSection() {
                   src={item.image}
                   alt={t[item.nameKey]}
                   className="w-full h-full object-cover bg-[#1a1110] scale-100 group-hover:scale-105 transition-transform duration-700"
+                  width={1477}
+                  height={1108}
                   draggable={false}
                   loading="lazy"
                 />
@@ -258,7 +265,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.soupe} alt="Soup" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" loading="lazy" />
+              <img src={IMAGES.experience.soupe} alt="Soup" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={1477} height={1108} loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -286,7 +293,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.mariage} alt="Sake" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" loading="lazy" />
+              <img src={IMAGES.experience.mariage} alt="Sake" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={1477} height={1108} loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -322,7 +329,7 @@ function AccessSection() {
           transition={fadeInUp.transition}
         >
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
-          <h2 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h2>
+          <h3 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h3>
           <p className="text-xs tracking-[0.3em] text-gray-500">GINZA</p>
         </motion.div>
 
