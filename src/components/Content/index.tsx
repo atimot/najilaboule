@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '../../i18n';
-import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG, IMAGES } from '../../constants';
+import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG } from '../../constants';
+import { heroImages, philosophySlides, menuImages, experienceImages, type ImageEntry } from '../../images';
 import { BrandDots } from '../BrandDots';
 import { ReservationButton } from '../ReservationButton';
 
@@ -10,16 +11,16 @@ import { ReservationButton } from '../ReservationButton';
 
 interface MenuItem {
   id: number;
-  image: string;
+  image: ImageEntry;
   nameKey: 'menu_1_name' | 'menu_2_name' | 'menu_3_name';
   descKey: 'menu_1_desc' | 'menu_2_desc' | 'menu_3_desc';
   dotColor: 'white' | 'orange' | 'red';
 }
 
 const MENU_ITEMS: MenuItem[] = [
-  { id: 1, image: IMAGES.menu.items[0], nameKey: 'menu_1_name', descKey: 'menu_1_desc', dotColor: 'white' },
-  { id: 2, image: IMAGES.menu.items[1], nameKey: 'menu_2_name', descKey: 'menu_2_desc', dotColor: 'orange' },
-  { id: 3, image: IMAGES.menu.items[2], nameKey: 'menu_3_name', descKey: 'menu_3_desc', dotColor: 'red' },
+  { id: 1, image: menuImages[0], nameKey: 'menu_1_name', descKey: 'menu_1_desc', dotColor: 'white' },
+  { id: 2, image: menuImages[1], nameKey: 'menu_2_name', descKey: 'menu_2_desc', dotColor: 'orange' },
+  { id: 3, image: menuImages[2], nameKey: 'menu_3_name', descKey: 'menu_3_desc', dotColor: 'red' },
 ];
 
 const MENU_DOT_COLORS = {
@@ -31,18 +32,19 @@ const MENU_DOT_COLORS = {
 // ─── Sections ───
 
 function HeroSection() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const hero = heroImages.background;
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img
-          src={IMAGES.hero.background}
-          alt="Ginza Bar Atmosphere"
+          src={hero.src}
+          alt={hero.alt[language]}
           className="w-full h-full object-cover opacity-50 grayscale scale-110 animate-slow-zoom"
-          width={1477}
-          height={1108}
-          fetchPriority="high"
+          width={hero.width}
+          height={hero.height}
+          fetchPriority={hero.fetchPriority}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brand/60 via-transparent to-brand" />
       </div>
@@ -80,13 +82,13 @@ function HeroSection() {
 }
 
 function PhilosophySection() {
-  const { philoSlides } = useLanguage();
+  const { language, philoSlides } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const philoRef = useRef(null);
   const isPhiloInView = useInView(philoRef, { once: true });
 
   const nextSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % IMAGES.philosophy.slides.length);
+    setActiveIndex((prev) => (prev + 1) % philosophySlides.length);
   }, []);
 
   useEffect(() => {
@@ -95,6 +97,7 @@ function PhilosophySection() {
   }, [nextSlide]);
 
   const currentSlide = philoSlides[activeIndex];
+  const currentImage = philosophySlides[activeIndex];
 
   return (
     <section
@@ -122,12 +125,12 @@ function PhilosophySection() {
                 transition={fadeIn.transition}
               >
                 <img
-                  src={IMAGES.philosophy.slides[activeIndex]}
-                  alt={`Philosophy ${activeIndex + 1}`}
+                  src={currentImage.src}
+                  alt={currentImage.alt[language]}
                   className="w-full h-full object-cover brightness-75 transition-opacity duration-[2s] ease-in-out"
-                  width={1477}
-                  height={1108}
-                  loading="lazy"
+                  width={currentImage.width}
+                  height={currentImage.height}
+                  loading={currentImage.loading}
                 />
               </motion.div>
             </AnimatePresence>
@@ -165,7 +168,7 @@ function PhilosophySection() {
             </div>
 
             <div className="mt-16 flex justify-center md:justify-start gap-4">
-              {IMAGES.philosophy.slides.map((_, index) => (
+              {philosophySlides.map((_, index) => (
                 <button
                   key={index}
                   className={clsx(
@@ -219,13 +222,13 @@ function MenuSection() {
               <div className="relative overflow-hidden aspect-[4/5] mb-6 pointer-events-none">
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <img
-                  src={item.image}
+                  src={item.image.src}
                   alt={t[item.nameKey]}
                   className="w-full h-full object-cover bg-[#1a1110] scale-100 group-hover:scale-105 transition-transform duration-700"
-                  width={1477}
-                  height={1108}
+                  width={item.image.width}
+                  height={item.image.height}
                   draggable={false}
-                  loading="lazy"
+                  loading={item.image.loading}
                 />
                 {item.dotColor !== 'white' && (
                   <div className={clsx('absolute bottom-0 right-0 size-20 opacity-20 blur-[24px]', MENU_DOT_COLORS[item.dotColor])} />
@@ -245,7 +248,7 @@ function MenuSection() {
 }
 
 function ExperienceSection() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const expSoupeRef = useRef(null);
   const isExpSoupeInView = useInView(expSoupeRef, { once: true, margin: '-100px' });
   const expMariageRef = useRef(null);
@@ -265,7 +268,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.soupe} alt="Soup" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={1477} height={1108} loading="lazy" />
+              <img src={experienceImages.soupe.src} alt={experienceImages.soupe.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.soupe.width} height={experienceImages.soupe.height} loading={experienceImages.soupe.loading} />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -293,7 +296,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={IMAGES.experience.mariage} alt="Sake" className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={1477} height={1108} loading="lazy" />
+              <img src={experienceImages.mariage.src} alt={experienceImages.mariage.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.mariage.width} height={experienceImages.mariage.height} loading={experienceImages.mariage.loading} />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>

@@ -44,22 +44,3 @@ export const NAVIGATION = {
   ],
 } as const;
 
-/**
- * 画像パス定数
- */
-
-export const IMAGES = {
-  hero: {
-    background: 'sake_01.JPG',
-  },
-  philosophy: {
-    slides: ['riz_01.JPG', 'counter_01.JPG', 'counter_02.JPG'],
-  },
-  menu: {
-    items: ['menu_01.JPG', 'menu_02.JPG', 'menu_03.JPG'],
-  },
-  experience: {
-    soupe: 'menu_01.JPG',
-    mariage: 'sake_01.JPG',
-  },
-} as const;
