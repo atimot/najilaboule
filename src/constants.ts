@@ -23,7 +23,7 @@ export const getStaggeredFadeInUp = (index: number, baseDelay = 0) => ({
 
 export const TIMING = {
   LOADER_DURATION: 2500,
-  PHILOSOPHY_SLIDE_INTERVAL: 10000,
+  PHILOSOPHY_SLIDE_INTERVAL: 7000,
 } as const;
 
 /**

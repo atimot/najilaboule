@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, useInView, AnimatePresence } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
 import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG } from '@/constants';
@@ -96,9 +96,6 @@ function PhilosophySection() {
     return () => clearInterval(interval);
   }, [nextSlide]);
 
-  const currentSlide = philoSlides[activeIndex];
-  const currentImage = philosophySlides[activeIndex];
-
   return (
     <section
       id="philosophy"
@@ -115,25 +112,23 @@ function PhilosophySection() {
           <div className="absolute inset-0 overflow-hidden md:relative md:inset-auto md:h-[700px]">
             <div className="hidden md:block md:absolute md:-top-10 md:-left-10 md:size-2 md:rounded-full md:bg-dot-red md:blur-[1px] md:z-10" />
 
-            <AnimatePresence mode="wait">
+            {philosophySlides.map((image, index) => (
               <motion.div
-                key={activeIndex}
+                key={index}
                 className="absolute inset-0"
-                initial={fadeIn.initial}
-                animate={fadeIn.animate}
-                exit={fadeIn.initial}
+                animate={{ opacity: index === activeIndex ? 1 : 0 }}
                 transition={fadeIn.transition}
               >
                 <img
-                  src={currentImage.src}
-                  alt={currentImage.alt[language]}
-                  className="w-full h-full object-cover brightness-75 transition-opacity duration-[2s] ease-in-out"
-                  width={currentImage.width}
-                  height={currentImage.height}
-                  loading={currentImage.loading}
+                  src={image.src}
+                  alt={image.alt[language]}
+                  className="w-full h-full object-cover brightness-75"
+                  width={image.width}
+                  height={image.height}
+                  loading={image.loading}
                 />
               </motion.div>
-            </AnimatePresence>
+            ))}
 
             <div className="absolute inset-0 bg-gradient-to-b from-brand/85 via-brand/50 to-brand/85 z-10 md:hidden" />
           </div>
@@ -147,24 +142,24 @@ function PhilosophySection() {
         >
           <div className="mx-auto md:max-w-none">
             <div className="grid">
-              <AnimatePresence mode="wait">
+              {philoSlides.map((slide, index) => (
                 <motion.div
-                  key={activeIndex}
-                  initial={fadeIn.initial}
-                  animate={fadeIn.animate}
-                  exit={fadeIn.initial}
+                  key={index}
+                  className={clsx('[grid-area:1/1]', index !== activeIndex && 'pointer-events-none')}
+                  animate={{ opacity: index === activeIndex ? 1 : 0 }}
                   transition={fadeIn.transition}
+                  aria-hidden={index !== activeIndex}
                 >
                   <div className="mx-auto max-w-[92vw] md:max-w-none">
                     <h3 className="text-2xl md:text-3xl font-serif mb-8 md:mb-12 leading-relaxed tracking-widest whitespace-pre-line">
-                      {currentSlide?.title}
+                      {slide.title}
                     </h3>
                     <div className="text-sm md:text-base leading-loose tracking-widest text-gray-300 font-light whitespace-pre-line">
-                      <p>{currentSlide?.body}</p>
+                      <p>{slide.body}</p>
                     </div>
                   </div>
                 </motion.div>
-              </AnimatePresence>
+              ))}
             </div>
 
             <div className="mt-16 flex justify-center md:justify-start gap-4">
