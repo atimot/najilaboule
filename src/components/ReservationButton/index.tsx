@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { SITE_CONFIG } from '../../constants';
+import { SITE_CONFIG } from '@/constants';
 
 interface ReservationButtonProps {
   variant?: 'outline' | 'filled';

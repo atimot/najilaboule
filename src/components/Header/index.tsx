@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
-import { fadeIn, SITE_CONFIG, NAVIGATION } from '../../constants';
-import { useLanguage } from '../../i18n';
-import { ReservationButton } from '../ReservationButton';
+import { fadeIn, SITE_CONFIG, NAVIGATION } from '@/constants';
+import { useLanguage } from '@/i18n';
+import { ReservationButton } from '@/components/ReservationButton';
 
 function LanguageSwitch({ className = '' }: { className?: string }) {
   const { language, setLanguage } = useLanguage();

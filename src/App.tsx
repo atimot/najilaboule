@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Loader } from './components/Loader';
-import { Header } from './components/Header';
-import { Content } from './components/Content';
-import { Footer } from './components/Footer';
+import { Loader } from '@/components/Loader';
+import { Header } from '@/components/Header';
+import { Content } from '@/components/Content';
+import { Footer } from '@/components/Footer';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'motion/react';
 import clsx from 'clsx';
-import { useLanguage } from '../../i18n';
-import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG } from '../../constants';
-import { heroImages, philosophySlides, menuImages, experienceImages, type ImageEntry } from '../../images';
-import { BrandDots } from '../BrandDots';
-import { ReservationButton } from '../ReservationButton';
+import { useLanguage } from '@/i18n';
+import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG } from '@/constants';
+import { heroImages, philosophySlides, menuImages, experienceImages, type ImageEntry } from '@/images';
+import { BrandDots } from '@/components/BrandDots';
+import { ReservationButton } from '@/components/ReservationButton';
 
 // ─── Data ───
 

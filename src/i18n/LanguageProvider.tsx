@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, type ReactNode } from 'react';
-import { type Language, translations, philoSlides } from './data';
-import { LanguageContext, type LanguageContextType } from './LanguageContext';
+import { type Language, translations, philoSlides } from '@/i18n/data';
+import { LanguageContext, type LanguageContextType } from '@/i18n/LanguageContext';
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('ja');

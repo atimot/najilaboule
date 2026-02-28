@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
-import { BrandDots } from '../BrandDots';
-import { TIMING, SITE_CONFIG } from '../../constants';
+import { BrandDots } from '@/components/BrandDots';
+import { TIMING, SITE_CONFIG } from '@/constants';
 
 interface LoaderProps {
   onComplete?: () => void;
