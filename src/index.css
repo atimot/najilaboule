@@ -1,5 +1,108 @@
-@import "./styles/variables.css";
-@import "./styles/base.css";
-@import "./styles/utilities.css";
-@import "./styles/animations.css";
-@import "./styles/components.css";
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #241816;
+  --color-brand-dark: #1f1513;
+  --color-brand-light: #2a1d1b;
+  --color-accent: #C8A67B;
+
+  --color-dot-white: #FFFFFF;
+  --color-dot-black: #000000;
+  --color-dot-red: #E60012;
+  --color-dot-blue: #0099CC;
+  --color-dot-yellow: #FFD700;
+  --color-dot-green: #009944;
+  --color-dot-orange: #F39800;
+  --color-dot-pink: #E6007F;
+  --color-dot-purple: #920783;
+
+  --font-serif: "Playfair Display", "Shippori Mincho", serif;
+  --font-sans: "Helvetica Neue", Arial, sans-serif;
+
+  --animate-slow-zoom: slow-zoom 20s infinite alternate;
+}
+
+@keyframes slow-zoom {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-brand);
+    color: #f8f8f8;
+    font-family: "Shippori Mincho", serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-brand);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #443330;
+    border-radius: 4px;
+  }
+}
