@@ -394,7 +394,7 @@ export function Content() {
     <>
       <HeroSection />
       <PhilosophySection />
-      <MenuSection />
+      {/* <MenuSection /> */}
       <ExperienceSection />
       <AccessSection />
     </>
