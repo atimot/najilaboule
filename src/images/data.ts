@@ -38,7 +38,7 @@ export const philosophySlides: readonly ImageEntry[] = [
   },
 ] as const;
 
-export const menuImages: readonly ImageEntry[] = [
+const menuImages: readonly ImageEntry[] = [
   {
     src: 'images/menu/item-01.jpg',
     alt: { ja: 'メニュー料理 1', en: 'Menu dish 1' },

@@ -2,13 +2,6 @@ export type Language = 'ja' | 'en';
 
 export interface Translations {
   hero_title: string;
-  menu_riz_title: string;
-  menu_1_name: string;
-  menu_1_desc: string;
-  menu_2_name: string;
-  menu_2_desc: string;
-  menu_3_name: string;
-  menu_3_desc: string;
   riz_title: string;
   riz_desc: string;
   soupe_title: string;
@@ -28,13 +21,6 @@ export interface PhiloSlide {
 export const translations: Record<Language, Translations> = {
   ja: {
     hero_title: '銀座の夜、\n米と汁を嗜む。',
-    menu_riz_title: 'おにぎりと汁',
-    menu_1_name: '銀シャリ - 極 -',
-    menu_1_desc: '新潟県産コシヒカリ / 能登の塩',
-    menu_2_name: '溢れいくら',
-    menu_2_desc: '北海道産いくら醤油漬け',
-    menu_3_name: '和牛しぐれ煮',
-    menu_3_desc: 'A5ランク黒毛和牛 / 実山椒',
     riz_title: 'にぎる、米。',
     riz_desc: '厳選された米を、掌でそっとにぎる。\n一粒一粒が立ち上がるおにぎりは、\nこの店の全ての始まりです。',
     soupe_title: 'ほどける、汁。',
@@ -47,13 +33,6 @@ export const translations: Record<Language, Translations> = {
   },
   en: {
     hero_title: 'Savoring Rice in the Ginza Night.',
-    menu_riz_title: 'Riz - Onigiri (Rice Ball)',
-    menu_1_name: 'Silver Shari - Kiwami',
-    menu_1_desc: 'Niigata Koshihikari Rice / Noto Salt',
-    menu_2_name: 'Overflowing Ikura',
-    menu_2_desc: 'Hokkaido Soy Marinated Salmon Roe',
-    menu_3_name: 'Wagyu Shigureni',
-    menu_3_desc: 'A5 Black Wagyu Beef / Japanese Pepper',
     riz_title: 'Shaping the Grain.',
     riz_desc: 'Carefully selected rice, gently shaped by hand. Each grain stands tall in our Onigiri — the very soul from which everything begins.',
     soupe_title: 'Unwinding Soup.',

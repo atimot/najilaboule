@@ -15,12 +15,6 @@ export const fadeIn = {
   transition: { duration: 1 },
 } as const;
 
-export const getStaggeredFadeInUp = (index: number, baseDelay = 0) => ({
-  initial: { opacity: 0, y: 30 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, delay: baseDelay + index * 0.1 },
-});
-
 export const TIMING = {
   LOADER_DURATION: 2500,
   PHILOSOPHY_SLIDE_INTERVAL: 7000,
@@ -39,7 +33,6 @@ export const SITE_CONFIG = {
 export const NAVIGATION = {
   sections: [
     { id: 'philosophy', label: 'Philosophy' },
-    { id: 'menu', label: 'Menu' },
     { id: 'access', label: 'Access' },
   ],
 } as const;
