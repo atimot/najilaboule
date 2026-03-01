@@ -2,32 +2,32 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
-import { fadeIn, fadeInUp, getStaggeredFadeInUp, TIMING, SITE_CONFIG } from '@/constants';
-import { heroImages, philosophySlides, menuImages, experienceImages, type ImageEntry } from '@/images';
+import { fadeIn, fadeInUp, /* getStaggeredFadeInUp, */ TIMING, SITE_CONFIG } from '@/constants';
+import { heroImages, philosophySlides, /* menuImages, */ experienceImages, /* type ImageEntry */ } from '@/images';
 import { BrandDots } from '@/components/BrandDots';
 import { ReservationButton } from '@/components/ReservationButton';
 
 // ─── Data ───
 
-interface MenuItem {
-  id: number;
-  image: ImageEntry;
-  nameKey: 'menu_1_name' | 'menu_2_name' | 'menu_3_name';
-  descKey: 'menu_1_desc' | 'menu_2_desc' | 'menu_3_desc';
-  dotColor: 'white' | 'orange' | 'red';
-}
+// interface MenuItem {
+//   id: number;
+//   image: ImageEntry;
+//   nameKey: 'menu_1_name' | 'menu_2_name' | 'menu_3_name';
+//   descKey: 'menu_1_desc' | 'menu_2_desc' | 'menu_3_desc';
+//   dotColor: 'white' | 'orange' | 'red';
+// }
 
-const MENU_ITEMS: MenuItem[] = [
-  { id: 1, image: menuImages[0], nameKey: 'menu_1_name', descKey: 'menu_1_desc', dotColor: 'white' },
-  { id: 2, image: menuImages[1], nameKey: 'menu_2_name', descKey: 'menu_2_desc', dotColor: 'orange' },
-  { id: 3, image: menuImages[2], nameKey: 'menu_3_name', descKey: 'menu_3_desc', dotColor: 'red' },
-];
+// const MENU_ITEMS: MenuItem[] = [
+//   { id: 1, image: menuImages[0], nameKey: 'menu_1_name', descKey: 'menu_1_desc', dotColor: 'white' },
+//   { id: 2, image: menuImages[1], nameKey: 'menu_2_name', descKey: 'menu_2_desc', dotColor: 'orange' },
+//   { id: 3, image: menuImages[2], nameKey: 'menu_3_name', descKey: 'menu_3_desc', dotColor: 'red' },
+// ];
 
-const MENU_DOT_COLORS = {
-  white: 'bg-dot-white',
-  orange: 'bg-dot-orange',
-  red: 'bg-dot-red',
-} as const;
+// const MENU_DOT_COLORS = {
+//   white: 'bg-dot-white',
+//   orange: 'bg-dot-orange',
+//   red: 'bg-dot-red',
+// } as const;
 
 // ─── Sections ───
 
@@ -182,65 +182,65 @@ function PhilosophySection() {
   );
 }
 
-function MenuSection() {
-  const { t } = useLanguage();
-  const menuTitleRef = useRef(null);
-  const isMenuTitleInView = useInView(menuTitleRef, { once: true });
-
-  return (
-    <section id="menu" className="py-24 md:py-40 bg-brand-light relative overflow-x-clip overflow-y-visible">
-      <div className="absolute top-20 -right-[10%] w-[500px] h-[500px] bg-dot-blue opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="max-w-[80rem] mx-auto px-6 md:px-20 mb-16">
-        <motion.div
-          ref={menuTitleRef}
-          initial={fadeInUp.initial}
-          animate={isMenuTitleInView ? fadeInUp.animate : {}}
-          transition={fadeInUp.transition}
-        >
-          <span className="text-xs tracking-[0.3em] text-accent block mb-2">MENU</span>
-          <h3 className="text-3xl md:text-[2.5rem] font-serif tracking-widest">{t.menu_riz_title}</h3>
-        </motion.div>
-      </div>
-
-      <div className="overflow-x-auto pb-10 px-6 md:px-20 flex gap-8 md:gap-12 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
-        {MENU_ITEMS.map((item, index) => {
-          const staggered = getStaggeredFadeInUp(index % 3);
-          return (
-            <motion.div
-              key={item.id}
-              className="flex-none w-[280px] md:w-[350px] cursor-pointer group"
-              initial={staggered.initial}
-              animate={isMenuTitleInView ? staggered.animate : {}}
-              transition={staggered.transition}
-            >
-              <div className="relative overflow-hidden aspect-[4/5] mb-6 pointer-events-none">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                <img
-                  src={item.image.src}
-                  alt={t[item.nameKey]}
-                  className="w-full h-full object-cover bg-[#1a1110] scale-100 group-hover:scale-105 transition-transform duration-700"
-                  width={item.image.width}
-                  height={item.image.height}
-                  draggable={false}
-                  loading={item.image.loading}
-                />
-                {item.dotColor !== 'white' && (
-                  <div className={clsx('absolute bottom-0 right-0 size-20 opacity-20 blur-[24px]', MENU_DOT_COLORS[item.dotColor])} />
-                )}
-              </div>
-              <div className="text-center">
-                <h4 className="text-lg font-serif mb-2">{t[item.nameKey]}</h4>
-                <p className="text-xs text-gray-400 tracking-wider">{t[item.descKey]}</p>
-                <div className={clsx('mt-4 size-1 rounded-full mx-auto opacity-50', MENU_DOT_COLORS[item.dotColor])} />
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
+// function MenuSection() {
+//   const { t } = useLanguage();
+//   const menuTitleRef = useRef(null);
+//   const isMenuTitleInView = useInView(menuTitleRef, { once: true });
+//
+//   return (
+//     <section id="menu" className="py-24 md:py-40 bg-brand-light relative overflow-x-clip overflow-y-visible">
+//       <div className="absolute top-20 -right-[10%] w-[500px] h-[500px] bg-dot-blue opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
+//
+//       <div className="max-w-[80rem] mx-auto px-6 md:px-20 mb-16">
+//         <motion.div
+//           ref={menuTitleRef}
+//           initial={fadeInUp.initial}
+//           animate={isMenuTitleInView ? fadeInUp.animate : {}}
+//           transition={fadeInUp.transition}
+//         >
+//           <span className="text-xs tracking-[0.3em] text-accent block mb-2">MENU</span>
+//           <h3 className="text-3xl md:text-[2.5rem] font-serif tracking-widest">{t.menu_riz_title}</h3>
+//         </motion.div>
+//       </div>
+//
+//       <div className="overflow-x-auto pb-10 px-6 md:px-20 flex gap-8 md:gap-12 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
+//         {MENU_ITEMS.map((item, index) => {
+//           const staggered = getStaggeredFadeInUp(index % 3);
+//           return (
+//             <motion.div
+//               key={item.id}
+//               className="flex-none w-[280px] md:w-[350px] cursor-pointer group"
+//               initial={staggered.initial}
+//               animate={isMenuTitleInView ? staggered.animate : {}}
+//               transition={staggered.transition}
+//             >
+//               <div className="relative overflow-hidden aspect-[4/5] mb-6 pointer-events-none">
+//                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+//                 <img
+//                   src={item.image.src}
+//                   alt={t[item.nameKey]}
+//                   className="w-full h-full object-cover bg-[#1a1110] scale-100 group-hover:scale-105 transition-transform duration-700"
+//                   width={item.image.width}
+//                   height={item.image.height}
+//                   draggable={false}
+//                   loading={item.image.loading}
+//                 />
+//                 {item.dotColor !== 'white' && (
+//                   <div className={clsx('absolute bottom-0 right-0 size-20 opacity-20 blur-[24px]', MENU_DOT_COLORS[item.dotColor])} />
+//                 )}
+//               </div>
+//               <div className="text-center">
+//                 <h4 className="text-lg font-serif mb-2">{t[item.nameKey]}</h4>
+//                 <p className="text-xs text-gray-400 tracking-wider">{t[item.descKey]}</p>
+//                 <div className={clsx('mt-4 size-1 rounded-full mx-auto opacity-50', MENU_DOT_COLORS[item.dotColor])} />
+//               </div>
+//             </motion.div>
+//           );
+//         })}
+//       </div>
+//     </section>
+//   );
+// }
 
 function ExperienceSection() {
   const { language, t } = useLanguage();
