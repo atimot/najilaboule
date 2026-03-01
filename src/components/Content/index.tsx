@@ -74,7 +74,7 @@ function HeroSection() {
           animate={fadeIn.animate}
           transition={{ delay: 4, duration: 2 }}
         >
-          Riz et Soupe, et un peu d\u2019alcool.
+          Riz et Soupe, et un peu d'alcool.
         </motion.p>
       </div>
     </section>
@@ -244,6 +244,8 @@ function PhilosophySection() {
 
 function ExperienceSection() {
   const { language, t } = useLanguage();
+  const expRizRef = useRef(null);
+  const isExpRizInView = useInView(expRizRef, { once: true, margin: '-100px' });
   const expSoupeRef = useRef(null);
   const isExpSoupeInView = useInView(expSoupeRef, { once: true, margin: '-100px' });
   const expMariageRef = useRef(null);
@@ -252,9 +254,39 @@ function ExperienceSection() {
   return (
     <section id="experience" className="px-6 py-24 md:px-20 md:py-40">
       <div className="max-w-[80rem] mx-auto flex flex-col gap-24 md:gap-32">
+        {/* RIZ CARD */}
+        <div
+          ref={expRizRef}
+          className="flex flex-col items-center gap-12 md:flex-row-reverse"
+        >
+          <motion.div
+            className="w-full md:w-1/2"
+            initial={fadeInUp.initial}
+            animate={isExpRizInView ? fadeInUp.animate : {}}
+            transition={fadeInUp.transition}
+          >
+            <div className="relative aspect-video overflow-hidden group">
+              <img src={experienceImages.riz.src} alt={experienceImages.riz.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.riz.width} height={experienceImages.riz.height} loading={experienceImages.riz.loading} />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="w-full md:w-1/2 md:pr-10"
+            initial={fadeInUp.initial}
+            animate={isExpRizInView ? fadeInUp.animate : {}}
+            transition={{ ...fadeInUp.transition, delay: 0.2 }}
+          >
+            <span className="text-xs tracking-[0.3em] text-accent block mb-2">RIZ</span>
+            <h3 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.riz_title}</h3>
+            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 font-light mb-8 whitespace-pre-line">{t.riz_desc}</p>
+          </motion.div>
+        </div>
+
+        {/* SOUPE CARD */}
         <div
           ref={expSoupeRef}
-          className="flex flex-col items-center gap-12 md:flex-row-reverse"
+          className="flex flex-col items-center gap-12 md:flex-row"
         >
           <motion.div
             className="w-full md:w-1/2"
@@ -269,7 +301,7 @@ function ExperienceSection() {
           </motion.div>
 
           <motion.div
-            className="w-full md:w-1/2 md:pr-10"
+            className="w-full md:w-1/2 md:pl-10"
             initial={fadeInUp.initial}
             animate={isExpSoupeInView ? fadeInUp.animate : {}}
             transition={{ ...fadeInUp.transition, delay: 0.2 }}
@@ -280,9 +312,10 @@ function ExperienceSection() {
           </motion.div>
         </div>
 
+        {/* MARIAGE CARD */}
         <div
           ref={expMariageRef}
-          className="flex flex-col items-center gap-12 md:flex-row"
+          className="flex flex-col items-center gap-12 md:flex-row-reverse"
         >
           <motion.div
             className="w-full md:w-1/2"
@@ -297,7 +330,7 @@ function ExperienceSection() {
           </motion.div>
 
           <motion.div
-            className="w-full md:w-1/2 md:pl-10"
+            className="w-full md:w-1/2 md:pr-10"
             initial={fadeInUp.initial}
             animate={isExpMariageInView ? fadeInUp.animate : {}}
             transition={{ ...fadeInUp.transition, delay: 0.2 }}

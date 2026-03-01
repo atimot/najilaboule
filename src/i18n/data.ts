@@ -9,6 +9,8 @@ export interface Translations {
   menu_2_desc: string;
   menu_3_name: string;
   menu_3_desc: string;
+  riz_title: string;
+  riz_desc: string;
   soupe_title: string;
   soupe_desc: string;
   mariage_title: string;
@@ -33,6 +35,8 @@ export const translations: Record<Language, Translations> = {
     menu_2_desc: '北海道産いくら醤油漬け',
     menu_3_name: '和牛しぐれ煮',
     menu_3_desc: 'A5ランク黒毛和牛 / 実山椒',
+    riz_title: 'にぎる、米。',
+    riz_desc: '厳選された米を、掌でそっとにぎる。\n一粒一粒が立ち上がるおにぎりは、\nこの店の全ての始まりです。',
     soupe_title: 'ほどける、汁。',
     soupe_desc: '銀座の夜の緊張を解きほぐす。\n季節の食材を椀の中に閉じ込めました。\nおにぎりとの調和をお楽しみください。',
     mariage_title: '酔いしれる。',
@@ -50,6 +54,8 @@ export const translations: Record<Language, Translations> = {
     menu_2_desc: 'Hokkaido Soy Marinated Salmon Roe',
     menu_3_name: 'Wagyu Shigureni',
     menu_3_desc: 'A5 Black Wagyu Beef / Japanese Pepper',
+    riz_title: 'Shaping the Grain.',
+    riz_desc: 'Carefully selected rice, gently shaped by hand. Each grain stands tall in our Onigiri — the very soul from which everything begins.',
     soupe_title: 'Unwinding Soup.',
     soupe_desc: 'The aroma of the first dashi broth unwinds the tension of the Ginza night. Seasonal ingredients sealed in a bowl. Enjoy the harmony with Onigiri.',
     mariage_title: 'Intoxicated by Harmony.',

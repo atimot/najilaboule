@@ -63,6 +63,7 @@ export const menuImages: readonly ImageEntry[] = [
 ] as const;
 
 export const experienceImages = {
+  riz: menuImages[1],
   soupe: menuImages[0],
   mariage: { ...heroImages.background, loading: 'lazy' as const, fetchPriority: undefined },
 } as const;
