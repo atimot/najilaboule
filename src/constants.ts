@@ -25,15 +25,7 @@ export const TIMING = {
  */
 
 export const SITE_CONFIG = {
-  name: 'Naji la boule',
-  phone: '03-6228-5803',
-  phoneLink: 'tel:03-6228-5803',
+  name: "Naji la boule",
+  phone: "03-6228-5803",
+  phoneLink: "tel:03-6228-5803",
 } as const;
-
-export const NAVIGATION = {
-  sections: [
-    { id: 'philosophy', label: 'Philosophy' },
-    { id: 'access', label: 'Access' },
-  ],
-} as const;
-

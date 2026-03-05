@@ -1,31 +1,52 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import clsx from 'clsx';
-import { fadeIn, SITE_CONFIG, NAVIGATION } from '@/constants';
-import { useLanguage } from '@/i18n';
-import { ReservationButton } from '@/components/ReservationButton';
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import clsx from "clsx";
+import { fadeIn, SITE_CONFIG } from "@/constants";
+import { useLanguage } from "@/i18n";
+import { ReservationButton } from "@/components/ReservationButton";
 
-function LanguageSwitch({ className = '' }: { className?: string }) {
+const NAVIGATION = {
+  sections: [{ id: "access", label: "Access" }],
+};
+
+function LanguageSwitch({
+  className = "",
+  onClose,
+}: {
+  className?: string;
+  onClose?: () => void;
+}) {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className={clsx('flex gap-4 text-xs tracking-widest font-serif', className)}>
+    <div
+      className={clsx(
+        "flex gap-4 text-xs tracking-widest font-serif",
+        className,
+      )}
+    >
       <button
         className={clsx(
-          'bg-transparent border-none text-inherit cursor-pointer p-0 pb-1 transition-opacity duration-300 hover:opacity-70',
-          language === 'ja' && 'font-bold text-accent border-b border-accent',
+          "bg-transparent border-none text-inherit cursor-pointer p-0 transition-opacity duration-300 hover:opacity-70",
+          language === "ja" && "font-bold text-accent border-b border-accent",
         )}
-        onClick={() => setLanguage('ja')}
+        onClick={() => {
+          setLanguage("ja");
+          onClose?.();
+        }}
       >
         JP
       </button>
       <span className="opacity-50">|</span>
       <button
         className={clsx(
-          'bg-transparent border-none text-inherit cursor-pointer p-0 pb-1 transition-opacity duration-300 hover:opacity-70',
-          language === 'en' && 'font-bold text-accent border-b border-accent',
+          "bg-transparent border-none text-inherit cursor-pointer p-0 transition-opacity duration-300 hover:opacity-70",
+          language === "en" && "font-bold text-accent border-b border-accent",
         )}
-        onClick={() => setLanguage('en')}
+        onClick={() => {
+          setLanguage("en");
+          onClose?.();
+        }}
       >
         EN
       </button>
@@ -33,7 +54,13 @@ function LanguageSwitch({ className = '' }: { className?: string }) {
   );
 }
 
-function HamburgerButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
+function HamburgerButton({
+  isOpen,
+  onClick,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+}) {
   return (
     <div className="fixed top-6 right-6 z-[60] md:hidden">
       <button
@@ -44,14 +71,14 @@ function HamburgerButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => 
       >
         <span
           className={clsx(
-            'absolute w-7 h-px bg-white transition-transform duration-300 origin-center',
-            isOpen ? 'translate-y-0 rotate-45' : '-translate-y-1',
+            "absolute w-7 h-px bg-white transition-transform duration-300 origin-center",
+            isOpen ? "translate-y-0 rotate-45" : "-translate-y-1",
           )}
         />
         <span
           className={clsx(
-            'absolute w-7 h-px bg-white transition-transform duration-300 origin-center',
-            isOpen ? 'translate-y-0 -rotate-45' : 'translate-y-1',
+            "absolute w-7 h-px bg-white transition-transform duration-300 origin-center",
+            isOpen ? "translate-y-0 -rotate-45" : "translate-y-1",
           )}
         />
       </button>
@@ -65,7 +92,10 @@ function DesktopNav() {
       <ul className="flex gap-8 text-sm tracking-widest items-center">
         {NAVIGATION.sections.map((section) => (
           <li key={section.id}>
-            <a href={`#${section.id}`} className="transition-colors duration-300 hover:text-accent">
+            <a
+              href={`#${section.id}`}
+              className="transition-colors duration-300 hover:text-accent"
+            >
               {section.label}
             </a>
           </li>
@@ -78,7 +108,13 @@ function DesktopNav() {
   );
 }
 
-function MobileNav({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function MobileNav({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -138,7 +174,7 @@ function MobileNav({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
               animate={fadeIn.animate}
               transition={{ delay: 0.5 }}
             >
-              <LanguageSwitch className="gap-6 text-sm" />
+              <LanguageSwitch className="gap-6 text-sm" onClose={onClose} />
             </motion.div>
           </div>
         </motion.nav>
@@ -151,7 +187,7 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -162,14 +198,19 @@ export function Header() {
         animate={fadeIn.animate}
         transition={{ delay: 2.5, duration: 1 }}
       >
-        <button className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left bg-transparent border-none text-inherit p-0" onClick={scrollToTop}>
+        <button
+          className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left bg-transparent border-none text-inherit p-0"
+          onClick={scrollToTop}
+        >
           {SITE_CONFIG.name}
-          <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">ナジラブール</span>
+          <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">
+            ナジラブール
+          </span>
         </button>
 
-        <div className="flex flex-col items-end gap-6">
-          <LanguageSwitch className="hidden md:flex pointer-events-auto" />
+        <div className="flex flex-row items-center gap-6">
           <DesktopNav />
+          <LanguageSwitch className="hidden md:flex pointer-events-auto" />
         </div>
       </motion.header>
 
