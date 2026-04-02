@@ -48,30 +48,30 @@ export const translations: Record<Language, Translations> = {
 export const philoSlides: Record<Language, PhiloSlide[]> = {
   ja: [
     {
-      title: '掌の宇宙、\n一粒の輝き。',
-      body: '厳選された米、清冽な水、そして村人の掌（たなごころ）。\n一粒一粒が立ち上がる瞬間、そこには無限の物語が宿ります。',
+      title: '一粒の想いを、\n世界へ。',
+      body: '日本の風土が育んだ、かけがえのない一粒。\nその美味しさを、もっと多くの人に届けたい。\nNaji la bouleは、その想いから生まれました。',
     },
     {
-      title: '湯気に咲く、\n静寂。',
-      body: '黄金色の出汁が、銀座の喧騒を優しく解きほぐす。\n心身を温める食べる宝石です。',
+      title: '銀座の宵に、\n米と憩う。',
+      body: '喧騒からそっと離れて、炊きたての米を味わう贅沢。\nお酒を傾けながら、ゆったりと流れる時間をお過ごしください。',
     },
     {
-      title: '宵に溶ける、\n至福。',
-      body: '米と汁。互いに引き立て合う「出会い」が、夜の時間をより濃密に彩ります。',
+      title: '美味しさを、\n誰かへ。',
+      body: '「この米、美味しいな」——その気持ちを、\n大切な人への贈り物にしてみませんか。\n一粒の感動が、人と人をつなぎます。',
     },
   ],
   en: [
     {
-      title: 'Universe in the Palm, Radiance of a Grain.',
-      body: "Carefully selected rice, pure water, and the artisan's palm. At the moment each grain stands up, an infinite story resides there.",
+      title: "A Single Grain's Wish,\nTo the World.",
+      body: 'An irreplaceable grain, nurtured by the land of Japan.\nWe want to share its deliciousness with more people.\nNaji la boule was born from that very wish.',
     },
     {
-      title: 'Silence Blooming in the Steam.',
-      body: 'Golden dashi broth gently unravels the hustle and bustle of Ginza. An edible gem that warms the body and soul.',
+      title: 'Rice and Repose\nin Ginza.',
+      body: 'Step away from the hustle and savor freshly cooked rice.\nWith a drink in hand, let time flow gently around you.',
     },
     {
-      title: 'Bliss Melting into the Evening.',
-      body: 'Sake born from rice and cuisine born from rice. The "encounter" that complements each other colors the night time more densely.',
+      title: 'Share the Flavor\nwith Someone Dear.',
+      body: 'When you think "this rice is truly delicious,"\nwhy not turn that feeling into a gift for someone special?\nA single grain of delight connects people together.',
     },
   ],
 };
