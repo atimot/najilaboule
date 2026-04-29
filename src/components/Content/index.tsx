@@ -80,6 +80,10 @@ function PhilosophySection() {
       ref={philoRef}
       className="px-6 py-24 md:px-20 md:py-40 min-h-screen md:min-h-0 relative flex items-center"
     >
+      <div aria-hidden="true" className="hidden md:block pointer-events-none">
+        <span className="absolute top-24 right-[8%] size-1.5 rounded-full bg-accent/40 blur-[1px]" />
+        <span className="absolute bottom-32 right-[18%] size-1 rounded-full bg-dot-yellow/30 blur-[1px]" />
+      </div>
       <div className="max-w-[80rem] mx-auto w-full md:flex md:flex-row md:items-center md:justify-between md:gap-8">
         <motion.div
           className="absolute inset-0 w-full pointer-events-none z-0 md:static md:w-[55%]"
@@ -100,7 +104,7 @@ function PhilosophySection() {
                 <img
                   src={image.src}
                   alt={image.alt[language]}
-                  className="w-full h-full object-cover brightness-75"
+                  className="w-full h-full object-cover brightness-[0.25]"
                   width={image.width}
                   height={image.height}
                   loading={image.loading}
@@ -170,7 +174,12 @@ function ExperienceSection() {
   const isExpMariageInView = useInView(expMariageRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="experience" className="px-6 py-24 md:px-20 md:py-40">
+    <section id="experience" className="px-6 py-24 md:px-20 md:py-40 relative">
+      <div aria-hidden="true" className="hidden md:block pointer-events-none">
+        <span className="absolute top-[18%] left-[6%] size-1.5 rounded-full bg-accent/30 blur-[1px]" />
+        <span className="absolute top-[48%] right-[5%] size-1 rounded-full bg-dot-red/25 blur-[1px]" />
+        <span className="absolute bottom-[20%] left-[10%] size-1 rounded-full bg-dot-blue/25 blur-[1px]" />
+      </div>
       <div className="max-w-[80rem] mx-auto flex flex-col gap-24 md:gap-32">
         {/* RIZ CARD */}
         <div

@@ -55,6 +55,14 @@
 
   body {
     background-color: var(--color-brand);
+    background-image:
+      url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse 90% 70% at 20% 10%, color-mix(in srgb, var(--color-accent) 6%, var(--color-brand-light)) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 80% at 85% 85%, var(--color-brand-dark) 0%, transparent 55%);
+    background-attachment: fixed, fixed, fixed;
+    background-size: 240px 240px, auto, auto;
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-blend-mode: soft-light, normal, normal;
     color: #f8f8f8;
     font-family: "Shippori Mincho", serif;
     overflow-x: hidden;
