@@ -1,12 +1,12 @@
 import type { ImageEntry } from './types';
 
-const PHOTO_WIDTH = 1477;
-const PHOTO_HEIGHT = 1108;
+const PHOTO_WIDTH = 2752;
+const PHOTO_HEIGHT = 1536;
 
 export const heroImages = {
   background: {
     src: 'images/hero/background.jpg',
-    alt: { ja: '銀座バーの雰囲気', en: 'Ginza bar atmosphere' },
+    alt: { ja: '銀座のバーカウンターに並ぶおにぎりと汁と酒', en: 'Onigiri, soup and sake on a Ginza bar counter' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'eager',
@@ -17,21 +17,21 @@ export const heroImages = {
 export const philosophySlides: readonly ImageEntry[] = [
   {
     src: 'images/philosophy/slide-01.jpg',
-    alt: { ja: 'こだわりの米', en: 'Carefully selected rice' },
+    alt: { ja: '指先に乗せた一粒の米', en: 'A single grain of rice on a fingertip' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
   {
     src: 'images/philosophy/slide-02.jpg',
-    alt: { ja: 'カウンターの空間', en: 'Counter seating atmosphere' },
+    alt: { ja: '炊きたての米を湛えた土鍋', en: 'Donabe pot of freshly cooked rice' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
   {
     src: 'images/philosophy/slide-03.jpg',
-    alt: { ja: 'カウンターからの眺め', en: 'View from the counter' },
+    alt: { ja: '水引で結ばれた米の贈り物', en: 'A gift of rice tied with mizuhiki' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
@@ -41,21 +41,21 @@ export const philosophySlides: readonly ImageEntry[] = [
 const menuImages: readonly ImageEntry[] = [
   {
     src: 'images/menu/item-01.jpg',
-    alt: { ja: 'メニュー料理 1', en: 'Menu dish 1' },
+    alt: { ja: '澄まし汁の椀', en: 'Bowl of clear dashi soup' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
   {
     src: 'images/menu/item-02.jpg',
-    alt: { ja: 'メニュー料理 2', en: 'Menu dish 2' },
+    alt: { ja: 'おむすびを結ぶ手', en: 'Hands shaping an onigiri' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
   {
     src: 'images/menu/item-03.jpg',
-    alt: { ja: 'メニュー料理 3', en: 'Menu dish 3' },
+    alt: { ja: '盃と酒', en: 'Sake cup' },
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
     loading: 'lazy',
@@ -65,5 +65,5 @@ const menuImages: readonly ImageEntry[] = [
 export const experienceImages = {
   riz: menuImages[1],
   soupe: menuImages[0],
-  mariage: { ...heroImages.background, loading: 'lazy' as const, fetchPriority: undefined },
+  mariage: menuImages[2],
 } as const;
