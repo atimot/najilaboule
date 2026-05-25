@@ -2,6 +2,7 @@ export type Language = 'ja' | 'en';
 
 export interface Translations {
   hero_title: string;
+  hero_tagline: string;
   riz_title: string;
   riz_desc: string;
   soupe_title: string;
@@ -11,6 +12,15 @@ export interface Translations {
   address_text: string;
   hours_main: string;
   hours_closed: string;
+  nav_access: string;
+  aria_menu_open: string;
+  aria_menu_close: string;
+  aria_home: string;
+  aria_reservation: string;
+  aria_slide_show: string;
+  map_title: string;
+  access_reservation_heading: string;
+  access_reservation_note: string;
 }
 
 export interface PhiloSlide {
@@ -21,6 +31,7 @@ export interface PhiloSlide {
 export const translations: Record<Language, Translations> = {
   ja: {
     hero_title: '銀座の夜、\n米と汁を嗜む。',
+    hero_tagline: 'Riz et Soupe, et un peu d’alcool.',
     riz_title: '結ぶ、米。',
     riz_desc: '厳選された米を、掌でそっと結ぶ。\n一粒一粒が寄り合うおむすびは、\nこの店の全ての始まりです。',
     soupe_title: 'ほどける、汁。',
@@ -28,11 +39,21 @@ export const translations: Record<Language, Translations> = {
     mariage_title: '揺蕩う、盃。',
     mariage_desc: '厳選された酒が、おにぎりと汁に寄り添う。\n盃を重ねるほどに心は揺蕩い、\n銀座の宵はゆるやかに更けていきます。',
     address_text: '東京都中央区銀座6-12-12\n銀座ステラビル2階',
-    hours_main: '営業時間: 18:30 - 23:30',
-    hours_closed: '定休日: 土日祝日',
+    hours_main: '営業時間 18:30 – 23:30',
+    hours_closed: '定休日 土日祝日',
+    nav_access: 'Access',
+    aria_menu_open: 'メニューを開く',
+    aria_menu_close: 'メニューを閉じる',
+    aria_home: 'トップへ戻る',
+    aria_reservation: '電話で予約する',
+    aria_slide_show: 'スライドを表示',
+    map_title: '店舗の地図 — 東京都中央区銀座6-12-12 銀座ステラビル2階',
+    access_reservation_heading: 'ご予約',
+    access_reservation_note: 'ご予約はお電話のみ承っております。\n席数に限りがございますので、\nお早めのご連絡をおすすめいたします。',
   },
   en: {
     hero_title: 'Savoring Rice in the Ginza Night.',
+    hero_tagline: 'Riz et Soupe, et un peu d’alcool.',
     riz_title: 'Binding the Grain.',
     riz_desc: 'Carefully selected rice, gently bound together by hand. Each grain drawn close in our Omusubi — the very beginning of everything here.',
     soupe_title: 'Unwinding Soup.',
@@ -40,8 +61,17 @@ export const translations: Record<Language, Translations> = {
     mariage_title: 'Drifting with the Cup.',
     mariage_desc: 'Carefully selected drinks accompany your onigiri and soup. With each cup, the spirit drifts gently as the Ginza evening deepens at its own unhurried pace.',
     address_text: 'Ginza Stella Building 2F, 6-12-12 Ginza, Chuo-ku, Tokyo, Japan',
-    hours_main: 'Hours: 18:30 - 23:30',
+    hours_main: 'Hours 18:30 – 23:30',
     hours_closed: 'Closed: Weekends & National Holidays',
+    nav_access: 'Access',
+    aria_menu_open: 'Open menu',
+    aria_menu_close: 'Close menu',
+    aria_home: 'Back to top',
+    aria_reservation: 'Reserve by phone',
+    aria_slide_show: 'Show slide',
+    map_title: 'Restaurant map — Ginza Stella Building 2F, 6-12-12 Ginza, Chuo-ku, Tokyo',
+    access_reservation_heading: 'Reservation',
+    access_reservation_note: 'Reservations are accepted by phone only.\nSeating is limited, so we recommend\ncontacting us in advance.',
   },
 };
 

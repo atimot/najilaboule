@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { SITE_CONFIG } from '@/constants';
+import { useLanguage } from '@/i18n';
 
 interface ReservationButtonProps {
   variant?: 'outline' | 'filled';
@@ -25,9 +26,11 @@ export function ReservationButton({
   size = 'md',
   className = '',
 }: ReservationButtonProps) {
+  const { t } = useLanguage();
   return (
     <a
       href={SITE_CONFIG.phoneLink}
+      aria-label={`${t.aria_reservation} (${SITE_CONFIG.phone})`}
       className={clsx(
         'inline-block text-center tracking-widest transition-[background-color,border-color,color] duration-500 cursor-pointer',
         variantClasses[variant],

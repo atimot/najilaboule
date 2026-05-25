@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import clsx from "clsx";
 import { fadeIn, SITE_CONFIG } from "@/constants";
 import { useLanguage } from "@/i18n";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { ReservationButton } from "@/components/ReservationButton";
 
-const NAVIGATION = {
-  sections: [{ id: "access", label: "Access" }],
-};
+const NAVIGATION_IDS = ["access"] as const;
 
 function LanguageSwitch({
   className = "",
@@ -61,12 +60,13 @@ function HamburgerButton({
   isOpen: boolean;
   onClick: () => void;
 }) {
+  const { t } = useLanguage();
   return (
     <div className="fixed top-6 right-6 z-[60] md:hidden">
       <button
         className="relative flex flex-col justify-center items-center w-10 h-10 cursor-pointer z-[60] bg-transparent border-none p-0"
         onClick={onClick}
-        aria-label="メニューを開く"
+        aria-label={isOpen ? t.aria_menu_close : t.aria_menu_open}
         aria-expanded={isOpen}
       >
         <span
@@ -87,16 +87,20 @@ function HamburgerButton({
 }
 
 function DesktopNav() {
+  const { t } = useLanguage();
+  const navLabels: Record<(typeof NAVIGATION_IDS)[number], string> = {
+    access: t.nav_access,
+  };
   return (
     <nav className="hidden md:block">
       <ul className="flex gap-8 text-sm tracking-widest items-center">
-        {NAVIGATION.sections.map((section) => (
-          <li key={section.id}>
+        {NAVIGATION_IDS.map((id) => (
+          <li key={id}>
             <a
-              href={`#${section.id}`}
+              href={`#${id}`}
               className="transition-colors duration-300 hover:text-accent"
             >
-              {section.label}
+              {navLabels[id]}
             </a>
           </li>
         ))}
@@ -115,6 +119,10 @@ function MobileNav({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { t } = useLanguage();
+  const navLabels: Record<(typeof NAVIGATION_IDS)[number], string> = {
+    access: t.nav_access,
+  };
   return (
     <AnimatePresence>
       {isOpen && (
@@ -140,20 +148,20 @@ function MobileNav({
                 },
               }}
             >
-              {NAVIGATION.sections.map((section) => (
+              {NAVIGATION_IDS.map((id) => (
                 <motion.li
-                  key={section.id}
+                  key={id}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
                     visible: { opacity: 1, y: 0 },
                   }}
                 >
                   <a
-                    href={`#${section.id}`}
+                    href={`#${id}`}
                     onClick={onClose}
                     className="transition-colors duration-300 hover:text-accent"
                   >
-                    {section.label}
+                    {navLabels[id]}
                   </a>
                 </motion.li>
               ))}
@@ -185,9 +193,25 @@ function MobileNav({
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [isMobileMenuOpen]);
+
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
   };
 
   return (
@@ -198,15 +222,17 @@ export function Header() {
         animate={fadeIn.animate}
         transition={{ delay: 2.5, duration: 1 }}
       >
-        <button
-          className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left bg-transparent border-none text-inherit p-0"
-          onClick={scrollToTop}
+        <a
+          href="#top"
+          onClick={handleHomeClick}
+          aria-label={t.aria_home}
+          className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left p-0"
         >
           {SITE_CONFIG.name}
           <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">
             ナジラブール
           </span>
-        </button>
+        </a>
 
         <div className="flex flex-row items-center gap-6">
           <DesktopNav />
