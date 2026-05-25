@@ -17,7 +17,6 @@
   --color-dot-purple: #920783;
 
   --font-serif: "Playfair Display", "Shippori Mincho", serif;
-  --font-sans: "Helvetica Neue", Arial, sans-serif;
 
   --animate-slow-zoom: slow-zoom 20s infinite alternate;
 }
@@ -35,6 +34,8 @@
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -64,7 +65,8 @@
     background-repeat: repeat, no-repeat, no-repeat;
     background-blend-mode: soft-light, normal, normal;
     color: #f8f8f8;
-    font-family: "Shippori Mincho", serif;
+    font-family: var(--font-serif);
+    font-feature-settings: "palt";
     overflow-x: hidden;
     min-height: 100vh;
   }

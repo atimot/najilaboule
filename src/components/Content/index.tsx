@@ -10,15 +10,18 @@ import { ReservationButton } from '@/components/ReservationButton';
 // ─── Sections ───
 
 function HeroSection() {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const hero = heroImages.background;
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0">
+    <section
+      id="top"
+      className="relative h-screen flex items-center justify-center overflow-hidden"
+    >
+      <div aria-hidden="true" className="absolute inset-0 z-0">
         <img
           src={hero.src}
-          alt={hero.alt[language]}
+          alt=""
           className="w-full h-full object-cover opacity-50 grayscale scale-110 animate-slow-zoom"
           width={hero.width}
           height={hero.height}
@@ -37,14 +40,14 @@ function HeroSection() {
           <BrandDots size="md" />
         </motion.div>
 
-        <motion.h2
+        <motion.h1
           className="text-4xl md:text-[3.5rem] font-serif tracking-[0.2em] mb-6 whitespace-pre-line"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 3.5, duration: 2 }}
         >
           {t.hero_title}
-        </motion.h2>
+        </motion.h1>
 
         <motion.p
           className="text-sm md:text-base leading-loose tracking-widest text-gray-400"
@@ -52,7 +55,7 @@ function HeroSection() {
           animate={fadeIn.animate}
           transition={{ delay: 4, duration: 2 }}
         >
-          Riz et Soupe, et un peu d'alcool.
+          {t.hero_tagline}
         </motion.p>
       </div>
     </section>
@@ -60,7 +63,7 @@ function HeroSection() {
 }
 
 function PhilosophySection() {
-  const { language, philoSlides } = useLanguage();
+  const { language, philoSlides, t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const philoRef = useRef(null);
   const isPhiloInView = useInView(philoRef, { once: true });
@@ -133,10 +136,10 @@ function PhilosophySection() {
                   aria-hidden={index !== activeIndex}
                 >
                   <div className="mx-auto max-w-[92vw] md:max-w-none">
-                    <h3 className="text-2xl md:text-3xl font-serif mb-8 md:mb-12 leading-relaxed tracking-widest whitespace-pre-line">
+                    <h2 className="text-2xl md:text-3xl font-serif mb-8 md:mb-12 leading-relaxed tracking-widest whitespace-pre-line">
                       {slide.title}
-                    </h3>
-                    <div className="text-sm md:text-base leading-loose tracking-widest text-gray-300 font-light whitespace-pre-line">
+                    </h2>
+                    <div className="text-sm md:text-base leading-loose tracking-widest text-gray-300 whitespace-pre-line">
                       <p>{slide.body}</p>
                     </div>
                   </div>
@@ -145,17 +148,21 @@ function PhilosophySection() {
             </div>
 
             <div className="mt-16 flex justify-center md:justify-start gap-4">
-              {philosophySlides.map((_, index) => (
-                <button
-                  key={index}
-                  className={clsx(
-                    'size-2 rounded-full bg-dot-white cursor-pointer transition-[opacity,transform] duration-300 border-none p-0',
-                    index === activeIndex ? 'opacity-100 scale-125' : 'opacity-30 hover:opacity-70',
-                  )}
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
+              {philosophySlides.map((_, index) => {
+                const slideTitle = philoSlides[index]?.title.replace(/\n/g, ' ') ?? '';
+                return (
+                  <button
+                    key={index}
+                    className={clsx(
+                      'size-2 rounded-full bg-dot-white cursor-pointer transition-[opacity,transform] duration-300 border-none p-0',
+                      index === activeIndex ? 'opacity-100 scale-125' : 'opacity-30 hover:opacity-70',
+                    )}
+                    onClick={() => setActiveIndex(index)}
+                    aria-label={`${t.aria_slide_show}: ${slideTitle} (${index + 1}/${philosophySlides.length})`}
+                    aria-current={index === activeIndex ? 'true' : undefined}
+                  />
+                );
+              })}
             </div>
           </div>
         </motion.div>
@@ -205,8 +212,8 @@ function ExperienceSection() {
             transition={{ ...fadeInUp.transition, delay: 0.2 }}
           >
             <span className="text-xs tracking-[0.3em] text-accent block mb-2">RIZ</span>
-            <h3 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.riz_title}</h3>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 font-light mb-8 whitespace-pre-line">{t.riz_desc}</p>
+            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.riz_title}</h2>
+            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.riz_desc}</p>
           </motion.div>
         </div>
 
@@ -234,8 +241,8 @@ function ExperienceSection() {
             transition={{ ...fadeInUp.transition, delay: 0.2 }}
           >
             <span className="text-xs tracking-[0.3em] text-accent block mb-2">SOUPE</span>
-            <h3 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.soupe_title}</h3>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 font-light mb-8 whitespace-pre-line">{t.soupe_desc}</p>
+            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.soupe_title}</h2>
+            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.soupe_desc}</p>
           </motion.div>
         </div>
 
@@ -263,8 +270,8 @@ function ExperienceSection() {
             transition={{ ...fadeInUp.transition, delay: 0.2 }}
           >
             <span className="text-xs tracking-[0.3em] text-accent block mb-2">MARIAGE</span>
-            <h3 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.mariage_title}</h3>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 font-light mb-8 whitespace-pre-line">{t.mariage_desc}</p>
+            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.mariage_title}</h2>
+            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.mariage_desc}</p>
           </motion.div>
         </div>
       </div>
@@ -287,7 +294,7 @@ function AccessSection() {
           transition={fadeInUp.transition}
         >
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
-          <h3 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h3>
+          <h2 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h2>
           <p className="text-xs tracking-[0.3em] text-gray-500">GINZA</p>
         </motion.div>
 
@@ -305,14 +312,14 @@ function AccessSection() {
             <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">TEL</p>
               <p className="font-serif whitespace-pre-line">
-                <a href={SITE_CONFIG.phoneLink} className="transition-colors duration-300 hover:text-accent">
+                <a href={SITE_CONFIG.phoneLink} className="tabular-nums transition-colors duration-300 hover:text-accent">
                   {SITE_CONFIG.phone}
                 </a>
               </p>
             </div>
             <div>
               <p className="text-xs text-gray-500 tracking-widest mb-1">HOURS</p>
-              <p className="font-serif whitespace-pre-line">
+              <p className="font-serif tabular-nums whitespace-pre-line">
                 {t.hours_main}
                 <br />
                 <span className="text-xs text-gray-500">{t.hours_closed}</span>
@@ -320,6 +327,13 @@ function AccessSection() {
             </div>
           </div>
           <div className="flex flex-col gap-6">
+            <div>
+              <p className="text-xs text-gray-500 tracking-widest mb-1">RESERVATION</p>
+              <p className="font-serif mb-2">{t.access_reservation_heading}</p>
+              <p className="text-sm leading-loose tracking-widest text-gray-400 whitespace-pre-line">
+                {t.access_reservation_note}
+              </p>
+            </div>
             <ReservationButton variant="filled" size="lg" />
           </div>
         </motion.div>
@@ -331,7 +345,7 @@ function AccessSection() {
         >
           <div className="w-full h-64">
             <iframe
-              title="Google Map"
+              title={t.map_title}
               src="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%AD%E5%A4%AE%E5%8C%BA%E9%8A%80%E5%BA%A76-12-12%20%E9%8A%80%E5%BA%A7%E3%82%B9%E3%83%86%E3%83%A9%E3%83%93%E3%83%AB2%E9%9A%8E&output=embed&hl=ja"
               width="100%"
               height="100%"
