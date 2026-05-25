@@ -17,6 +17,7 @@ export const fadeIn = {
 
 export const TIMING = {
   LOADER_DURATION: 2500,
+  LOADER_DURATION_REDUCED: 500,
   PHILOSOPHY_SLIDE_INTERVAL: 7000,
 } as const;
 

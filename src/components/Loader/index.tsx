@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { BrandDots } from '@/components/BrandDots';
 import { TIMING, SITE_CONFIG } from '@/constants';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 interface LoaderProps {
   onComplete?: () => void;
@@ -9,15 +10,19 @@ interface LoaderProps {
 
 export function Loader({ onComplete }: LoaderProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const duration = prefersReducedMotion
+    ? TIMING.LOADER_DURATION_REDUCED
+    : TIMING.LOADER_DURATION;
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
       onComplete?.();
-    }, TIMING.LOADER_DURATION);
+    }, duration);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [duration, onComplete]);
 
   return (
     <AnimatePresence>
