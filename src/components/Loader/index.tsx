@@ -35,14 +35,14 @@ export function Loader({ onComplete }: LoaderProps) {
         >
           <BrandDots size="lg" className="mb-8" animated />
 
-          <motion.h1
+          <motion.p
             className="text-2xl tracking-[0.3em] font-serif"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 1 }}
           >
             {SITE_CONFIG.name}
-          </motion.h1>
+          </motion.p>
         </motion.div>
       )}
     </AnimatePresence>

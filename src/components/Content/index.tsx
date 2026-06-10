@@ -3,6 +3,7 @@ import { motion, useInView } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
 import { fadeIn, fadeInUp, TIMING, SITE_CONFIG } from '@/constants';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { heroImages, philosophySlides, experienceImages } from '@/images';
 import { BrandDots } from '@/components/BrandDots';
 import { ReservationButton } from '@/components/ReservationButton';
@@ -21,6 +22,8 @@ function HeroSection() {
       <div aria-hidden="true" className="absolute inset-0 z-0">
         <img
           src={hero.src}
+          srcSet={hero.srcSet}
+          sizes={hero.sizes}
           alt=""
           className="w-full h-full object-cover opacity-50 grayscale scale-110 animate-slow-zoom"
           width={hero.width}
@@ -65,23 +68,35 @@ function HeroSection() {
 function PhilosophySection() {
   const { language, philoSlides, t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
-  const philoRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const philoRef = useRef<HTMLElement>(null);
   const isPhiloInView = useInView(philoRef, { once: true });
+  const isPhiloVisible = useInView(philoRef);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const nextSlide = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % philosophySlides.length);
   }, []);
 
+  // 自動送りは「画面内 + reduced-motion でない + hover/focus されていない」間のみ。
+  // activeIndex を依存に含めることで、手動切替時にタイマーが仕切り直しになる
   useEffect(() => {
+    if (prefersReducedMotion || !isPhiloVisible || isPaused) return;
     const interval = setInterval(nextSlide, TIMING.PHILOSOPHY_SLIDE_INTERVAL);
     return () => clearInterval(interval);
-  }, [nextSlide]);
+  }, [nextSlide, prefersReducedMotion, isPhiloVisible, isPaused, activeIndex]);
 
   return (
     <section
       id="philosophy"
       ref={philoRef}
       className="px-6 py-24 md:px-20 md:py-40 min-h-screen md:min-h-0 relative flex items-center"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsPaused(false);
+      }}
     >
       <div aria-hidden="true" className="hidden md:block pointer-events-none">
         <span className="absolute top-24 right-[8%] size-1.5 rounded-full bg-accent/40 blur-[1px]" />
@@ -106,6 +121,8 @@ function PhilosophySection() {
               >
                 <img
                   src={image.src}
+                  srcSet={image.srcSet}
+                  sizes={image.sizes}
                   alt={image.alt[language]}
                   className="w-full h-full object-cover brightness-[0.25]"
                   width={image.width}
@@ -200,7 +217,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.riz.src} alt={experienceImages.riz.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.riz.width} height={experienceImages.riz.height} loading={experienceImages.riz.loading} />
+              <img src={experienceImages.riz.src} srcSet={experienceImages.riz.srcSet} sizes={experienceImages.riz.sizes} alt={experienceImages.riz.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.riz.width} height={experienceImages.riz.height} loading={experienceImages.riz.loading} />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -229,7 +246,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.soupe.src} alt={experienceImages.soupe.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.soupe.width} height={experienceImages.soupe.height} loading={experienceImages.soupe.loading} />
+              <img src={experienceImages.soupe.src} srcSet={experienceImages.soupe.srcSet} sizes={experienceImages.soupe.sizes} alt={experienceImages.soupe.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.soupe.width} height={experienceImages.soupe.height} loading={experienceImages.soupe.loading} />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -258,7 +275,7 @@ function ExperienceSection() {
             transition={fadeInUp.transition}
           >
             <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.mariage.src} alt={experienceImages.mariage.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.mariage.width} height={experienceImages.mariage.height} loading={experienceImages.mariage.loading} />
+              <img src={experienceImages.mariage.src} srcSet={experienceImages.mariage.srcSet} sizes={experienceImages.mariage.sizes} alt={experienceImages.mariage.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.mariage.width} height={experienceImages.mariage.height} loading={experienceImages.mariage.loading} />
               <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
             </div>
           </motion.div>
@@ -295,7 +312,7 @@ function AccessSection() {
         >
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
           <h2 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h2>
-          <p className="text-xs tracking-[0.3em] text-gray-500">GINZA</p>
+          <p className="text-xs tracking-[0.3em] text-gray-400">GINZA</p>
         </motion.div>
 
         <motion.div
@@ -306,11 +323,11 @@ function AccessSection() {
         >
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-xs text-gray-500 tracking-widest mb-1">ADDRESS</p>
+              <p className="text-xs text-gray-400 tracking-widest mb-1">ADDRESS</p>
               <p className="font-serif whitespace-pre-line">{t.address_text}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 tracking-widest mb-1">TEL</p>
+              <p className="text-xs text-gray-400 tracking-widest mb-1">TEL</p>
               <p className="font-serif whitespace-pre-line">
                 <a href={SITE_CONFIG.phoneLink} className="tabular-nums transition-colors duration-300 hover:text-accent">
                   {SITE_CONFIG.phone}
@@ -318,17 +335,17 @@ function AccessSection() {
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 tracking-widest mb-1">HOURS</p>
+              <p className="text-xs text-gray-400 tracking-widest mb-1">HOURS</p>
               <p className="font-serif tabular-nums whitespace-pre-line">
                 {t.hours_main}
                 <br />
-                <span className="text-xs text-gray-500">{t.hours_closed}</span>
+                <span className="text-xs text-gray-400">{t.hours_closed}</span>
               </p>
             </div>
           </div>
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-xs text-gray-500 tracking-widest mb-1">RESERVATION</p>
+              <p className="text-xs text-gray-400 tracking-widest mb-1">RESERVATION</p>
               <p className="font-serif mb-2">{t.access_reservation_heading}</p>
               <p className="text-sm leading-loose tracking-widest text-gray-400 whitespace-pre-line">
                 {t.access_reservation_note}

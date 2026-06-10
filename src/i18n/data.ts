@@ -92,7 +92,7 @@ export const philoSlides: Record<Language, PhiloSlide[]> = {
   ],
   en: [
     {
-      title: "A Single Grain's Wish,\nTo the World.",
+      title: 'A Single Grain’s Wish,\nTo the World.',
       body: 'An irreplaceable grain, nurtured by the land of Japan.\nWe want to share its deliciousness with more people.\nNaji la boule was born from that very wish.',
     },
     {
@@ -101,7 +101,7 @@ export const philoSlides: Record<Language, PhiloSlide[]> = {
     },
     {
       title: 'Share the Flavor\nwith Someone Dear.',
-      body: 'When you think "this rice is truly delicious,"\nwhy not turn that feeling into a gift for someone special?\nA single grain of delight connects people together.',
+      body: 'When you think “this rice is truly delicious,”\nwhy not turn that feeling into a gift for someone special?\nA single grain of delight connects people together.',
     },
   ],
 };
