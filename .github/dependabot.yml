@@ -1,0 +1,17 @@
+# Dependabot による依存関係の自動更新
+# - github-actions: ランタイム非推奨などのアクション更新を週次でチェック
+# - npm: マイナー更新が頻繁なため、全依存を 1 つの PR にまとめて月次でチェック
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      all-dependencies:
+        patterns: ['*']
