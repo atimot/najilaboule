@@ -105,7 +105,7 @@ mergeable が `CONFLICTING` の場合:
    console.log('wasm optional deps OK');
    "
    ```
-   欠落していたら lockfile を `npx -y npm@latest install --package-lock-only` で再生成する。それでも欠落する場合のみ、「lockfile を手で編集しない」原則の例外として次でスケルトン化してからゼロから再生成する: `printf '{"name":"najilaboule","version":"0.0.0","lockfileVersion":3,"requires":true,"packages":{}}' > package-lock.json && npx -y npm@latest install --package-lock-only`
+   欠落していたら lockfile を `npx -y npm@latest install --package-lock-only` で再生成し、コミットして PR ブランチへ push する(手順2の5〜6 と同じ要領。大原則どおり手順3を最初からやり直す)。それでも欠落する場合のみ、「lockfile を手で編集しない」原則の例外として次でスケルトン化してからゼロから再生成する: `printf '{"name":"najilaboule","version":"0.0.0","lockfileVersion":3,"requires":true,"packages":{}}' > package-lock.json && npx -y npm@latest install --package-lock-only`
 5. **audit**: `npm audit --json | jq -c .metadata.vulnerabilities` を実行し、手順0で記録した main のベースラインと比較して、どの severity も件数が増えていないこと(0 のままが理想)
 6. **preview での目視確認**:
    ```bash

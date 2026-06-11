@@ -217,7 +217,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Files:**
 - Modify: `.claude/settings.json`(permissions.allow 配列)
 
-- [ ] **Step 1: allow 配列に 3 エントリを追加**
+- [ ] **Step 1: allow 配列に 4 エントリを追加(レビューで npx を2つの完全一致形に分割)**
 
 `.claude/settings.json` の `permissions.allow` 配列の `"Bash(npm run *)"` の直後に以下の 3 行を追加する(Edit ツールで):
 
@@ -324,4 +324,4 @@ Expected: PR の URL が出力される
 
 - **Spec coverage**: 起動 IF(全件/番号/--dry-run)→ Task 1 手順0と引数節 / 影響調査・コンフリクト解消・フル検証・レビュー・マージ・見届け・レポート → SKILL.md 手順 1〜7 / エラー表 → SKILL.md 同表 / settings 追記 → Task 2 / テスト計画 3 項目 → Task 3(0件パスは Step 1 に吸収)。ギャップなし
 - **Placeholder scan**: TBD/TODO なし。全ステップに実コマンド・実コードを記載
-- **整合性**: スキル名 `dependabot-merge` / ブランチ名 / permission パターン(`npx -y npm@latest *` — スキル内のコマンドはすべて `npx -y npm@latest` 形式で統一)に不一致なし
+- **整合性**: スキル名 `dependabot-merge` / ブランチ名 / permission パターン(レビュー後は `npx -y npm@latest ci` と `npx -y npm@latest install --package-lock-only` の完全一致2エントリ)に不一致なし
