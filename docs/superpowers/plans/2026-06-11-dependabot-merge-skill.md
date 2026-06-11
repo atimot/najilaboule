@@ -223,7 +223,8 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 ```json
       "Bash(npm ci)",
-      "Bash(npx -y npm@latest *)",
+      "Bash(npx -y npm@latest ci)",
+      "Bash(npx -y npm@latest install --package-lock-only)",
       "Bash(gh run *)",
 ```
 
@@ -232,7 +233,8 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ```json
       "Bash(npm run *)",
       "Bash(npm ci)",
-      "Bash(npx -y npm@latest *)",
+      "Bash(npx -y npm@latest ci)",
+      "Bash(npx -y npm@latest install --package-lock-only)",
       "Bash(gh run *)",
       "Bash(npx tsc *)",
 ```
@@ -242,7 +244,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - [ ] **Step 2: JSON の妥当性を検証**
 
 Run: `jq '.permissions.allow | length' .claude/settings.json`
-Expected: エラーなく数値(既存 21 + 3 = 24)が出力される
+Expected: エラーなく数値(既存 20 + 3 = 23。レビューで npx 許可を2エントリに分割した場合は 24)が出力される
 
 - [ ] **Step 3: コミット**
 
