@@ -37,10 +37,10 @@ gh pr list --author app/dependabot --state open --json number,title,mergeable,me
 
 `mergeable` が `UNKNOWN` の PR は GitHub が計算中(recreate 直後など)。30秒ほど待って再取得する。
 
-後の手順3で比較するため、main 時点の脆弱性ベースラインをここで記録しておく:
+後の手順3で比較するため、main 時点の脆弱性ベースラインをここで記録しておく。**現在のブランチではなく origin/main の lockfile に対して**実行すること(作業ツリーを汚さないよう一時ディレクトリで):
 
 ```bash
-npm audit --json | jq -c .metadata.vulnerabilities
+tmp=$(mktemp -d) && git show origin/main:package.json > "$tmp/package.json" && git show origin/main:package-lock.json > "$tmp/package-lock.json" && (cd "$tmp" && npm audit --json | jq -c .metadata.vulnerabilities)
 ```
 
 ### 1. 影響調査(PR ごと)
@@ -85,7 +85,7 @@ mergeable が `CONFLICTING` の場合:
 
 ### 3. 検証(PR ごと・フル)
 
-PR ブランチ(または差替 PR のブランチ)上で順に実行。**すべて成功が必須**:
+対象 PR のブランチへ `gh pr checkout <N>` で移動してから(手順2を実施した場合はそのブランチのまま)順に実行。**すべて成功が必須**。途中で失敗してもマージ判定は不合格のまま、残りのチェックを情報収集として実行してよい(レポートが充実する):
 
 1. **クリーンインストール(2系統)** — ローカル npm と最新 npm の両方で lockfile が整合すること:
    ```bash
@@ -111,11 +111,11 @@ PR ブランチ(または差替 PR のブランチ)上で順に実行。**すべ
    ```bash
    npm run preview &
    ```
-   (build は検証2で実行済み。preview は http://localhost:4173 で起動する)
+   (build は検証2で実行済み。preview はベースパス付き URL で配信される — 起動ログに表示される URL(このリポジトリでは http://localhost:4173/najilaboule/)を使うこと。ルートの http://localhost:4173 はページではない)
    preview の URL に対して Chrome DevTools MCP(または利用可能なブラウザツール)で:
    - スクリーンショットを取得しレイアウト崩れがないか確認
    - コンソールにエラーが出ていないか確認
-   - 確認後 preview プロセスを停止する(バックグラウンドジョブを `kill %1` するか、起動時のプロセス ID を kill)
+   - 確認後 preview プロセスを停止する。`kill %1` や npm ラッパー PID の kill では vite の子プロセスが生き残るため、ポートで特定して止める: `lsof -ti tcp:4173 | xargs kill`
    ブラウザツールが使えない場合は `curl` で HTTP 200 と HTML 内容のスモークチェックに切り替え、レポートに「目視確認は未実施」と明記する
 
 ### 4. レビュー(PR ごと)
@@ -123,6 +123,7 @@ PR ブランチ(または差替 PR のブランチ)上で順に実行。**すべ
 - `git diff origin/main -- package.json` の差分が更新対象パッケージのみであること
 - peer dependency の矛盾(検証1の ERESOLVE)があれば、peer 対応版への**最小の追加バンプ**で解消を試みる(例: eslint 10 化には eslint-plugin-react-hooks 7.1.1 が必要だった)。追加バンプした場合は PR 本文にパッケージ名と理由を明記する。解消できなければ検証失敗扱い
 - lockfile に無関係なパッケージの大規模変更が混入していないこと(多少の in-range 更新は lockfile 再生成の正常な副作用なので可)
+- major 更新でリポジトリ側のソース/設定の修正が必要になった場合(例: TypeScript 6 で `baseUrl` が廃止され tsconfig の修正が必要)、その修正を依存 PR に混ぜない。修正が自明なら**別 PR として main に先行マージ**し、Dependabot PR を rebase(`@dependabot rebase` コメントか手順2)してから手順3をやり直す。自明でなければこの PR はスキップしてレポートで人間に委ねる
 
 ### 5. マージ
 
@@ -168,6 +169,7 @@ gh pr merge <N> --merge
 |---|---|
 | 検証失敗 | マージせずスキップし、`gh pr comment` で失敗内容を記録。他 PR は続行 |
 | peer dependency 矛盾 | 手順4の追加バンプで解消を試みる。解消後は手順3を再実行。不可なら検証失敗扱い |
+| major 更新がソース/設定の修正を要求 | 修正を別 PR で main に先行マージ → PR を rebase → 手順3再実行(手順4参照) |
 | デプロイ失敗 | 全処理を停止(手順6の3参照) |
 | Dependabot ブランチへ push 不可 | 新ブランチ + 新 PR で代替(手順2の6参照) |
 | ある PR のマージで別 PR が不要化 | 不要 PR を理由コメント付きでクローズ(手順1の5参照) |
