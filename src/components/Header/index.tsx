@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, type RefObject } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import clsx from "clsx";
 import { fadeIn, SITE_CONFIG } from "@/constants";
@@ -56,14 +56,17 @@ function LanguageSwitch({
 function HamburgerButton({
   isOpen,
   onClick,
+  buttonRef,
 }: {
   isOpen: boolean;
   onClick: () => void;
+  buttonRef: RefObject<HTMLButtonElement | null>;
 }) {
   const { t } = useLanguage();
   return (
     <div className="fixed top-6 right-6 z-[60] md:hidden">
       <button
+        ref={buttonRef}
         className="relative flex flex-col justify-center items-center w-10 h-10 cursor-pointer z-[60] bg-transparent border-none p-0"
         onClick={onClick}
         aria-label={isOpen ? t.aria_menu_close : t.aria_menu_open}
@@ -115,9 +118,11 @@ function DesktopNav() {
 function MobileNav({
   isOpen,
   onClose,
+  navRef,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  navRef: RefObject<HTMLElement | null>;
 }) {
   const { t } = useLanguage();
   const navLabels: Record<(typeof NAVIGATION_IDS)[number], string> = {
@@ -127,6 +132,7 @@ function MobileNav({
     <AnimatePresence>
       {isOpen && (
         <motion.nav
+          ref={navRef}
           className="fixed inset-0 z-50 bg-brand/80 backdrop-blur-[28px] backdrop-saturate-150 overflow-y-auto overscroll-contain md:hidden"
           initial={fadeIn.initial}
           animate={fadeIn.animate}
@@ -195,14 +201,55 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useLanguage();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
 
+  // メニュー表示中: 背景スクロールをロックし、Tab をハンバーガー+メニュー内に閉じ込める。
+  // 閉じたらハンバーガーへフォーカスを戻す
   useEffect(() => {
     if (!isMobileMenuOpen) return;
+
+    const hamburgerButton = hamburgerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMobileMenuOpen(false);
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusables: HTMLElement[] = [
+        ...(hamburgerButton ? [hamburgerButton] : []),
+        ...(mobileNavRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled])',
+        ) ?? []),
+      ];
+      if (focusables.length === 0) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (!active || !focusables.includes(active)) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handler);
+      hamburgerButton?.focus();
+    };
   }, [isMobileMenuOpen]);
 
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -243,11 +290,13 @@ export function Header() {
       <HamburgerButton
         isOpen={isMobileMenuOpen}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        buttonRef={hamburgerRef}
       />
 
       <MobileNav
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+        navRef={mobileNavRef}
       />
     </>
   );
