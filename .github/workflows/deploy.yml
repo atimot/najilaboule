@@ -15,9 +15,11 @@ permissions:
   id-token: write
 
 # 同時実行の制御
+# 進行中の本番デプロイは中断せず完了させる (GitHub Pages 公式テンプレ推奨)。
+# main へ立て続けにマージしても、不完全なデプロイ状態で止まるのを防ぐ。
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   # ビルドジョブ
