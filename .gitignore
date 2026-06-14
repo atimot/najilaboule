@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Playwright (スモークテスト)
+test-results
+playwright-report
+/playwright/.cache
+
 # Claude Code (ローカル専用ファイル)
 .claude/settings.local.json
 .claude/worktrees/

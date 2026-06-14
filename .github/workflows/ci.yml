@@ -1,0 +1,61 @@
+# PR の検証用ワークフロー (build / lint / 起動スモーク)。
+# main へのマージ前ゲート。public リポジトリの標準ランナーで動くため費用は無料。
+name: CI
+
+on:
+  pull_request:
+    branches: ['main']
+  # main への push 直後にも一度通しておく (required check の履歴を作る/手動再実行用)
+  push:
+    branches: ['main']
+  workflow_dispatch:
+
+# Claude を CI 内では使わないため、トークンは読み取りのみで十分。
+permissions:
+  contents: read
+
+# 同一ブランチで新しい push が来たら古い run を打ち切る (無駄な実行を減らす)。
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: build / lint / smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      # lockfile が package.json と不整合 (wasm optional 依存の脱落含む) なら
+      # Linux の npm ci はここで失敗する = マージ前にデプロイ停止事故を防ぐ。
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke test
+        run: npm run test:smoke
+
+      # スクショ等を artifact 化。失敗時の調査と、緑でも人間が表示を後追い確認できるように。
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-results
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
