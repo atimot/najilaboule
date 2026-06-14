@@ -97,14 +97,9 @@ mergeable が `CONFLICTING` の場合:
 3. **lint**: `npm run lint` が成功すること
 4. **lockfile 専用チェック** — wasm 系 optional 依存の脱落検出(macOS の npm では脱落してもローカル npm ci が通ってしまい、CI だけが落ちる):
    ```bash
-   node -e "
-   const l = require('./package-lock.json');
-   const need = ['@emnapi/core', '@emnapi/runtime'];
-   const missing = need.filter(p => !Object.keys(l.packages).some(k => k.endsWith('node_modules/' + p)));
-   if (missing.length) { console.error('lockfile に欠落:', missing.join(', ')); process.exit(1); }
-   console.log('wasm optional deps OK');
-   "
+   npm run check:lockfile
    ```
+   (検証ロジックの正本は `scripts/check-lockfile.mjs`。ship スキルと共有)
    欠落していたら lockfile を `npx -y npm@latest install --package-lock-only` で再生成し、コミットして PR ブランチへ push する(手順2の5〜6 と同じ要領。大原則どおり手順3を最初からやり直す)。それでも欠落する場合のみ、「lockfile を手で編集しない」原則の例外として次でスケルトン化してからゼロから再生成する: `printf '{"name":"najilaboule","version":"0.0.0","lockfileVersion":3,"requires":true,"packages":{}}' > package-lock.json && npx -y npm@latest install --package-lock-only`
 5. **audit**: `npm audit --json | jq -c .metadata.vulnerabilities` を実行し、手順0で記録した main のベースラインと比較して、どの severity も件数が増えていないこと(0 のままが理想)
 6. **preview での目視確認**:

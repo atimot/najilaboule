@@ -12,7 +12,22 @@
       "Bash(npx tsc *)",
       "Bash(npx eslint *)",
       "Bash(gh pr *)",
+      "Bash(gh api *)",
       "Bash(sips --formats)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git switch *)",
+      "Bash(git checkout *)",
+      "Bash(git rebase *)",
+      "Bash(git rev-parse *)",
+      "Bash(git show *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(npm audit *)",
+      "Bash(curl -s -o /dev/null *)",
+      "Bash(mktemp *)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__new_page",
       "mcp__plugin_chrome-devtools-mcp_chrome-devtools__list_pages",
@@ -47,7 +62,7 @@
           },
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path // empty'); d=\"${CLAUDE_PROJECT_DIR:-.}\"; if [ \"$f\" = \"$d/src/index.css\" ] && git -C \"$d\" diff --quiet -- DESIGN.md 2>/dev/null; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"src/index.css が変更されましたが DESIGN.md は未変更です。@theme のデザイントークンを変更した場合は DESIGN.md を必ず同期更新してください (CLAUDE.md のルール)。\"}}'; fi"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); d=\"${CLAUDE_PROJECT_DIR:-.}\"; if [ \"$f\" = \"$d/src/index.css\" ] && git -C \"$d\" diff --quiet HEAD -- DESIGN.md 2>/dev/null && git -C \"$d\" diff --quiet origin/main...HEAD -- DESIGN.md 2>/dev/null; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"src/index.css が変更されましたが DESIGN.md は未変更です。@theme のデザイントークンを変更した場合は DESIGN.md を必ず同期更新してください (CLAUDE.md のルール)。\"}}'; fi"
           }
         ]
       }
