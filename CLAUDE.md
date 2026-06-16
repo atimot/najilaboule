@@ -34,10 +34,9 @@ src/
 
 ## デザイン決め事 (重要)
 
-このプロジェクトは姉妹プロジェクトの Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`) と **デザイン統一** をしている。デザイントークン・タイポ・余白・コピー語感の **正 (source of truth)** はこのプロジェクト直下の [`DESIGN.md`](./DESIGN.md) に集約。
+このプロジェクトは姉妹プロジェクトの Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`) と世界観を揃えることを目指している。デザイントークンの **正 (source of truth) は `src/index.css` の `@theme` ブロック**。[`DESIGN.md`](./DESIGN.md) はその値を Shopify 側に翻訳するための **方向性の共有メモ** であり、コードとの完全一致を保証する契約ではない(両者がズレていたら `src/index.css` が正)。
 
-- 色・フォント・余白などを変更する際は、必ず `DESIGN.md` も同時更新する(忘れると hook がリマインドする)
-- `src/index.css` の `@theme` ブロックは `DESIGN.md` の値と一致させる
+- 色・フォント・余白を変えるときは `src/index.css` を正として更新する。`DESIGN.md` は気付いた範囲で追従させればよく、厳密同期の義務はない(ズレても害がないよう directional な位置づけにしている)
 - 新しいデザインパターンを導入する場合は、Shopify 側への波及も意識する
 
 ## CI とデプロイ
