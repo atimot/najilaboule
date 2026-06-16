@@ -21,7 +21,7 @@
 3. GitHub の **CI (`.github/workflows/ci.yml`) が required check**。緑になったら GitHub が自動マージする
 4. main マージで `deploy.yml` が GitHub Pages へデプロイ。デプロイ完走まで見届ける
 
-検証〜マージ〜デプロイ見届けの実務手順は [`/ship` スキル](.claude/skills/ship/SKILL.md) に集約。依存更新は [`/dependabot-merge` スキル](.claude/skills/dependabot-merge/SKILL.md) を使う。
+どの変更も上記パイプラインで本番へ届ける。依存更新は [`/dependabot-merge` スキル](.claude/skills/dependabot-merge/SKILL.md)(影響調査・コンフリクト解消・SHA でのデプロイ見届けまでの実務コマンドを含む)を使う。
 
 ### マージ判断の線引き
 
