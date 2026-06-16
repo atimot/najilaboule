@@ -1,8 +1,8 @@
 # Naji la boule Design Guide
 
-LP (このプロジェクト) と Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`) の **共通デザイン決め事**。両者で同じ世界観を保つための単一の正 (source of truth)。
+LP (このプロジェクト) と Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`) で同じ世界観を保つための **方向性の共有メモ (directional reference)**。
 
-> 値の出典は LP の `src/index.css` および各コンポーネント。Shopify テーマ側はこのドキュメントに合わせて `config/settings_data.json` 等で色・フォントを設定する。
+> **位置づけに注意**: トークン値の実体 (= 厳密な正) は LP の `src/index.css` の `@theme` ブロックおよび各コンポーネント。このドキュメントはそこから引いた値を Shopify 側に翻訳するための"対訳・意図メモ"であり、コードとの 1:1 完全一致を保証するものではない。値がズレていたら **`src/index.css` が正**。Shopify テーマ側はこのメモを参考に `config/settings_data.json` 等で色・フォントを設定する。
 
 ---
 

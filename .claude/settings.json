@@ -47,7 +47,7 @@
           },
           {
             "type": "command",
-            "command": "f=$(jq -r '.tool_input.file_path // empty'); d=\"${CLAUDE_PROJECT_DIR:-.}\"; if [ \"$f\" = \"$d/src/index.css\" ] && git -C \"$d\" diff --quiet HEAD -- DESIGN.md 2>/dev/null && git -C \"$d\" diff --quiet origin/main...HEAD -- DESIGN.md 2>/dev/null; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"src/index.css が変更されましたが DESIGN.md は未変更です。@theme のデザイントークンを変更した場合は DESIGN.md を必ず同期更新してください (CLAUDE.md のルール)。\"}}'; fi"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); d=\"${CLAUDE_PROJECT_DIR:-.}\"; if [ \"$f\" = \"$d/src/index.css\" ] && git -C \"$d\" diff --quiet HEAD -- DESIGN.md 2>/dev/null && git -C \"$d\" diff --quiet origin/main...HEAD -- DESIGN.md 2>/dev/null; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"src/index.css が変更されました。@theme のトークンを変えたなら、Shopify 向けの方向性メモ DESIGN.md も気付いた範囲で追従させてください (src/index.css が正なので完全一致は不要、CLAUDE.md のデザイン決め事を参照)。\"}}'; fi"
           }
         ]
       }
