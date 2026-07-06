@@ -1,7 +1,7 @@
 import { m, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { BrandDots } from '@/components/BrandDots';
-import { TIMING, SITE_CONFIG } from '@/constants';
+import { TIMING, REDUCED_FADE, SITE_CONFIG } from '@/constants';
 import { useLanguage } from '@/i18n';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
@@ -34,12 +34,13 @@ export function Loader({ onComplete }: LoaderProps) {
     <AnimatePresence>
       {isVisible && (
         <m.div
-          className="fixed inset-0 z-50 bg-brand flex flex-col items-center justify-center"
+          // z はハンバーガー (z-[60]) より上: コンテンツ常時マウント化により、下の要素が透けないようにする
+          className="fixed inset-0 z-[70] bg-brand flex flex-col items-center justify-center"
           role="status"
           aria-label={t.aria_loading}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0.3 : 1, ease: 'easeInOut' }}
+          transition={{ duration: prefersReducedMotion ? REDUCED_FADE.DURATION : 1, ease: 'easeInOut' }}
         >
           <BrandDots size="lg" className="mb-8" animated />
 
@@ -48,6 +49,7 @@ export function Loader({ onComplete }: LoaderProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={
+              // reduced 時は表示時間 (LOADER_DURATION_REDUCED = 500ms) 内に収まる短いフェード
               prefersReducedMotion
                 ? { delay: 0, duration: 0.2 }
                 : { delay: 1, duration: 1 }

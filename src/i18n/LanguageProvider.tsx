@@ -44,10 +44,11 @@ function getInitialState(): LanguageState {
   if (param) return { language: param, isExplicit: true };
   const stored = readStoredLanguage();
   if (stored) return { language: stored, isExplicit: true };
-  return {
-    language: navigator.language.toLowerCase().startsWith('ja') ? 'ja' : 'en',
-    isExplicit: false,
-  };
+  // ブラウザ言語での自動判定はしない: ベース URL は hreflang で ja / x-default と
+  // 宣言しており、en-US ロケールでレンダリングする Googlebot に英語コンテンツを
+  // 返すと ja 正規 URL が英語ページとしてインデックスされてしまう。
+  // 英語話者には ?lang=en (hreflang 経由で検索結果から直接届く) と切替 UI で対応する
+  return { language: 'ja', isExplicit: false };
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -59,6 +60,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     if (!isExplicit) return;
 
+    // ?lang= 経由の言語も次回訪問へ引き継ぐ (明示的な言語はソースを問わず永続化)
+    try {
+      localStorage.setItem(STORAGE_KEY, language);
+    } catch {
+      // 保存できなくても言語切替自体は機能させる
+    }
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute('content', translations[language].meta_description);
@@ -80,11 +87,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = useCallback((lang: Language) => {
     setState({ language: lang, isExplicit: true });
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      // 保存できなくても言語切替自体は機能させる
-    }
   }, []);
 
   const value = useMemo<LanguageContextType>(() => ({

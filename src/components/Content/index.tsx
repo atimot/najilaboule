@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { m, useInView } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
-import { fadeIn, fadeInUp, TIMING, HERO_FADE, SITE_CONFIG } from '@/constants';
+import { fadeIn, fadeInUp, TIMING, HERO_FADE, REDUCED_FADE, SITE_CONFIG } from '@/constants';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { heroImages, philosophyImages, experienceImages } from '@/images';
 import { BrandDots } from '@/components/BrandDots';
@@ -17,7 +17,7 @@ function HeroSection() {
 
   const heroTransition = (delay: number) =>
     prefersReducedMotion
-      ? { delay: HERO_FADE.REDUCED_DELAY, duration: HERO_FADE.REDUCED_DURATION }
+      ? { delay: REDUCED_FADE.DELAY, duration: REDUCED_FADE.DURATION }
       : { delay, duration: HERO_FADE.DURATION };
 
   return (
@@ -171,7 +171,8 @@ function PhilosophySection() {
               ))}
             </div>
 
-            <div className="mt-16 flex justify-center md:justify-start">
+            {/* -mx-2 はボタンの p-2 (タップ領域確保) を相殺し、ドットの見た目の位置をテキスト左端に揃える */}
+            <div className="mt-16 -mx-2 flex justify-center md:justify-start">
               {philosophyImages.map((_, index) => {
                 const slideTitle = philoSlides[index]?.title.replace(/\n/g, ' ') ?? '';
                 return (

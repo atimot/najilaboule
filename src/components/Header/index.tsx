@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect, useRef, type RefObject } from "react";
 import { m, AnimatePresence } from "motion/react";
 import clsx from "clsx";
-import { fadeIn, SITE_CONFIG } from "@/constants";
+import { fadeIn, REDUCED_FADE, SITE_CONFIG } from "@/constants";
 import { useLanguage, type Language, type Translations } from "@/i18n";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
@@ -222,6 +222,19 @@ export function Header() {
 
   useBodyScrollLock(isMobileMenuOpen);
 
+  // md 以上ではメニューもハンバーガーも md:hidden で消えるため、開いたまま
+  // ブレークポイントを跨ぐと inert とスクロールロックだけが残ってしまう。跨いだら閉じる
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    // ハンバーガー自体が md:hidden なので md 以上で開かれることはなく、跨ぎの検知だけでよい
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsMobileMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [isMobileMenuOpen]);
+
   // メニュー表示中: Tab をハンバーガー+メニュー内に閉じ込め、
   // 背景 (header/main/footer) は inert でスクリーンリーダーからも隠す。
   // 閉じたらハンバーガーへフォーカスを戻す
@@ -292,7 +305,10 @@ export function Header() {
         className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start bg-linear-to-b from-brand/90 to-transparent text-white backdrop-blur-[2px]"
         initial={fadeIn.initial}
         animate={fadeIn.animate}
-        transition={{ delay: prefersReducedMotion ? 0.3 : 2.5, duration: prefersReducedMotion ? 0.5 : 1 }}
+        transition={{
+          delay: prefersReducedMotion ? REDUCED_FADE.DELAY : 2.5,
+          duration: prefersReducedMotion ? REDUCED_FADE.DURATION : 1,
+        }}
       >
         <a
           href="#top"

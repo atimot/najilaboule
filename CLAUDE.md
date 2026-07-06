@@ -28,7 +28,7 @@ src/
 
 ## ルール
 
-- **文言のハードコード禁止**。表示文字列は `src/i18n/data.ts` に ja/en 両方を追加し、`useLanguage()` 経由で参照する。例外は2つ: 画像の alt は `src/images/data.ts` に ja/en 併記でコロケーション、両言語共通の欧文装飾ラベル (RIZ / ADDRESS / TEL / GINZA 等) は JSX 直書きを許容
+- **文言のハードコード禁止**。表示文字列は `src/i18n/data.ts` に ja/en 両方を追加し、`useLanguage()` 経由で参照する。例外は3つ: (1) 画像の alt は `src/images/data.ts` に ja/en 併記でコロケーション、(2) 両言語共通の欧文装飾ラベル (RIZ / ADDRESS / TEL / GINZA 等) は JSX 直書きを許容、(3) `index.html` の静的文言 (meta description / noscript) は React を経由できないため直書きし、対応する `data.ts` / `constants.ts` の値と同期コメントで揃える
 - `dist/` と `package-lock.json` は直接編集しない(規約。以前の permissions deny による機械的ブロックは撤去済み)
 - アニメーションを追加・変更するときは `usePrefersReducedMotion` による reduced-motion 対応を維持する
 - Performance / Accessibility / SEO は改善済み(コミット 2ff8234)。スコアを下げる回帰を出さない
