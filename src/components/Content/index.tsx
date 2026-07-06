@@ -286,6 +286,56 @@ function ExperienceSection() {
   );
 }
 
+function RiceShopSection() {
+  const { t } = useLanguage();
+  const shopRef = useRef(null);
+  const isShopInView = useInView(shopRef, { once: true, margin: '-100px' });
+  // 水引で結ばれた米の贈り物の写真 (Philosophy スライド3枚目) を背景に流用
+  const image = philosophyImages[2];
+
+  return (
+    <section id="shop" ref={shopRef} className="relative px-6 py-24 md:px-20 md:py-40 overflow-hidden">
+      <div aria-hidden="true" className="absolute inset-0 z-0">
+        <img
+          src={image.src}
+          srcSet={image.srcSet}
+          sizes="100vw"
+          alt=""
+          className="w-full h-full object-cover brightness-[0.3]"
+          width={image.width}
+          height={image.height}
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-linear-to-b from-brand via-brand/40 to-brand" />
+      </div>
+
+      <m.div
+        className="relative z-10 max-w-3xl mx-auto text-center"
+        initial={fadeInUp.initial}
+        animate={isShopInView ? fadeInUp.animate : {}}
+        transition={fadeInUp.transition}
+      >
+        <span className="text-xs tracking-[0.3em] text-accent block mb-2">BOUTIQUE</span>
+        <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest whitespace-pre-line">
+          {t.shop_title}
+        </h2>
+        <p className="text-sm md:text-base leading-loose tracking-widest text-gray-300 mb-12 whitespace-pre-line">
+          {t.shop_desc}
+        </p>
+        <a
+          href={SITE_CONFIG.riceShopUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t.aria_rice_shop}
+          className="inline-block text-center tracking-widest py-3 px-10 text-sm border border-white/50 bg-transparent text-inherit transition-[background-color,border-color,color] duration-500 hover:bg-accent hover:border-accent hover:text-brand"
+        >
+          ONLINE SHOP <span aria-hidden="true">↗</span>
+        </a>
+      </m.div>
+    </section>
+  );
+}
+
 function AccessSection() {
   const { language, t } = useLanguage();
   const accessRef = useRef(null);
@@ -376,6 +426,7 @@ export function Content() {
       <HeroSection />
       <PhilosophySection />
       <ExperienceSection />
+      <RiceShopSection />
       <AccessSection />
     </>
   );

@@ -11,6 +11,9 @@ export interface Translations {
   soupe_desc: string;
   mariage_title: string;
   mariage_desc: string;
+  shop_title: string;
+  shop_desc: string;
+  aria_rice_shop: string;
   address_text: string;
   hours_main: string;
   hours_closed: string;
@@ -45,6 +48,9 @@ export const translations: Record<Language, Translations> = {
     soupe_desc: '銀座の夜の緊張を解きほぐす。\n季節の食材を椀の中に閉じ込めました。\nおにぎりとの調和をお楽しみください。',
     mariage_title: '揺蕩う、盃。',
     mariage_desc: '厳選された酒が、おにぎりと汁に寄り添う。\n盃を重ねるほどに心は揺蕩い、\n銀座の宵はゆるやかに更けていきます。',
+    shop_title: 'この一粒を、\nご自宅へ。',
+    shop_desc: '当店のおむすびを結ぶのは、新潟・弥彦村で育まれた「伊彌彦米」。\n店で出会った美味しさを、ご家庭の食卓でも。\n大切な方への贈り物にもおすすめです。',
+    aria_rice_shop: '伊彌彦米オンラインショップ（外部サイト・新しいタブで開きます）',
     address_text: '東京都中央区銀座6-12-12\n銀座ステラビル2階',
     hours_main: '営業時間 18:30 – 23:30',
     hours_closed: '定休日 土日祝日',
@@ -71,6 +77,9 @@ export const translations: Record<Language, Translations> = {
     soupe_desc: 'The aroma of the first dashi broth unwinds the tension of the Ginza night. Seasonal ingredients sealed in a bowl. Enjoy the harmony with Onigiri.',
     mariage_title: 'Drifting with the Cup.',
     mariage_desc: 'Carefully selected drinks accompany your onigiri and soup. With each cup, the spirit drifts gently as the Ginza evening deepens at its own unhurried pace.',
+    shop_title: 'Bring This Grain\nHome.',
+    shop_desc: 'Our omusubi are bound from Iyahiko rice, grown in Yahiko Village, Niigata.\nBring the flavor you found here to your own table,\nor share it as a gift for someone dear.\n(The online shop is in Japanese.)',
+    aria_rice_shop: 'Iyahiko rice online shop (external site in Japanese; opens in a new tab)',
     address_text: 'Ginza Stella Building 2F, 6-12-12 Ginza, Chuo-ku, Tokyo, Japan',
     hours_main: 'Hours 18:30 – 23:30',
     hours_closed: 'Closed: Weekends & National Holidays',

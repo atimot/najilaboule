@@ -51,4 +51,6 @@ export const SITE_CONFIG = {
   phone: "03-6228-5803",
   phoneLink: "tel:03-6228-5803",
   url: "https://atimot.github.io/najilaboule/",
+  /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ) */
+  riceShopUrl: "https://iyahiko.square.site/",
 } as const;
