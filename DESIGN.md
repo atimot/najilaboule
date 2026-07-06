@@ -155,7 +155,7 @@ Shopifyテーマで再現する場合は、`section` 単位で background-image 
 | 透明度のみのフェード | `opacity 0→1`, `1s` (`fadeIn` プリセット) |
 | ホバートランジション | `transition-opacity duration-300 hover:opacity-70` または `transition-colors duration-300 hover:text-accent` |
 | Loader 表示時間 | 通常 2500ms / reduced-motion 時 500ms (`TIMING.LOADER_DURATION` / `LOADER_DURATION_REDUCED`) |
-| Hero フェード遅延 | dots `delay 3s` → h1 `delay 3.5s` → tagline `delay 4s`。Loader 退場直後の演出として固定 |
+| Hero フェード遅延 | dots `delay 0.8s` → h1 `delay 1s` → tagline `delay 1.5s` (各 duration 2s、`HERO_FADE` in `src/constants.ts`)。コンテンツは Loader の不透明オーバーレイの下に常時マウントされ、フェードは Loader 退場 (2.5s〜3.5s) と重なって完了する (LCP はフェード完了時点で記録されるため先行させる。reduced-motion 時は delay 0.3s / duration 0.5s) |
 | Philosophy スライド切替間隔 | 7000ms (`TIMING.PHILOSOPHY_SLIDE_INTERVAL`)。自動送りは「セクションが画面内 + reduced-motion でない + hover/focus されていない」間のみ動作 (WCAG 2.2.2)。手動切替でタイマーはリセット |
 | Hero 背景の slow-zoom | `scale 1.1 → 1.2`, `20s infinite alternate` (CSS keyframes) |
 | `prefers-reduced-motion` | 全 animation・transition を 0.01ms に短縮、`scroll-behavior: auto` も強制する CSS が設定済み。JS 側からは `usePrefersReducedMotion` フック (`src/hooks/`) を参照し、Loader 短縮や smooth scroll 抑制に利用する |

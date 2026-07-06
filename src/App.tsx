@@ -7,21 +7,21 @@ import { Footer } from '@/components/Footer';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
+  // コンテンツは最初から Loader の下にマウントしておく (LCP をローダー時間でブロックしない)。
+  // inert でローダー表示中のフォーカス・クリックを遮る (inert 非対応の旧ブラウザ向けに aria-hidden も併用)
   return (
     <>
       <Loader onComplete={() => setIsLoading(false)} />
 
-      {!isLoading && (
-        <>
-          <Header />
+      <div inert={isLoading} aria-hidden={isLoading || undefined}>
+        <Header />
 
-          <main>
-            <Content />
-          </main>
+        <main>
+          <Content />
+        </main>
 
-          <Footer />
-        </>
-      )}
+        <Footer />
+      </div>
     </>
   );
 }

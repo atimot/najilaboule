@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import clsx from 'clsx';
 
 interface BrandDotsProps {
@@ -7,16 +7,17 @@ interface BrandDotsProps {
   animated?: boolean;
 }
 
+// グローの色は @theme のドットトークンを color-mix で参照する (トークン変更に追従させる)
 const DOT_COLORS = [
-  'bg-dot-white shadow-[0_0_10px_rgba(255,255,255,0.5)]',
+  'bg-dot-white shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-white)_50%,transparent)]',
   'bg-dot-black border border-gray-600',
-  'bg-dot-red shadow-[0_0_10px_rgba(230,0,18,0.3)]',
-  'bg-dot-blue shadow-[0_0_10px_rgba(0,153,204,0.3)]',
-  'bg-dot-yellow shadow-[0_0_10px_rgba(255,215,0,0.3)]',
-  'bg-dot-green shadow-[0_0_10px_rgba(0,153,68,0.3)]',
-  'bg-dot-orange shadow-[0_0_10px_rgba(243,152,0,0.3)]',
-  'bg-dot-pink shadow-[0_0_10px_rgba(230,0,127,0.3)]',
-  'bg-dot-purple shadow-[0_0_10px_rgba(146,7,131,0.3)]',
+  'bg-dot-red shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-red)_30%,transparent)]',
+  'bg-dot-blue shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-blue)_30%,transparent)]',
+  'bg-dot-yellow shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-yellow)_30%,transparent)]',
+  'bg-dot-green shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-green)_30%,transparent)]',
+  'bg-dot-orange shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-orange)_30%,transparent)]',
+  'bg-dot-pink shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-pink)_30%,transparent)]',
+  'bg-dot-purple shadow-[0_0_10px_color-mix(in_srgb,var(--color-dot-purple)_30%,transparent)]',
 ] as const;
 
 const SIZE_CLASSES = {
@@ -37,7 +38,7 @@ export function BrandDots({ size = 'md', className = '', animated = false }: Bra
       {DOT_COLORS.map((colorClass, index) => {
         const dotClass = clsx('rounded-full', SIZE_CLASSES[size], colorClass);
         return animated ? (
-          <motion.div
+          <m.div
             key={index}
             className={dotClass}
             initial={{ opacity: 0, scale: 0 }}

@@ -1,6 +1,8 @@
 export type Language = 'ja' | 'en';
 
 export interface Translations {
+  meta_description: string;
+  brand_kana: string;
   hero_title: string;
   hero_tagline: string;
   riz_title: string;
@@ -13,9 +15,10 @@ export interface Translations {
   hours_main: string;
   hours_closed: string;
   nav_access: string;
+  menu_label: string;
   aria_menu_open: string;
   aria_menu_close: string;
-  aria_home: string;
+  aria_loading: string;
   aria_reservation: string;
   aria_slide_show: string;
   map_title: string;
@@ -30,6 +33,10 @@ export interface PhiloSlide {
 
 export const translations: Record<Language, Translations> = {
   ja: {
+    // index.html の <meta name="description"> と同一に保つこと (クローラーは静的 HTML 側を読む)
+    meta_description:
+      '銀座の夜、米と汁を嗜む。おにぎりと汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6228-5803まで。',
+    brand_kana: 'ナジラブール',
     hero_title: '銀座の夜、\n米と汁を嗜む。',
     hero_tagline: 'Riz et Soupe, et un peu d’alcool.',
     riz_title: '結ぶ、米。',
@@ -42,9 +49,10 @@ export const translations: Record<Language, Translations> = {
     hours_main: '営業時間 18:30 – 23:30',
     hours_closed: '定休日 土日祝日',
     nav_access: 'Access',
+    menu_label: 'メニュー',
     aria_menu_open: 'メニューを開く',
     aria_menu_close: 'メニューを閉じる',
-    aria_home: 'トップへ戻る',
+    aria_loading: '読み込み中',
     aria_reservation: '電話で予約する',
     aria_slide_show: 'スライドを表示',
     map_title: '店舗の地図 — 東京都中央区銀座6-12-12 銀座ステラビル2階',
@@ -52,6 +60,9 @@ export const translations: Record<Language, Translations> = {
     access_reservation_note: 'ご予約はお電話のみ承っております。\n席数に限りがございますので、\nお早めのご連絡をおすすめいたします。',
   },
   en: {
+    meta_description:
+      'Savoring rice and soup in the Ginza night. Onigiri, soup, and a little sake. Official site of Naji la boule, a Japanese restaurant in Ginza 6-chome, Tokyo. Reservations: +81-3-6228-5803.',
+    brand_kana: 'ナジラブール',
     hero_title: 'Savoring Rice in the Ginza Night.',
     hero_tagline: 'Riz et Soupe, et un peu d’alcool.',
     riz_title: 'Binding the Grain.',
@@ -64,9 +75,10 @@ export const translations: Record<Language, Translations> = {
     hours_main: 'Hours 18:30 – 23:30',
     hours_closed: 'Closed: Weekends & National Holidays',
     nav_access: 'Access',
+    menu_label: 'Menu',
     aria_menu_open: 'Open menu',
     aria_menu_close: 'Close menu',
-    aria_home: 'Back to top',
+    aria_loading: 'Loading',
     aria_reservation: 'Reserve by phone',
     aria_slide_show: 'Show slide',
     map_title: 'Restaurant map — Ginza Stella Building 2F, 6-12-12 Ginza, Chuo-ku, Tokyo',

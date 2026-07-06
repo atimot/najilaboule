@@ -1,0 +1,7 @@
+# 注意: GitHub Pages のプロジェクトサイトでは robots.txt はサブパス配下に置かれ、
+# クローラーはオリジン直下 (atimot.github.io/robots.txt) しか読まないため、
+# このファイルは独自ドメイン移行時に有効になる。sitemap.xml は Search Console から手動送信すること
+User-agent: *
+Allow: /
+
+Sitemap: https://atimot.github.io/najilaboule/sitemap.xml

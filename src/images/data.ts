@@ -25,7 +25,7 @@ export const heroImages = {
   },
 } as const satisfies Record<string, ImageEntry>;
 
-export const philosophySlides: readonly ImageEntry[] = [
+export const philosophyImages: readonly ImageEntry[] = [
   {
     src: 'images/philosophy/slide-01-1600.webp',
     srcSet: srcSetOf('images/philosophy/slide-01'),
@@ -55,17 +55,9 @@ export const philosophySlides: readonly ImageEntry[] = [
   },
 ] as const;
 
-const menuImages: readonly ImageEntry[] = [
-  {
-    src: 'images/menu/item-01-1600.webp',
-    srcSet: srcSetOf('images/menu/item-01'),
-    sizes: SIZES_EXPERIENCE,
-    alt: { ja: '澄まし汁の椀', en: 'Bowl of clear dashi soup' },
-    width: PHOTO_WIDTH,
-    height: PHOTO_HEIGHT,
-    loading: 'lazy',
-  },
-  {
+// ファイル名と表示カードの対応に注意: item-01=汁 (soupe)、item-02=米 (riz)、item-03=酒 (mariage)
+export const experienceImages = {
+  riz: {
     src: 'images/menu/item-02-1600.webp',
     srcSet: srcSetOf('images/menu/item-02'),
     sizes: SIZES_EXPERIENCE,
@@ -74,7 +66,16 @@ const menuImages: readonly ImageEntry[] = [
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
-  {
+  soupe: {
+    src: 'images/menu/item-01-1600.webp',
+    srcSet: srcSetOf('images/menu/item-01'),
+    sizes: SIZES_EXPERIENCE,
+    alt: { ja: '澄まし汁の椀', en: 'Bowl of clear dashi soup' },
+    width: PHOTO_WIDTH,
+    height: PHOTO_HEIGHT,
+    loading: 'lazy',
+  },
+  mariage: {
     src: 'images/menu/item-03-1600.webp',
     srcSet: srcSetOf('images/menu/item-03'),
     sizes: SIZES_EXPERIENCE,
@@ -83,10 +84,4 @@ const menuImages: readonly ImageEntry[] = [
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
-] as const;
-
-export const experienceImages = {
-  riz: menuImages[1],
-  soupe: menuImages[0],
-  mariage: menuImages[2],
-} as const;
+} as const satisfies Record<string, ImageEntry>;

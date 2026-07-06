@@ -1,2 +1,2 @@
 export type { ImageEntry } from '@/images/types';
-export { heroImages, philosophySlides, experienceImages } from '@/images/data';
+export { heroImages, philosophyImages, experienceImages } from '@/images/data';

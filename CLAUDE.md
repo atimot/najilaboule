@@ -11,15 +11,16 @@ npm run lint     # eslint .
 npm run preview  # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
 ```
 
-型チェックと lint は PostToolUse hook が `.ts`/`.tsx` 編集のたびに自動実行される。エラーが返ってきたらその場で直してから先に進む。
+`.ts`/`.tsx` を編集したら `npm run lint` と `npm run build` を自分で実行して検証する(以前あった PostToolUse hook はコミット 4146a66 で撤去済み)。エラーはその場で直してから先に進む。
 
 ## 構造
 
 ```
 src/
-├── App.tsx            # エントリ。Loader → Header/Content/Footer
+├── App.tsx            # エントリ。コンテンツは Loader の下に常時マウント (LCP 対策)
 ├── components/        # BrandDots / Content / Footer / Header / Loader / ReservationButton
 ├── i18n/              # 文言は data.ts に ja/en 両方で集約。useLanguage() で取得
+├── images/            # 画像メタデータ (srcset/sizes と ja/en の alt をコロケーション)
 ├── hooks/             # usePrefersReducedMotion (アニメーションは必ずこれを尊重)
 ├── index.css          # Tailwind @theme (デザイントークンの実体)
 └── constants.ts
@@ -27,8 +28,8 @@ src/
 
 ## ルール
 
-- **文言のハードコード禁止**。表示文字列は `src/i18n/data.ts` に ja/en 両方を追加し、`useLanguage()` 経由で参照する
-- `dist/` と `package-lock.json` は直接編集しない(permissions の deny で機械的にブロック済み)
+- **文言のハードコード禁止**。表示文字列は `src/i18n/data.ts` に ja/en 両方を追加し、`useLanguage()` 経由で参照する。例外は2つ: 画像の alt は `src/images/data.ts` に ja/en 併記でコロケーション、両言語共通の欧文装飾ラベル (RIZ / ADDRESS / TEL / GINZA 等) は JSX 直書きを許容
+- `dist/` と `package-lock.json` は直接編集しない(規約。以前の permissions deny による機械的ブロックは撤去済み)
 - アニメーションを追加・変更するときは `usePrefersReducedMotion` による reduced-motion 対応を維持する
 - Performance / Accessibility / SEO は改善済み(コミット 2ff8234)。スコアを下げる回帰を出さない
 
@@ -41,7 +42,7 @@ src/
 
 ## CI とデプロイ
 
-- PR と main への push で軽量 CI (`.github/workflows/ci.yml`: `npm ci` → lint → build) が走る。**緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)
+- PR と main への push で軽量 CI (`.github/workflows/ci.yml`: check:lockfile → `npm ci` → lint → build) が走る。**緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)
 - main マージで `deploy.yml` が GitHub Pages へデプロイ
 - `package-lock.json` は手編集しない。lockfile 変更は必ず `npx -y npm@latest` 経由 (ローカル npm は wasm 系 optional 依存を脱落させ CI が落ちる)。`npm run check:lockfile` で脱落を検査できる
 - Dependabot PR は CI が緑になったことを確認してから手動でマージする

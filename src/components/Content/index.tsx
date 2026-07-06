@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { m, useInView } from 'motion/react';
 import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
-import { fadeIn, fadeInUp, TIMING, SITE_CONFIG } from '@/constants';
+import { fadeIn, fadeInUp, TIMING, HERO_FADE, SITE_CONFIG } from '@/constants';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { heroImages, philosophySlides, experienceImages } from '@/images';
+import { heroImages, philosophyImages, experienceImages } from '@/images';
 import { BrandDots } from '@/components/BrandDots';
 import { ReservationButton } from '@/components/ReservationButton';
 
@@ -12,7 +12,13 @@ import { ReservationButton } from '@/components/ReservationButton';
 
 function HeroSection() {
   const { t } = useLanguage();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const hero = heroImages.background;
+
+  const heroTransition = (delay: number) =>
+    prefersReducedMotion
+      ? { delay: HERO_FADE.REDUCED_DELAY, duration: HERO_FADE.REDUCED_DURATION }
+      : { delay, duration: HERO_FADE.DURATION };
 
   return (
     <section
@@ -30,36 +36,36 @@ function HeroSection() {
           height={hero.height}
           fetchPriority={hero.fetchPriority}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand/60 via-transparent to-brand" />
+        <div className="absolute inset-0 bg-linear-to-b from-brand/60 via-transparent to-brand" />
       </div>
 
       <div className="relative z-10 text-center px-6 md:px-20">
-        <motion.div
+        <m.div
           className="w-fit mx-auto mb-10"
           initial={fadeIn.initial}
           animate={fadeIn.animate}
-          transition={{ delay: 3, duration: 2 }}
+          transition={heroTransition(HERO_FADE.DOTS_DELAY)}
         >
           <BrandDots size="md" />
-        </motion.div>
+        </m.div>
 
-        <motion.h1
+        <m.h1
           className="text-4xl md:text-[3.5rem] font-serif tracking-[0.2em] mb-6 whitespace-pre-line"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.5, duration: 2 }}
+          transition={heroTransition(HERO_FADE.H1_DELAY)}
         >
           {t.hero_title}
-        </motion.h1>
+        </m.h1>
 
-        <motion.p
+        <m.p
           className="text-sm md:text-base leading-loose tracking-widest text-gray-400"
           initial={fadeIn.initial}
           animate={fadeIn.animate}
-          transition={{ delay: 4, duration: 2 }}
+          transition={heroTransition(HERO_FADE.TAGLINE_DELAY)}
         >
           {t.hero_tagline}
-        </motion.p>
+        </m.p>
       </div>
     </section>
   );
@@ -75,7 +81,7 @@ function PhilosophySection() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const nextSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % philosophySlides.length);
+    setActiveIndex((prev) => (prev + 1) % philosophyImages.length);
   }, []);
 
   // 自動送りは「画面内 + reduced-motion でない + hover/focus されていない」間のみ。
@@ -102,8 +108,8 @@ function PhilosophySection() {
         <span className="absolute top-24 right-[8%] size-1.5 rounded-full bg-accent/40 blur-[1px]" />
         <span className="absolute bottom-32 right-[18%] size-1 rounded-full bg-dot-yellow/30 blur-[1px]" />
       </div>
-      <div className="max-w-[80rem] mx-auto w-full md:flex md:flex-row md:items-center md:justify-between md:gap-8">
-        <motion.div
+      <div className="max-w-7xl mx-auto w-full md:flex md:flex-row md:items-center md:justify-between md:gap-8">
+        <m.div
           className="absolute inset-0 w-full pointer-events-none z-0 md:static md:w-[55%]"
           initial={fadeInUp.initial}
           animate={isPhiloInView ? fadeInUp.animate : {}}
@@ -112,12 +118,13 @@ function PhilosophySection() {
           <div className="absolute inset-0 overflow-hidden md:relative md:inset-auto md:h-[700px]">
             <div className="hidden md:block md:absolute md:-top-10 md:-left-10 md:size-2 md:rounded-full md:bg-dot-red md:blur-[1px] md:z-10" />
 
-            {philosophySlides.map((image, index) => (
-              <motion.div
+            {philosophyImages.map((image, index) => (
+              <m.div
                 key={index}
                 className="absolute inset-0"
                 animate={{ opacity: index === activeIndex ? 1 : 0 }}
                 transition={fadeIn.transition}
+                aria-hidden={index !== activeIndex}
               >
                 <img
                   src={image.src}
@@ -129,14 +136,14 @@ function PhilosophySection() {
                   height={image.height}
                   loading={image.loading}
                 />
-              </motion.div>
+              </m.div>
             ))}
 
-            <div className="absolute inset-0 bg-gradient-to-b from-brand/85 via-brand/50 to-brand/85 z-10 md:hidden" />
+            <div className="absolute inset-0 bg-linear-to-b from-brand/85 via-brand/50 to-brand/85 z-10 md:hidden" />
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className="relative z-10 w-full text-center md:w-[45%] md:text-left"
           initial={fadeInUp.initial}
           animate={isPhiloInView ? fadeInUp.animate : {}}
@@ -145,7 +152,7 @@ function PhilosophySection() {
           <div className="mx-auto md:max-w-none">
             <div className="grid">
               {philoSlides.map((slide, index) => (
-                <motion.div
+                <m.div
                   key={index}
                   className={clsx('[grid-area:1/1]', index !== activeIndex && 'pointer-events-none')}
                   animate={{ opacity: index === activeIndex ? 1 : 0 }}
@@ -160,43 +167,108 @@ function PhilosophySection() {
                       <p>{slide.body}</p>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
-            <div className="mt-16 flex justify-center md:justify-start gap-4">
-              {philosophySlides.map((_, index) => {
+            <div className="mt-16 flex justify-center md:justify-start">
+              {philosophyImages.map((_, index) => {
                 const slideTitle = philoSlides[index]?.title.replace(/\n/g, ' ') ?? '';
                 return (
                   <button
                     key={index}
-                    className={clsx(
-                      'size-2 rounded-full bg-dot-white cursor-pointer transition-[opacity,transform] duration-300 border-none p-0',
-                      index === activeIndex ? 'opacity-100 scale-125' : 'opacity-30 hover:opacity-70',
-                    )}
+                    className="group/dot p-2 bg-transparent border-none cursor-pointer"
                     onClick={() => setActiveIndex(index)}
-                    aria-label={`${t.aria_slide_show}: ${slideTitle} (${index + 1}/${philosophySlides.length})`}
+                    aria-label={`${t.aria_slide_show}: ${slideTitle} (${index + 1}/${philosophyImages.length})`}
                     aria-current={index === activeIndex ? 'true' : undefined}
-                  />
+                  >
+                    <span
+                      className={clsx(
+                        'block size-2 rounded-full bg-dot-white transition-[opacity,transform] duration-300',
+                        index === activeIndex
+                          ? 'opacity-100 scale-125'
+                          : 'opacity-40 group-hover/dot:opacity-70',
+                      )}
+                    />
+                  </button>
                 );
               })}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
 }
 
-function ExperienceSection() {
-  const { language, t } = useLanguage();
-  const expRizRef = useRef(null);
-  const isExpRizInView = useInView(expRizRef, { once: true, margin: '-100px' });
-  const expSoupeRef = useRef(null);
-  const isExpSoupeInView = useInView(expSoupeRef, { once: true, margin: '-100px' });
-  const expMariageRef = useRef(null);
-  const isExpMariageInView = useInView(expMariageRef, { once: true, margin: '-100px' });
+const EXPERIENCE_CARDS = [
+  { key: 'riz', label: 'RIZ', reverse: true },
+  { key: 'soupe', label: 'SOUPE', reverse: false },
+  { key: 'mariage', label: 'MARIAGE', reverse: true },
+] as const;
 
+function ExperienceCard({
+  cardKey,
+  label,
+  reverse,
+}: {
+  cardKey: (typeof EXPERIENCE_CARDS)[number]['key'];
+  label: string;
+  reverse: boolean;
+}) {
+  const { language, t } = useLanguage();
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, margin: '-100px' });
+  const image = experienceImages[cardKey];
+
+  return (
+    <div
+      ref={cardRef}
+      className={clsx(
+        'flex flex-col items-center gap-12',
+        reverse ? 'md:flex-row-reverse' : 'md:flex-row',
+      )}
+    >
+      <m.div
+        className="w-full md:w-1/2"
+        initial={fadeInUp.initial}
+        animate={isInView ? fadeInUp.animate : {}}
+        transition={fadeInUp.transition}
+      >
+        <div className="relative aspect-video overflow-hidden group">
+          <img
+            src={image.src}
+            srcSet={image.srcSet}
+            sizes={image.sizes}
+            alt={image.alt[language]}
+            className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105"
+            width={image.width}
+            height={image.height}
+            loading={image.loading}
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-brand via-transparent to-transparent opacity-60" />
+        </div>
+      </m.div>
+
+      <m.div
+        className={clsx('w-full md:w-1/2', reverse ? 'md:pr-10' : 'md:pl-10')}
+        initial={fadeInUp.initial}
+        animate={isInView ? fadeInUp.animate : {}}
+        transition={{ ...fadeInUp.transition, delay: 0.2 }}
+      >
+        <span className="text-xs tracking-[0.3em] text-accent block mb-2">{label}</span>
+        <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">
+          {t[`${cardKey}_title`]}
+        </h2>
+        <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">
+          {t[`${cardKey}_desc`]}
+        </p>
+      </m.div>
+    </div>
+  );
+}
+
+function ExperienceSection() {
   return (
     <section id="experience" className="px-6 py-24 md:px-20 md:py-40 relative">
       <div aria-hidden="true" className="hidden md:block pointer-events-none">
@@ -204,107 +276,24 @@ function ExperienceSection() {
         <span className="absolute top-[48%] right-[5%] size-1 rounded-full bg-dot-red/25 blur-[1px]" />
         <span className="absolute bottom-[20%] left-[10%] size-1 rounded-full bg-dot-blue/25 blur-[1px]" />
       </div>
-      <div className="max-w-[80rem] mx-auto flex flex-col gap-24 md:gap-32">
-        {/* RIZ CARD */}
-        <div
-          ref={expRizRef}
-          className="flex flex-col items-center gap-12 md:flex-row-reverse"
-        >
-          <motion.div
-            className="w-full md:w-1/2"
-            initial={fadeInUp.initial}
-            animate={isExpRizInView ? fadeInUp.animate : {}}
-            transition={fadeInUp.transition}
-          >
-            <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.riz.src} srcSet={experienceImages.riz.srcSet} sizes={experienceImages.riz.sizes} alt={experienceImages.riz.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.riz.width} height={experienceImages.riz.height} loading={experienceImages.riz.loading} />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="w-full md:w-1/2 md:pr-10"
-            initial={fadeInUp.initial}
-            animate={isExpRizInView ? fadeInUp.animate : {}}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-          >
-            <span className="text-xs tracking-[0.3em] text-accent block mb-2">RIZ</span>
-            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.riz_title}</h2>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.riz_desc}</p>
-          </motion.div>
-        </div>
-
-        {/* SOUPE CARD */}
-        <div
-          ref={expSoupeRef}
-          className="flex flex-col items-center gap-12 md:flex-row"
-        >
-          <motion.div
-            className="w-full md:w-1/2"
-            initial={fadeInUp.initial}
-            animate={isExpSoupeInView ? fadeInUp.animate : {}}
-            transition={fadeInUp.transition}
-          >
-            <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.soupe.src} srcSet={experienceImages.soupe.srcSet} sizes={experienceImages.soupe.sizes} alt={experienceImages.soupe.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.soupe.width} height={experienceImages.soupe.height} loading={experienceImages.soupe.loading} />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="w-full md:w-1/2 md:pl-10"
-            initial={fadeInUp.initial}
-            animate={isExpSoupeInView ? fadeInUp.animate : {}}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-          >
-            <span className="text-xs tracking-[0.3em] text-accent block mb-2">SOUPE</span>
-            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.soupe_title}</h2>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.soupe_desc}</p>
-          </motion.div>
-        </div>
-
-        {/* MARIAGE CARD */}
-        <div
-          ref={expMariageRef}
-          className="flex flex-col items-center gap-12 md:flex-row-reverse"
-        >
-          <motion.div
-            className="w-full md:w-1/2"
-            initial={fadeInUp.initial}
-            animate={isExpMariageInView ? fadeInUp.animate : {}}
-            transition={fadeInUp.transition}
-          >
-            <div className="relative aspect-video overflow-hidden group">
-              <img src={experienceImages.mariage.src} srcSet={experienceImages.mariage.srcSet} sizes={experienceImages.mariage.sizes} alt={experienceImages.mariage.alt[language]} className="w-full h-full object-cover brightness-90 transition-transform duration-[2s] group-hover:scale-105" width={experienceImages.mariage.width} height={experienceImages.mariage.height} loading={experienceImages.mariage.loading} />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand via-transparent to-transparent opacity-60" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="w-full md:w-1/2 md:pr-10"
-            initial={fadeInUp.initial}
-            animate={isExpMariageInView ? fadeInUp.animate : {}}
-            transition={{ ...fadeInUp.transition, delay: 0.2 }}
-          >
-            <span className="text-xs tracking-[0.3em] text-accent block mb-2">MARIAGE</span>
-            <h2 className="text-3xl md:text-[2.5rem] font-serif mb-8 tracking-widest">{t.mariage_title}</h2>
-            <p className="text-sm md:text-base leading-loose tracking-widest text-gray-400 mb-8 whitespace-pre-line">{t.mariage_desc}</p>
-          </motion.div>
-        </div>
+      <div className="max-w-7xl mx-auto flex flex-col gap-24 md:gap-32">
+        {EXPERIENCE_CARDS.map(({ key, label, reverse }) => (
+          <ExperienceCard key={key} cardKey={key} label={label} reverse={reverse} />
+        ))}
       </div>
     </section>
   );
 }
 
 function AccessSection() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const accessRef = useRef(null);
   const isAccessInView = useInView(accessRef, { once: true, margin: '-100px' });
 
   return (
     <section id="access" ref={accessRef} className="px-6 py-24 md:px-20 md:py-40 bg-brand-dark relative">
-      <div className="max-w-[80rem] mx-auto text-center">
-        <motion.div
+      <div className="max-w-7xl mx-auto text-center">
+        <m.div
           className="mb-12"
           initial={fadeInUp.initial}
           animate={isAccessInView ? fadeInUp.animate : {}}
@@ -313,9 +302,9 @@ function AccessSection() {
           <BrandDots size="sm" className="inline-grid opacity-50 mb-8" />
           <h2 className="text-3xl md:text-[2.5rem] font-serif mb-2 tracking-widest">{SITE_CONFIG.name}</h2>
           <p className="text-xs tracking-[0.3em] text-gray-400">GINZA</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           className="grid gap-12 text-left mb-16 md:grid-cols-2"
           initial={fadeInUp.initial}
           animate={isAccessInView ? fadeInUp.animate : {}}
@@ -353,9 +342,9 @@ function AccessSection() {
             </div>
             <ReservationButton variant="filled" size="lg" />
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={fadeInUp.initial}
           animate={isAccessInView ? fadeInUp.animate : {}}
           transition={{ ...fadeInUp.transition, delay: 0.4 }}
@@ -363,7 +352,7 @@ function AccessSection() {
           <div className="w-full h-64">
             <iframe
               title={t.map_title}
-              src="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%AD%E5%A4%AE%E5%8C%BA%E9%8A%80%E5%BA%A76-12-12%20%E9%8A%80%E5%BA%A7%E3%82%B9%E3%83%86%E3%83%A9%E3%83%93%E3%83%AB2%E9%9A%8E&output=embed&hl=ja"
+              src={`https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%AD%E5%A4%AE%E5%8C%BA%E9%8A%80%E5%BA%A76-12-12%20%E9%8A%80%E5%BA%A7%E3%82%B9%E3%83%86%E3%83%A9%E3%83%93%E3%83%AB2%E9%9A%8E&output=embed&hl=${language}`}
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -372,7 +361,7 @@ function AccessSection() {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
