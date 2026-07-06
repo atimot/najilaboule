@@ -25,6 +25,21 @@ export const heroImages = {
   },
 } as const satisfies Record<string, ImageEntry>;
 
+/**
+ * 「水引で結ばれた米の贈り物」の写真。Philosophy スライド3枚目と
+ * RiceShopSection (BOUTIQUE) の背景で共用するため名前付きで公開する。
+ * philosophyImages の並び替えがショップ背景に波及しないよう、配列の index 参照は禁止
+ */
+export const riceGiftImage: ImageEntry = {
+  src: 'images/philosophy/slide-03-1600.webp',
+  srcSet: srcSetOf('images/philosophy/slide-03'),
+  sizes: SIZES_PHILOSOPHY,
+  alt: { ja: '水引で結ばれた米の贈り物', en: 'A gift of rice tied with mizuhiki' },
+  width: PHOTO_WIDTH,
+  height: PHOTO_HEIGHT,
+  loading: 'lazy',
+};
+
 export const philosophyImages: readonly ImageEntry[] = [
   {
     src: 'images/philosophy/slide-01-1600.webp',
@@ -44,15 +59,7 @@ export const philosophyImages: readonly ImageEntry[] = [
     height: PHOTO_HEIGHT,
     loading: 'lazy',
   },
-  {
-    src: 'images/philosophy/slide-03-1600.webp',
-    srcSet: srcSetOf('images/philosophy/slide-03'),
-    sizes: SIZES_PHILOSOPHY,
-    alt: { ja: '水引で結ばれた米の贈り物', en: 'A gift of rice tied with mizuhiki' },
-    width: PHOTO_WIDTH,
-    height: PHOTO_HEIGHT,
-    loading: 'lazy',
-  },
+  riceGiftImage,
 ] as const;
 
 // ファイル名と表示カードの対応に注意: item-01=汁 (soupe)、item-02=米 (riz)、item-03=酒 (mariage)
