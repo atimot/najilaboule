@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useLanguage } from '@/i18n';
 import { fadeIn, fadeInUp, TIMING, HERO_FADE, REDUCED_FADE, SITE_CONFIG } from '@/constants';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { heroImages, philosophyImages, experienceImages } from '@/images';
+import { heroImages, philosophyImages, experienceImages, riceGiftImage } from '@/images';
 import { BrandDots } from '@/components/BrandDots';
 import { ReservationButton } from '@/components/ReservationButton';
 
@@ -290,8 +290,7 @@ function RiceShopSection() {
   const { t } = useLanguage();
   const shopRef = useRef(null);
   const isShopInView = useInView(shopRef, { once: true, margin: '-100px' });
-  // 水引で結ばれた米の贈り物の写真 (Philosophy スライド3枚目) を背景に流用
-  const image = philosophyImages[2];
+  const image = riceGiftImage;
 
   return (
     <section id="shop" ref={shopRef} className="relative px-6 py-24 md:px-20 md:py-40 overflow-hidden">
