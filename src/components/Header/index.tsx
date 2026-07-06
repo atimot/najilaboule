@@ -1,12 +1,25 @@
-import { useState, useEffect, useRef, type RefObject } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { Fragment, useState, useEffect, useRef, type RefObject } from "react";
+import { m, AnimatePresence } from "motion/react";
 import clsx from "clsx";
-import { fadeIn, SITE_CONFIG } from "@/constants";
-import { useLanguage } from "@/i18n";
+import { fadeIn, REDUCED_FADE, SITE_CONFIG } from "@/constants";
+import { useLanguage, type Language, type Translations } from "@/i18n";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ReservationButton } from "@/components/ReservationButton";
 
 const NAVIGATION_IDS = ["access"] as const;
+const MOBILE_NAV_ID = "mobile-menu";
+
+const LANGUAGE_OPTIONS: readonly { code: Language; label: string }[] = [
+  { code: "ja", label: "JP" },
+  { code: "en", label: "EN" },
+];
+
+const getNavLabels = (
+  t: Translations,
+): Record<(typeof NAVIGATION_IDS)[number], string> => ({
+  access: t.nav_access,
+});
 
 function LanguageSwitch({
   className = "",
@@ -24,31 +37,28 @@ function LanguageSwitch({
         className,
       )}
     >
-      <button
-        className={clsx(
-          "bg-transparent border-none text-inherit cursor-pointer p-0 transition-opacity duration-300 hover:opacity-70",
-          language === "ja" && "font-bold text-accent border-b border-accent",
-        )}
-        onClick={() => {
-          setLanguage("ja");
-          onClose?.();
-        }}
-      >
-        JP
-      </button>
-      <span className="opacity-50">|</span>
-      <button
-        className={clsx(
-          "bg-transparent border-none text-inherit cursor-pointer p-0 transition-opacity duration-300 hover:opacity-70",
-          language === "en" && "font-bold text-accent border-b border-accent",
-        )}
-        onClick={() => {
-          setLanguage("en");
-          onClose?.();
-        }}
-      >
-        EN
-      </button>
+      {LANGUAGE_OPTIONS.map(({ code, label }, index) => (
+        <Fragment key={code}>
+          {index > 0 && (
+            <span className="opacity-50" aria-hidden="true">
+              |
+            </span>
+          )}
+          <button
+            className={clsx(
+              "bg-transparent border-none text-inherit cursor-pointer p-0 transition-opacity duration-300 hover:opacity-70",
+              language === code && "font-bold text-accent border-b border-accent",
+            )}
+            onClick={() => {
+              setLanguage(code);
+              onClose?.();
+            }}
+            aria-pressed={language === code}
+          >
+            {label}
+          </button>
+        </Fragment>
+      ))}
     </div>
   );
 }
@@ -71,6 +81,7 @@ function HamburgerButton({
         onClick={onClick}
         aria-label={isOpen ? t.aria_menu_close : t.aria_menu_open}
         aria-expanded={isOpen}
+        aria-controls={MOBILE_NAV_ID}
       >
         <span
           className={clsx(
@@ -91,9 +102,7 @@ function HamburgerButton({
 
 function DesktopNav() {
   const { t } = useLanguage();
-  const navLabels: Record<(typeof NAVIGATION_IDS)[number], string> = {
-    access: t.nav_access,
-  };
+  const navLabels = getNavLabels(t);
   return (
     <nav className="hidden md:block">
       <ul className="flex gap-8 text-sm tracking-widest items-center">
@@ -125,25 +134,31 @@ function MobileNav({
   navRef: RefObject<HTMLElement | null>;
 }) {
   const { t } = useLanguage();
-  const navLabels: Record<(typeof NAVIGATION_IDS)[number], string> = {
-    access: t.nav_access,
-  };
+  const navLabels = getNavLabels(t);
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.nav
+        <m.nav
           ref={navRef}
+          id={MOBILE_NAV_ID}
+          // aria-modal は付けない: 唯一の閉じるボタン (HamburgerButton) がダイアログの
+          // 外にあり、aria-modal だと支援技術から隠れてしまう。背景の隔離は inert で行う
+          role="dialog"
+          aria-label={t.menu_label}
           className="fixed inset-0 z-50 bg-brand/80 backdrop-blur-[28px] backdrop-saturate-150 overflow-y-auto overscroll-contain md:hidden"
           initial={fadeIn.initial}
           animate={fadeIn.animate}
           exit={fadeIn.initial}
           transition={{ duration: 0.5 }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) onClose();
-          }}
         >
-          <div className="min-h-dvh flex flex-col items-center justify-center py-20 px-6">
-            <motion.ul
+          <div
+            className="min-h-dvh flex flex-col items-center justify-center py-20 px-6"
+            onClick={(e) => {
+              // メニュー項目の外側 (この余白 div 自身) のタップで閉じる
+              if (e.target === e.currentTarget) onClose();
+            }}
+          >
+            <m.ul
               className="flex flex-col items-center gap-8 text-lg tracking-widest"
               initial="hidden"
               animate="visible"
@@ -155,7 +170,7 @@ function MobileNav({
               }}
             >
               {NAVIGATION_IDS.map((id) => (
-                <motion.li
+                <m.li
                   key={id}
                   variants={{
                     hidden: { opacity: 0, y: 20 },
@@ -169,9 +184,9 @@ function MobileNav({
                   >
                     {navLabels[id]}
                   </a>
-                </motion.li>
+                </m.li>
               ))}
-              <motion.li
+              <m.li
                 className="mt-4"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -179,19 +194,19 @@ function MobileNav({
                 }}
               >
                 <ReservationButton variant="outline" size="md" />
-              </motion.li>
-            </motion.ul>
+              </m.li>
+            </m.ul>
 
-            <motion.div
+            <m.div
               className="mt-12"
               initial={fadeIn.initial}
               animate={fadeIn.animate}
               transition={{ delay: 0.5 }}
             >
               <LanguageSwitch className="gap-6 text-sm" onClose={onClose} />
-            </motion.div>
+            </m.div>
           </div>
-        </motion.nav>
+        </m.nav>
       )}
     </AnimatePresence>
   );
@@ -203,15 +218,37 @@ export function Header() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
-  // メニュー表示中: 背景スクロールをロックし、Tab をハンバーガー+メニュー内に閉じ込める。
+  useBodyScrollLock(isMobileMenuOpen);
+
+  // md 以上ではメニューもハンバーガーも md:hidden で消えるため、開いたまま
+  // ブレークポイントを跨ぐと inert とスクロールロックだけが残ってしまう。跨いだら閉じる
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    // ハンバーガー自体が md:hidden なので md 以上で開かれることはなく、跨ぎの検知だけでよい
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsMobileMenuOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [isMobileMenuOpen]);
+
+  // メニュー表示中: Tab をハンバーガー+メニュー内に閉じ込め、
+  // 背景 (header/main/footer) は inert でスクリーンリーダーからも隠す。
   // 閉じたらハンバーガーへフォーカスを戻す
   useEffect(() => {
     if (!isMobileMenuOpen) return;
 
     const hamburgerButton = hamburgerRef.current;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+
+    const inertTargets = [
+      headerRef.current,
+      document.querySelector("main"),
+      document.querySelector("footer"),
+    ].filter((el): el is HTMLElement => el instanceof HTMLElement);
+    inertTargets.forEach((el) => el.setAttribute("inert", ""));
 
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -246,7 +283,7 @@ export function Header() {
     window.addEventListener("keydown", handler);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      inertTargets.forEach((el) => el.removeAttribute("inert"));
       window.removeEventListener("keydown", handler);
       hamburgerButton?.focus();
     };
@@ -263,21 +300,27 @@ export function Header() {
 
   return (
     <>
-      <motion.header
-        className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start bg-gradient-to-b from-brand/90 to-transparent text-white backdrop-blur-[2px]"
+      <m.header
+        ref={headerRef}
+        className="fixed top-0 w-full z-40 p-6 md:p-10 flex justify-between items-start bg-linear-to-b from-brand/90 to-transparent text-white backdrop-blur-[2px]"
         initial={fadeIn.initial}
         animate={fadeIn.animate}
-        transition={{ delay: 2.5, duration: 1 }}
+        transition={{
+          delay: prefersReducedMotion ? REDUCED_FADE.DELAY : 2.5,
+          duration: prefersReducedMotion ? REDUCED_FADE.DURATION : 1,
+        }}
       >
         <a
           href="#top"
           onClick={handleHomeClick}
-          aria-label={t.aria_home}
           className="font-serif text-xl md:text-2xl tracking-widest cursor-pointer text-left p-0"
         >
           {SITE_CONFIG.name}
-          <span className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400">
-            ナジラブール
+          <span
+            lang="ja"
+            className="text-xs md:text-sm tracking-[0.2em] block mt-1 text-gray-400"
+          >
+            {t.brand_kana}
           </span>
         </a>
 
@@ -285,7 +328,7 @@ export function Header() {
           <DesktopNav />
           <LanguageSwitch className="hidden md:flex pointer-events-auto" />
         </div>
-      </motion.header>
+      </m.header>
 
       <HamburgerButton
         isOpen={isMobileMenuOpen}

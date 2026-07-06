@@ -8,9 +8,13 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#241816" />
+    <!-- description は src/i18n/data.ts の meta_description (ja) と同一に保つこと (言語切替時に JS が上書きする) -->
     <meta name="description" content="銀座の夜、米と汁を嗜む。おにぎりと汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6228-5803まで。" />
     <title>Naji la boule | Ginza</title>
     <link rel="canonical" href="https://atimot.github.io/najilaboule/" />
+    <link rel="alternate" hreflang="ja" href="https://atimot.github.io/najilaboule/" />
+    <link rel="alternate" hreflang="en" href="https://atimot.github.io/najilaboule/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://atimot.github.io/najilaboule/" />
 
     <!-- OGP / SNS シェア -->
     <meta property="og:type" content="website" />
@@ -55,13 +59,22 @@
       }
     </script>
 
-    <link rel="preload" as="image" type="image/webp" imagesrcset="/images/hero/background-800.webp 800w, /images/hero/background-1600.webp 1600w, /images/hero/background-2400.webp 2400w" imagesizes="100vw" />
+    <link rel="preload" as="image" type="image/webp" fetchpriority="high" imagesrcset="/images/hero/background-800.webp 800w, /images/hero/background-1600.webp 1600w, /images/hero/background-2400.webp 2400w" imagesizes="100vw" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   </head>
   <body class="antialiased">
     <div id="root"></div>
+    <!-- 店名・電話は src/constants.ts (SITE_CONFIG)、住所は src/i18n/data.ts (address_text) と同期して保つこと -->
+    <noscript>
+      <div style="padding: 2rem; text-align: center; font-family: serif; line-height: 1.8;">
+        <p>Naji la boule (ナジラブール) — 銀座の和食店 / Japanese restaurant in Ginza</p>
+        <p>東京都中央区銀座6-12-12 銀座ステラビル2階<br />Ginza Stella Building 2F, 6-12-12 Ginza, Chuo-ku, Tokyo</p>
+        <p>ご予約 / Reservations: <a href="tel:03-6228-5803">03-6228-5803</a></p>
+        <p>このサイトの表示には JavaScript が必要です。 / This site requires JavaScript.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
