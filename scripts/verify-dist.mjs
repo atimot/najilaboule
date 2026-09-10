@@ -22,6 +22,9 @@ const checks = [
   ['#top セクション', /<section[^>]*id="top"/.test(html)],
   ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
   ['Hero 画像の preload (avif)', /<link rel="preload" as="image" type="image\/avif" imagesrcset="[^"]+" imagesizes="100vw" fetchpriority="high">/.test(html)],
+  ['#philosophy セクション', /<section[^>]*id="philosophy"/.test(html)],
+  ['Philosophy の 3 幕 (article ×3)', count(/<article\b/g) === 3],
+  ['Philosophy の写真 alt (デスクトップ用とモバイル用)', count(/alt="指先に乗せた一粒の米"/g) === 2 && count(/alt="水引で結ばれた米の贈り物"/g) >= 2],
 ];
 
 let failed = 0;

@@ -1,0 +1,265 @@
+---
+import { Picture } from 'astro:assets';
+import { images } from '@/assets/images';
+import { getCopy } from '@/i18n';
+
+const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
+const t = getCopy(lang);
+const acts = t.philosophy.acts;
+const photos = images.philosophy;
+const SIZES = '(min-width: 48rem) 44rem, 100vw';
+---
+
+<section id="philosophy" class="philosophy" aria-labelledby="philosophy-title">
+  <div class="deco" aria-hidden="true">
+    <span class="deco__dot deco__dot--1"></span>
+    <span class="deco__dot deco__dot--2"></span>
+  </div>
+
+  <div class="philosophy__inner">
+    <!-- デスクトップ: 左に留まる写真。幕が進むと次の写真がクロスフェードする -->
+    <figure class="stage">
+      {
+        photos.map((photo, i) => (
+          <div class={`stage__photo stage__photo--${i + 1}`}>
+            <Picture src={photo.src} formats={['avif', 'webp']} widths={[800, 1600]} sizes={SIZES} alt={photo.alt[lang]} />
+          </div>
+        ))
+      }
+    </figure>
+
+    <div class="acts">
+      {
+        acts.map((act, i) => (
+          <article class="act" style={`view-timeline-name: --act-${i + 1}`}>
+            <div class="act__photo">
+              <Picture src={photos[i].src} formats={['avif', 'webp']} widths={[800, 1600]} sizes={SIZES} alt={photos[i].alt[lang]} />
+            </div>
+            <div class="act__text">
+              <h2 id={i === 0 ? 'philosophy-title' : undefined} class="act__title">
+                {act.title}
+              </h2>
+              <p class="act__body">{act.body}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .philosophy {
+    position: relative;
+  }
+
+  .deco {
+    display: none;
+  }
+
+  /* ---- モバイル (既定): 3 幕を縦積み、各幕の背面に写真 ---- */
+  .stage {
+    display: none;
+  }
+
+  .act {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: var(--space-section-y) var(--space-section-x);
+    text-align: center;
+  }
+
+  .act__photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .act__photo :global(picture) {
+    display: contents;
+  }
+
+  .act__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.25);
+  }
+
+  .act__photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-brand) 85%, transparent),
+      color-mix(in srgb, var(--color-brand) 50%, transparent),
+      color-mix(in srgb, var(--color-brand) 85%, transparent)
+    );
+  }
+
+  .act__text {
+    position: relative;
+    z-index: 1;
+    max-width: 92vw;
+    margin-inline: auto;
+  }
+
+  .act__title {
+    margin-bottom: var(--space-stack);
+    font-size: var(--text-title-mobile);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-wide);
+    white-space: pre-line;
+  }
+
+  .act__body {
+    font-size: var(--text-body-mobile);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-soft);
+    white-space: pre-line;
+  }
+
+  /* ---- デスクトップ: 左 55% に sticky の写真、右 45% に 3 幕 ---- */
+  @media (min-width: 48rem) {
+    .philosophy {
+      padding: var(--space-section-y-md) var(--space-section-x-md);
+      timeline-scope: --act-1, --act-2, --act-3;
+    }
+
+    .deco {
+      display: block;
+      pointer-events: none;
+    }
+
+    .deco__dot {
+      position: absolute;
+      border-radius: var(--radius-full);
+      filter: blur(1px);
+    }
+
+    .deco__dot--1 {
+      top: 96px;
+      right: 8%;
+      width: 6px;
+      height: 6px;
+      background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    }
+
+    .deco__dot--2 {
+      right: 18%;
+      bottom: 128px;
+      width: 4px;
+      height: 4px;
+      background: color-mix(in srgb, var(--color-dot-yellow) 30%, transparent);
+    }
+
+    .philosophy__inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+    }
+
+    .stage {
+      position: sticky;
+      top: calc((100vh - 700px) / 2);
+      display: block;
+      width: 55%;
+      height: 700px;
+      margin: 0;
+    }
+
+    /* 現行の左上の赤い光点 */
+    .stage::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      z-index: 10;
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-dot-red);
+      filter: blur(1px);
+    }
+
+    .stage__photo {
+      position: absolute;
+      inset: 0;
+    }
+
+    .stage__photo :global(picture) {
+      display: contents;
+    }
+
+    .stage__photo :global(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.25);
+    }
+
+    /* 写真 2・3 は対応する幕が入ってくる区間で現れる。非対応ブラウザと reduced-motion では写真 1 のみ */
+    .stage__photo--2,
+    .stage__photo--3 {
+      opacity: 0;
+    }
+
+    @supports (animation-timeline: view()) {
+      .stage__photo--2 {
+        animation: photo-in linear both;
+        animation-timeline: --act-2;
+        animation-range: entry 0% cover 30%;
+      }
+
+      .stage__photo--3 {
+        animation: photo-in linear both;
+        animation-timeline: --act-3;
+        animation-range: entry 0% cover 30%;
+      }
+    }
+
+    .acts {
+      width: 45%;
+    }
+
+    .act {
+      justify-content: flex-start;
+      min-height: 70vh;
+      padding: 0;
+      text-align: left;
+    }
+
+    .act__photo {
+      display: none;
+    }
+
+    .act__text {
+      max-width: none;
+      margin: 0;
+    }
+
+    .act__title {
+      margin-bottom: var(--space-stack-lg);
+      font-size: var(--text-title);
+    }
+
+    .act__body {
+      font-size: var(--text-body);
+    }
+  }
+
+  @keyframes photo-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
