@@ -1,52 +1,57 @@
 # Naji la boule (LP)
 
-銀座の和食店「Naji la boule」の公式ランディングページ。React 19 + Vite + Tailwind v4 + TypeScript。
+銀座の和食店「Naji la boule」の公式ランディングページ。Astro 7 + 素の CSS + TypeScript。配信 JS ゼロ。
 
 ## コマンド
 
 ```bash
-npm run dev      # dev サーバー起動 (http://localhost:5173/najilaboule/ — base パスに注意)
-npm run build    # tsc -b && vite build。完了報告前に必ず通すこと
-npm run lint     # eslint .
+npm run dev          # dev サーバー起動 (http://localhost:4321/najilaboule/ — base パスに注意)
+npm run build        # astro build → scripts/verify-dist.mjs (dist/index.html の不変条件チェック)。完了報告前に必ず通すこと
+npm run lint         # astro check (型チェック)
 npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
-npm run preview  # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
+npm run preview      # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
 ```
 
-`.ts`/`.tsx` を編集したら `npm run lint` と `npm run build` を自分で実行して検証する(以前あった PostToolUse hook はコミット 4146a66 で撤去済み)。エラーはその場で直してから先に進む。
+`.astro` / `.ts` / `.css` を編集したら `npm run lint` と `npm run build` を自分で実行して検証する。エラーはその場で直してから先に進む。
 
 ## 構造
 
 ```
+astro.config.ts        site / base / fonts (Astro Fonts API、自前ホスト)
 src/
-├── App.tsx            # エントリ。コンテンツは Loader の下に常時マウント (LCP 対策)
-├── components/        # BrandDots / Content / Footer / Header / Loader / ReservationButton
-├── i18n/              # 文言は data.ts に ja/en 両方で集約。useLanguage() で取得
-├── images/            # 画像メタデータ (srcset/sizes と ja/en の alt をコロケーション)
-├── hooks/             # usePrefersReducedMotion (アニメーションは必ずこれを尊重)
-├── index.css          # Tailwind @theme (デザイントークンの実体)
-└── constants.ts
+├── pages/index.astro  日本語ページ。Base に各セクションを並べ、Hero の preload を渡す
+├── layouts/Base.astro <head> 一式 (meta / OGP / JSON-LD / フォント / preload)、skip link
+├── components/        Header / Hero / Philosophy / Experience / Boutique / Access / Footer / Button / BrandDots
+├── content/ja.ts      文言 (型 Copy)。英語版は en.ts を追加
+├── i18n/              Lang / Copy 型、getCopy(lang)、SUPPORTED_LANGS
+├── assets/images/     元画像 (JPEG)。<Picture> が AVIF/WebP をビルド時生成
+├── assets/images.ts   画像の import と alt (alt の文字列は assets/alts.ts)
+├── assets/alts.ts     画像 alt (ja/en)。字形サブセットの収集元
+├── config.ts          SITE (店名・電話・URL・地図) と JSON-LD
+└── styles/
+    ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
+    └── global.css     リセット、body 背景 3 層、focus ring、.container/.section/.label/.reveal、共通 keyframes、reduced-motion
+scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、外部フォントなし、h1 が 1 つ、preload 等)
 ```
 
 ## ルール
 
-- **文言のハードコード禁止**。表示文字列は `src/i18n/data.ts` に ja/en 両方を追加し、`useLanguage()` 経由で参照する。例外は3つ: (1) 画像の alt は `src/images/data.ts` に ja/en 併記でコロケーション、(2) 両言語共通の欧文装飾ラベル (RIZ / ADDRESS / TEL / GINZA 等) は JSX 直書きを許容、(3) `index.html` の静的文言 (meta description / noscript) は React を経由できないため直書きし、対応する `data.ts` / `constants.ts` の値と同期コメントで揃える
-- `dist/` と `package-lock.json` は直接編集しない(規約。以前の permissions deny による機械的ブロックは撤去済み)
-- アニメーションを追加・変更するときは `usePrefersReducedMotion` による reduced-motion 対応を維持する
-- Performance / Accessibility / SEO は改善済み(コミット 2ff8234)。スコアを下げる回帰を出さない
+- **配信 JS を増やさない**。動きは CSS (keyframes / scroll-driven animations) で書き、`@supports` と `prefers-reduced-motion` で段階的に落とす
+- **文言のハードコード禁止**。表示文字列は `src/content/ja.ts` に置き、`getCopy()` 経由で参照する。例外: 欧文の装飾ラベル (RIZ / SOUPE / MARIAGE / BOUTIQUE / GINZA / ADDRESS / TEL / HOURS / RESERVATION / ONLINE SHOP) と画像 alt (`src/assets/images.ts` に ja/en 併記)
+- **英語版の継ぎ目を壊さない**。`Copy` 型・`getCopy(lang)`・`Base` の `lang` prop・alt の ja/en 併記を維持する。英語版を足すときは `content/en.ts`、`pages/en/index.astro`、`astro.config.ts` の `i18n`、`SUPPORTED_LANGS` を追加する
+- ブレークポイントは 768px (`48rem`) の 1 本だけ
+- `dist/` と `package-lock.json` は直接編集しない
+- Performance / Accessibility / SEO のスコアを下げる回帰を出さない (`verify-dist.mjs` が最低限を守る)
+- `astro.config.ts` の `vite.build.cssMinify` は `esbuild` 固定。Lightning CSS は `animation-timeline` を `animation` ショートハンドに畳み込んで無効な宣言を出す (Philosophy のクロスフェードと `.reveal` が止まる)
+- Shippori Mincho は `astro.config.ts` の `collectGlyphs` が `src/content/ja.ts`・`src/config.ts`・`src/assets/alts.ts` から集めた文字だけにサブセットされる。日本語の文字列をそれ以外の場所に置くとフォールバック書体で描かれるので、文言は必ずそこに置く
 
 ## デザイン決め事 (重要)
 
-デザインの決め事は 2 つの文書に分かれている。役割が違うので混ぜない。
-
-- [`DESIGN.md`](./DESIGN.md) — **デザインシステムの正**。Google Labs の DESIGN.md オープン仕様 (YAML フロントマターのトークン + 固定 8 節の本文) に従う。色・タイポ・余白・角丸・コンポーネントのトークン値はフロントマターが normative で、本文は「なぜ・どこで使うか」と Do's and Don'ts。姉妹の Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`、Dawn ベースの素の CSS) もこのファイルの値を手で移して世界観を揃える
-- [`docs/design/lp-blueprint.md`](./docs/design/lp-blueprint.md) — **Astro 移植用の一時的な照合仕様**。React 実装 (コミット 76ac9d2) のセクション別 DOM と Tailwind クラス、motion のアニメーション表、振る舞い、移植チェックリスト。Astro 版がチェックリストを満たしたら退役させる。恒久的な決め事はここに足さず DESIGN.md へ
-
-運用ルール:
-
-- 色・フォント・余白を変えるときは **DESIGN.md のフロントマターと `src/index.css` の `@theme` を同じ値に揃える**。`npx -y @google/design.md@0.4.0 export --format css-tailwind DESIGN.md` の出力と `@theme` を見比べれば照合できる (フォント行は書式が違うので目視)
-- DESIGN.md を編集したら `npm run lint:design` を通す。エラー 0 を維持する。warning のうち `orphaned-tokens` (コンポーネントから参照されないトークン) と `button-filled` の `contrast-ratio` (半透明背景を単体で計算する誤検知) は許容
-- 新しいデザインパターンを導入する場合は DESIGN.md の該当節 (Components / Do's and Don'ts) に追記し、Shopify 側への波及も意識する
-- Astro への作り直しは 2026-09-10 に決定 (Tailwind v4 は継続)。移行本体の設計は別途 spec を書く
+- [`DESIGN.md`](./DESIGN.md) — **デザインシステムの正**。Google Labs の DESIGN.md オープン仕様に従う。トークン値はフロントマターが normative。姉妹の Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`、Dawn ベースの素の CSS) もこのファイルの値を手で移して世界観を揃える
+- 色・フォント・余白を変えるときは **DESIGN.md のフロントマターと `src/styles/tokens.css` を同じ値に揃える**
+- DESIGN.md を編集したら `npm run lint:design` を通す。warning のうち `orphaned-tokens` と `button-filled` の `contrast-ratio` (半透明背景の誤検知) は許容
+- 動きの決め事は DESIGN.md の Components / Motion Grammar。新しい動きを足すときはそこに追記する
+- 再構築の経緯と受け入れ基準は `docs/superpowers/specs/2026-09-10-astro-rebuild-design.md`。旧 React 版の記録は `docs/archive/lp-blueprint-react.md`
 
 ## CI とデプロイ
 

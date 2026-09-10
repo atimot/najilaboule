@@ -1,0 +1,71 @@
+---
+import { Font } from 'astro:assets';
+import '@/styles/global.css';
+import { SITE, buildJsonLd } from '@/config';
+import { getCopy, SUPPORTED_LANGS, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+  /** LCP 画像の preload (Hero が渡す) */
+  preload?: { srcSet: string; sizes: string; type: string };
+}
+
+const { lang, preload } = Astro.props;
+const t = getCopy(lang);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // '/najilaboule/'
+const canonical = new URL(base, Astro.site).href;
+const ogImage = new URL(`${base}images/ogp.jpg`, Astro.site).href;
+const ogLocale = lang === 'ja' ? 'ja_JP' : 'en_US';
+const jsonLd = buildJsonLd(canonical, ogImage);
+---
+
+<!doctype html>
+<html lang={lang} class="dark" style="color-scheme: dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    {
+      SUPPORTED_LANGS.length > 1 && (
+        <>
+          {SUPPORTED_LANGS.map((l) => (
+            <link rel="alternate" hreflang={l} href={l === SUPPORTED_LANGS[0] ? canonical : `${canonical}${l}/`} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={canonical} />
+        </>
+      )
+    }
+    <meta name="theme-color" content="#241816" />
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32x32.png`} />
+    <link rel="icon" type="image/png" sizes="16x16" href={`${base}favicon-16x16.png`} />
+    <link rel="apple-touch-icon" sizes="180x180" href={`${base}apple-touch-icon.png`} />
+    <link rel="manifest" href={`${base}site.webmanifest`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <Font cssVariable="--font-playfair" preload />
+    <Font cssVariable="--font-shippori" />
+    {
+      preload && (
+        <link rel="preload" as="image" type={preload.type} imagesrcset={preload.srcSet} imagesizes={preload.sizes} fetchpriority="high" />
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.common.skipToContent}</a>
+    <slot />
+  </body>
+</html>
