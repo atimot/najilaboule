@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+.astro/
 dist-ssr
 *.local
 test-results
@@ -27,3 +28,6 @@ test-results
 *.njsproj
 *.sln
 *.sw?
+
+# superpowers SDD ワークスペース (ローカル専用)
+.superpowers/
