@@ -1,0 +1,168 @@
+---
+import BrandDots from '@/components/BrandDots.astro';
+import Button from '@/components/Button.astro';
+import { SITE } from '@/config';
+import { getCopy } from '@/i18n';
+
+const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
+const t = getCopy(lang);
+const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery)}&output=embed&hl=${lang}`;
+---
+
+<section id="access" class="access section" aria-labelledby="access-title">
+  <div class="access__inner container">
+    <div class="access__head reveal">
+      <BrandDots size="sm" class="access__dots" />
+      <h2 id="access-title" class="access__title">{SITE.name}</h2>
+      <p class="label label--muted access__place">GINZA</p>
+    </div>
+
+    <div class="info reveal">
+      <div class="info__col">
+        <div>
+          <p class="field__label">ADDRESS</p>
+          <p class="field__value">{t.access.address}</p>
+        </div>
+        <div>
+          <p class="field__label">TEL</p>
+          <p class="field__value">
+            <a href={SITE.phoneHref} class="tel">{SITE.phone}</a>
+          </p>
+        </div>
+        <div>
+          <p class="field__label">HOURS</p>
+          <p class="field__value field__value--nums">
+            {t.access.hoursMain}
+            <br />
+            <span class="field__note">{t.access.hoursClosed}</span>
+          </p>
+        </div>
+      </div>
+      <div class="info__col">
+        <div>
+          <p class="field__label">RESERVATION</p>
+          <p class="field__value reservation__heading">{t.access.reservationHeading}</p>
+          <p class="reservation__note">{t.access.reservationNote}</p>
+        </div>
+        <Button href={SITE.phoneHref} ariaLabel={`${t.common.reserveByPhone} (${SITE.phone})`} variant="filled" size="lg">
+          RESERVATION
+        </Button>
+      </div>
+    </div>
+
+    <div class="map reveal">
+      <iframe
+        title={t.access.mapTitle}
+        src={mapSrc}
+        width="100%"
+        height="100%"
+        style="border: 0"
+        allowfullscreen
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .access {
+    position: relative;
+    background: var(--color-brand-dark);
+  }
+
+  .access__inner {
+    text-align: center;
+  }
+
+  .access__head {
+    margin-bottom: var(--space-stack-lg);
+  }
+
+  .access :global(.access__dots) {
+    margin: 0 auto var(--space-stack);
+    opacity: 0.5;
+  }
+
+  .access__title {
+    margin-bottom: 8px;
+    font-size: var(--text-headline-mobile);
+    line-height: var(--leading-headline);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .access__place {
+    margin-bottom: 0;
+  }
+
+  .info {
+    display: grid;
+    gap: var(--space-stack-lg);
+    margin-bottom: var(--space-stack-xl);
+    text-align: left;
+  }
+
+  .info__col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .field__label {
+    margin-bottom: 4px;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .field__value {
+    white-space: pre-line;
+  }
+
+  .field__value--nums,
+  .tel {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tel {
+    transition: color var(--duration-hover);
+  }
+
+  .tel:hover {
+    color: var(--color-accent);
+  }
+
+  .field__note {
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    color: var(--color-text-muted);
+  }
+
+  .reservation__heading {
+    margin-bottom: 8px;
+  }
+
+  .reservation__note {
+    font-size: var(--text-menu);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    white-space: pre-line;
+  }
+
+  .map {
+    width: 100%;
+    height: 256px;
+  }
+
+  @media (min-width: 48rem) {
+    .access__title {
+      font-size: var(--text-headline);
+    }
+
+    .info {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

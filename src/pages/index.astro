@@ -5,6 +5,9 @@ import Header from '@/components/Header.astro';
 import Hero from '@/components/Hero.astro';
 import Philosophy from '@/components/Philosophy.astro';
 import Experience from '@/components/Experience.astro';
+import Boutique from '@/components/Boutique.astro';
+import Access from '@/components/Access.astro';
+import Footer from '@/components/Footer.astro';
 import { images } from '@/assets/images';
 
 // Hero の <Picture> と同じ設定で AVIF の srcset を得て、<head> で preload する
@@ -18,5 +21,8 @@ const heroPreload = { srcSet: heroAvif.srcSet.attribute, sizes: '100vw', type: '
     <Hero />
     <Philosophy />
     <Experience />
+    <Boutique />
+    <Access />
   </main>
+  <Footer />
 </Base>

@@ -28,6 +28,12 @@ const checks = [
   ['#experience セクション', /<section[^>]*id="experience"/.test(html)],
   ['RIZ / SOUPE / MARIAGE ラベル', ['RIZ', 'SOUPE', 'MARIAGE'].every((l) => html.includes(`>${l}</span>`))],
   ['Experience の h2 ×3', ['結ぶ、米。', 'ほどける、汁。', '揺蕩う、盃。'].every((s) => new RegExp(`<h2[^>]*>\\s*${s}\\s*</h2>`).test(html))],
+  ['#shop セクション', /<section[^>]*id="shop"/.test(html)],
+  ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/iyahiko\.square\.site\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
+  ['#access セクション', /<section[^>]*id="access"/.test(html)],
+  ['地図 iframe に title と lazy', /<iframe[^>]*title="店舗の地図[^"]*"[^>]*loading="lazy"/.test(html)],
+  ['<footer> に著作権表記', /<footer[^>]*>[\s\S]*All Rights Reserved\.[\s\S]*<\/footer>/.test(html)],
+  ['h2 は 8 つ', count(/<h2\b/g) === 8],
 ];
 
 let failed = 0;
