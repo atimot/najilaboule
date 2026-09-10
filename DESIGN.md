@@ -30,56 +30,56 @@ colors:
 typography:
   # fontSize は 768px 以上の値。モバイル値は本文 Typography の表を参照。
   display:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "3.5rem"
     fontWeight: 400
     lineHeight: 1.11
     letterSpacing: "0.2em"
   headline:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "2.5rem"
     fontWeight: 400
     lineHeight: 1.2
     letterSpacing: "0.1em"
   title:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "1.875rem"
     fontWeight: 400
     lineHeight: 1.625
     letterSpacing: "0.1em"
   brand:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "1.5rem"
     fontWeight: 400
     lineHeight: 1.33
     letterSpacing: "0.1em"
   body:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 2
     letterSpacing: "0.1em"
     fontFeature: '"palt"'
   menu:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.43
     letterSpacing: "0.1em"
   label:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "0.75rem"
     fontWeight: 400
     lineHeight: 1.33
     letterSpacing: "0.1em"
   label-wide:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "0.75rem"
     fontWeight: 400
     lineHeight: 1.33
     letterSpacing: "0.3em"
   caption:
-    fontFamily: Playfair Display, Shippori Mincho, serif
+    fontFamily: Zen Old Mincho, serif
     fontSize: "10px"
     fontWeight: 400
     lineHeight: 1.5
@@ -168,7 +168,7 @@ components:
 **Key Characteristics:**
 - 面の基本は焦茶 (`brand` #241816) 一色。明度差ではなくノイズと放射グラデーションで奥行きを出す
 - 差し色は金 (`accent` #C8A67B) のみ。ホバー・フォーカス・小ラベルに限って使い、面を塗らない
-- 書体は Playfair Display と Shippori Mincho の明朝ペアだけ。サンセリフは存在しない
+- 書体は Zen Old Mincho の 1 書体だけ (和文も欧文も)。サンセリフは存在しない
 - ウェイトは 400 が既定。700 は言語スイッチのアクティブ表示にしか使わない
 - 写真は必ず減光し (25〜90%)、下端を `brand` へ溶かすグラデーションを重ねる
 - 角丸も影もない。ブランドの 9 色ドットだけが円形で、淡いグローをまとう
@@ -202,10 +202,10 @@ components:
 
 ## Typography
 
-**Display / Body Font:** Playfair Display (欧文) → Shippori Mincho (和文) → serif
+**Display / Body Font:** Zen Old Mincho (和文・欧文とも) → serif
 **Label Font:** 同上。サンセリフの補助書体は導入しない。
 
-**Character:** 欧文は Playfair の高いコントラストで銀座らしい格を出し、和文は Shippori Mincho のやわらかい明朝で受ける。両者は同じ `font-family` スタックで自動的に振り分けられるため、和欧混植でも書体指定を切り替えない。`font-feature-settings: "palt"` を body に当て、和文のプロポーショナル詰めを常時有効にする。Google Fonts からは 400 と 700 だけを読み込む (フェイクボールド防止)。
+**Character:** 和文も欧文も Zen Old Mincho の 1 書体で組み、古典的な明朝の静かな佇まいで銀座らしい格を出す。欧文書体を別に持たないので、和欧混植でも書体指定を切り替えない。`font-feature-settings: "palt"` を body に当て、和文のプロポーショナル詰めを常時有効にする。Google Fonts からは 400 と 700 だけを読み込む (フェイクボールド防止)。
 
 ### Hierarchy
 右列はモバイル (768px 未満) の値。フロントマターの `typography` はデスクトップ値。
@@ -319,7 +319,7 @@ components:
 ## Do's and Don'ts
 
 ### Do:
-- **Do** すべての文字を Playfair Display / Shippori Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ
+- **Do** すべての文字を Zen Old Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ
 - **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`RIZ` `SOUPE` `MARIAGE` `BOUTIQUE`)
 - **Do** 本文は行間 2、字間 0.1em、色は `text-soft` か `text-muted`
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす

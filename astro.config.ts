@@ -3,7 +3,7 @@ import { ja } from './src/content/ja';
 import { SITE } from './src/config';
 import { imageAlts } from './src/assets/alts';
 
-/** ページで使う全文字 (Shippori Mincho を使用文字だけにサブセットするため) */
+/** ページで使う全文字 (Zen Old Mincho を使用文字だけにサブセットするため) */
 function collectGlyphs(...sources: unknown[]): string[] {
   const chars = new Set<string>();
   const walk = (v: unknown) => {
@@ -12,8 +12,10 @@ function collectGlyphs(...sources: unknown[]): string[] {
     else if (v && typeof v === 'object') Object.values(v).forEach(walk);
   };
   sources.forEach(walk);
-  // 数字・記号は Playfair 側で出るが、フォールバック順の保険として含める
-  for (const c of '0123456789©–—’“”…↗') chars.add(c);
+  // 欧文ラベル (RIZ / RESERVATION / ONLINE SHOP / All Rights Reserved など) はコンポーネントに直書きされ
+  // ここからは集められないため、印刷可能な ASCII 全部と記号を保険として含める
+  for (let code = 0x20; code <= 0x7e; code++) chars.add(String.fromCharCode(code));
+  for (const c of '©–—’“”…↗') chars.add(c);
   return [...chars];
 }
 
@@ -24,19 +26,8 @@ export default defineConfig({
   compressHTML: true,
   fonts: [
     {
-      name: 'Playfair Display',
-      cssVariable: '--font-playfair',
-      provider: fontProviders.google(),
-      weights: [400, 700],
-      styles: ['normal'],
-      subsets: ['latin'],
-      // 生成される変数に generic serif が混ざると和文が Shippori に届かなくなるため、フォールバックを付けない
-      fallbacks: [],
-      optimizedFallbacks: false,
-    },
-    {
-      name: 'Shippori Mincho',
-      cssVariable: '--font-shippori',
+      name: 'Zen Old Mincho',
+      cssVariable: '--font-zen-old-mincho',
       provider: fontProviders.google(),
       weights: [400, 700],
       styles: ['normal'],
