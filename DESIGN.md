@@ -154,10 +154,9 @@ components:
   このファイルは Google Labs の DESIGN.md オープン仕様 (https://github.com/google-labs-code/design.md) に従う。
   - フロントマターのトークンが正 (normative)。本文はその使いどころと理由。
   - 検証: `npm run lint:design` (エラー 0 を維持する。orphaned-tokens 等の warning は許容)
-  - トークンを変えたら LP の `src/index.css` の @theme も同じ値に揃える (`npx -y @google/design.md@0.4.0 export --format css-tailwind DESIGN.md` で照合できる)
-    (@theme 側にだけある `--font-serif` は、ここの全 typography 役割が共有する fontFamily に対応する。export のフォント行は書式が違うので目視で合わせる)
+  - トークンを変えたら LP の `src/styles/tokens.css` も同じ値に揃える (`npx -y @google/design.md@0.4.0 export --format dtcg DESIGN.md` で値を照合できる)
   - 許容している lint warning: orphaned-tokens (コンポーネント未参照のトークン)、button-filled の contrast-ratio (半透明背景を単体で計算する誤検知)
-  - React 実装の個別レイアウト・モーション・振る舞いは docs/design/lp-blueprint.md (Astro 移植用の一時文書) に分離している
+  - React 実装の個別レイアウト・モーション・振る舞いは docs/archive/lp-blueprint-react.md (旧 React 版の記録) に分離している
 -->
 
 # Design System: Naji la boule
@@ -292,14 +291,9 @@ components:
 - **Focus:** `accent` 2px のアウトライン、offset 2px (全リンク・ボタン共通)
 
 ### Header & Navigation
-- **Desktop:** 左に店名 (`brand`) とカナ表記、右に `Access` リンク (`nav-link`、ホバーで `accent` へ 300ms) と sm の Outline ボタン、続けて言語スイッチ。ヘッダー全体は Loader 退場に合わせて 1 秒でフェードイン (遅延 2.5 秒)
-- **Mobile:** ヘッダーからナビと言語スイッチを消し、右上 40×40px のハンバーガー (白 28px × 1px の 2 本線、開くと 45° に交差、300ms) を置く
-- **Mobile Menu:** 全画面の `mobile-menu-overlay` (`brand` 80% + 28px ぼかし + 彩度 150%)。項目は 1.125rem、縦 32px 間隔で中央揃え、Outline ボタン (md) と言語スイッチ (0.875rem) を下に添える。0.5 秒でフェードイン、項目は 0.1 秒ずつずらして下から 20px 浮き上がる。背景スクロールはロックし、Tab フォーカスをメニュー内に閉じ込め、Esc と余白タップで閉じる
-
-### Language Switch
-- **Style:** `JP | EN` の 2 択、0.75rem、字間 0.1em、区切りの `|` は 50% 不透明
-- **Active:** `accent` 色 + 700 + 1px の `accent` 下線。これが 700 を使う唯一の場所
-- **Hover:** 非アクティブ側は不透明度 70% へ 300ms
+- **Desktop:** 左に店名 (`brand`) とカナ表記、右に `Access` リンク (`nav-link`、ホバーで `accent` へ 300ms) と sm の Outline ボタン。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
+- **Mobile:** `Access` リンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (Access セクションへはスクロールで届く)
+- **Language Switch:** 英語版を追加するまで非表示。追加時は `JP | EN` の静的リンク (0.75rem、字間 0.1em、アクティブは `accent` + 700 + 1px 下線) をナビの右に置く
 
 ### Section Label + Heading
 - **Pattern:** `label-wide` の仏語/英語ラベル (`RIZ` `BOUTIQUE` `GINZA`) を `accent` (Access の `GINZA` は `text-muted`) で置き、8px 下に `headline` の h2、32px 下に本文
@@ -307,13 +301,9 @@ components:
 
 ### Photo Treatment
 - **Hero:** `object-fit: cover`、不透明度 50%、グレースケール、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 60% → 透明 → 100% のグラデーション
-- **Philosophy:** 25% に減光、3 枚を 7 秒ごとに 1 秒のクロスフェードで切り替え。ホバー・フォーカス中と画面外では止める
+- **Philosophy:** 25% に減光。デスクトップでは左の写真が留まり (sticky、高さ 700px)、右の 3 幕を読み進めると次の写真へクロスフェードする (CSS scroll-driven)。モバイルは 3 幕を縦積みし、各幕の背面に敷く。非対応ブラウザと reduced-motion では写真 1 枚に固定
 - **Experience:** 90% に減光、16:9、ホバーで 2 秒かけて 1.05 倍。下から `brand` へ溶かす
 - **BOUTIQUE:** 30% に減光して全面背景に、上下を `brand` で締める
-
-### Slide Indicator
-- **Style:** 8px の白い円 (`slide-indicator`)、8px のタップ余白を持つボタン。非アクティブは 40%、ホバー 70%、アクティブは 100% で 1.25 倍。300ms で遷移
-- **A11y:** `aria-current` とスライドタイトル + `(n/3)` を含むラベル
 
 ### Brand Dots
 - **Style:** 3×3 グリッド、色順固定、各ドットにグロー。Loader では 9 個が 0.1 秒ずつずれて 0.5 秒で拡大しながら現れる
@@ -322,16 +312,13 @@ components:
 ### Footer
 - **Style:** 上に `line-faint` の 1px 罫線、縦 32px、中央揃え、`footer-text` (`text-muted`、10px、字間 0.1em、`tabular-nums`)。文言は `© {年} Naji la boule. All Rights Reserved.`
 
-### Loader
-- **Style:** 全画面の `brand` 面 (z 70)。中央にブランドドット (lg) と、1 秒遅れて 1 秒で浮き上がる店名 (1.5rem、字間 0.3em)。2.5 秒表示して 1 秒の ease-in-out で退場。退場中に Hero の要素が順にフェードインし、退場完了と同時に揃う
-- **Reduced motion:** 表示 0.5 秒、退場 0.5 秒
-
 ### Motion Grammar
-- **標準のフェードイン:** 不透明度 0 → 1、必要なら y +30px → 0、1 秒、ease-out。セクションが画面に入ったら一度だけ再生し、文章側は画像側より 0.2 秒遅らせる
-- **Hero の順序:** ドット (遅延 0.8s) → 見出し (1.0s、y +10px) → タグライン (1.5s)、各 2 秒。Loader 退場と重ねて完了させる
+- **開演 (ページ表示時):** 写真が 0.15 → 0.5 に 1.2s で明るくなり、9 つのドットが 0.2s から 0.08s 刻みで灯り、見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。合計約 2.4s、ブロッキングしない
+- **スクロール時の浮き上がり:** `animation-timeline: view()` で、要素が視界に入る区間 (entry 0% → 40%) に不透明度 0 → 1、y +30px → 0。`@supports` で段階適用し、非対応では常時表示
 - **ホバー:** 色は 300ms、ボタンの反転は 500ms、写真の拡大は 2 秒。いずれも ease-out
 - **イージング:** ease-out / ease-in-out のみ。スプリング、バウンス、オーバーシュートは使わない
-- **Reduced motion:** CSS で全アニメーションと遷移を 0.01ms に短縮し、`scroll-behavior: auto` を強制。JS 駆動のフェードは遅延 0.3 秒 / 0.5 秒に置き換え、自動スライド送りは停止する
+- **Reduced motion:** 全 animation / transition を無効化し、`scroll-behavior: auto` を強制。即時表示にする
+- **JS を使わない:** 動きは CSS だけで書く。JS でしか作れない動きは採用しない
 
 ## Do's and Don'ts
 
@@ -347,6 +334,7 @@ components:
 - **Do** フォーカスリングは `accent` 2px / offset 2px を全リンク・ボタンに
 - **Do** 暗背景の小さい文字は `text-muted` (≈ #99a1af) を下限にする
 - **Do** 見出しは h1 を 1 ページに 1 つ (Hero)、各セクションの先頭を h2 にする
+- **Do** 動きは CSS だけで書き、`@supports` と reduced-motion で段階的に落とす
 
 ### Don't:
 - **Don't** サンセリフを使わない。ラベルにも数字にも
@@ -362,3 +350,4 @@ components:
 - **Don't** アイコンライブラリを入れない。矢印は `↗` の文字で
 - **Don't** 768px 以外にブレークポイントを増やさない
 - **Don't** 文言をコンポーネントに直書きしない。ja / en の両方を i18n データに置く (欧文の装飾ラベルと画像 alt は例外)
+- **Don't** 配信 JS を増やさない。アニメーションライブラリも入れない
