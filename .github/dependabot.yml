@@ -15,3 +15,8 @@ updates:
     groups:
       all-dependencies:
         patterns: ['*']
+    ignore:
+      # TypeScript 7 は @astrojs/check の peer 範囲 (^5 || ^6) 外で npm ci が落ちる。
+      # @astrojs/check が TS 7 に対応したら外す
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
