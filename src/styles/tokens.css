@@ -25,8 +25,8 @@
   /* 黒ドットの輪郭 (DESIGN.md Brand Dots: #4a5565 相当) */
   --color-dot-border: oklch(44.6% 0.03 256.802);
 
-  /* typography: --font-playfair / --font-shippori は Astro Fonts API が定義する */
-  --font-serif: var(--font-playfair), var(--font-shippori), serif;
+  /* typography: --font-zen-old-mincho は Astro Fonts API が定義する (和文も欧文も 1 書体) */
+  --font-serif: var(--font-zen-old-mincho), serif;
   --text-display: 3.5rem;
   --text-display-mobile: 2.25rem;
   --leading-display: 1.11;

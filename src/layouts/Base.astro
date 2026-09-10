@@ -56,8 +56,7 @@ const jsonLd = buildJsonLd(canonical, ogImage);
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-    <Font cssVariable="--font-playfair" preload />
-    <Font cssVariable="--font-shippori" />
+    <Font cssVariable="--font-zen-old-mincho" />
     {
       preload && (
         <link rel="preload" as="image" type={preload.type} imagesrcset={preload.srcSet} imagesizes={preload.sizes} fetchpriority="high" />
