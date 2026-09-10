@@ -2,7 +2,7 @@
 
 日付: 2026-09-10
 状態: ユーザーレビュー待ち
-前提の記録: [Projects/najilaboule-lp](obsidian://open?vault=obsidian&file=Projects%2Fnajilaboule-lp) (Obsidian)、`docs/design/lp-blueprint.md` (現行 React 版の照合仕様)、`DESIGN.md` (デザインシステム)
+関連文書: `DESIGN.md` (デザインシステム)、`docs/design/lp-blueprint.md` (現行 React 版の照合仕様)。決定の経緯は Obsidian の Projects/najilaboule-lp に記録
 
 ## 1. 目的
 
