@@ -20,4 +20,4 @@ npm run preview  # ビルド成果物のローカル配信 (http://localhost:417
 
 main ブランチへのマージで GitHub Actions (`.github/workflows/deploy.yml`) が GitHub Pages へ自動デプロイする。PR には CI (lint / build) が走る。
 
-開発の詳細な決め事は [CLAUDE.md](./CLAUDE.md)、デザイントークンの方向性メモは [DESIGN.md](./DESIGN.md) を参照。
+開発の詳細な決め事は [CLAUDE.md](./CLAUDE.md)、デザインシステム (Google Labs の DESIGN.md 仕様準拠) は [DESIGN.md](./DESIGN.md)、Astro 移植用の照合仕様は [docs/design/lp-blueprint.md](./docs/design/lp-blueprint.md) を参照。

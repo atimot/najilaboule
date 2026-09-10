@@ -8,6 +8,7 @@
 npm run dev      # dev サーバー起動 (http://localhost:5173/najilaboule/ — base パスに注意)
 npm run build    # tsc -b && vite build。完了報告前に必ず通すこと
 npm run lint     # eslint .
+npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
 npm run preview  # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
 ```
 
@@ -35,10 +36,17 @@ src/
 
 ## デザイン決め事 (重要)
 
-このプロジェクトは姉妹プロジェクトの Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`) と世界観を揃えることを目指している。デザイントークンの **正 (source of truth) は `src/index.css` の `@theme` ブロック**。[`DESIGN.md`](./DESIGN.md) はその値を Shopify 側に翻訳するための **方向性の共有メモ** であり、コードとの完全一致を保証する契約ではない(両者がズレていたら `src/index.css` が正)。
+デザインの決め事は 2 つの文書に分かれている。役割が違うので混ぜない。
 
-- 色・フォント・余白を変えるときは `src/index.css` を正として更新する。`DESIGN.md` は気付いた範囲で追従させればよく、厳密同期の義務はない(ズレても害がないよう directional な位置づけにしている)
-- 新しいデザインパターンを導入する場合は、Shopify 側への波及も意識する
+- [`DESIGN.md`](./DESIGN.md) — **デザインシステムの正**。Google Labs の DESIGN.md オープン仕様 (YAML フロントマターのトークン + 固定 8 節の本文) に従う。色・タイポ・余白・角丸・コンポーネントのトークン値はフロントマターが normative で、本文は「なぜ・どこで使うか」と Do's and Don'ts。姉妹の Shopify テーマ (`/Users/tomitad/work/najilaboule-shop`、Dawn ベースの素の CSS) もこのファイルの値を手で移して世界観を揃える
+- [`docs/design/lp-blueprint.md`](./docs/design/lp-blueprint.md) — **Astro 移植用の一時的な照合仕様**。React 実装 (コミット 76ac9d2) のセクション別 DOM と Tailwind クラス、motion のアニメーション表、振る舞い、移植チェックリスト。Astro 版がチェックリストを満たしたら退役させる。恒久的な決め事はここに足さず DESIGN.md へ
+
+運用ルール:
+
+- 色・フォント・余白を変えるときは **DESIGN.md のフロントマターと `src/index.css` の `@theme` を同じ値に揃える**。`npx -y @google/design.md@0.4.0 export --format css-tailwind DESIGN.md` の出力と `@theme` を見比べれば照合できる (フォント行は書式が違うので目視)
+- DESIGN.md を編集したら `npm run lint:design` を通す。エラー 0 を維持する。warning のうち `orphaned-tokens` (コンポーネントから参照されないトークン) と `button-filled` の `contrast-ratio` (半透明背景を単体で計算する誤検知) は許容
+- 新しいデザインパターンを導入する場合は DESIGN.md の該当節 (Components / Do's and Don'ts) に追記し、Shopify 側への波及も意識する
+- Astro への作り直しは 2026-09-10 に決定 (Tailwind v4 は継続)。移行本体の設計は別途 spec を書く
 
 ## CI とデプロイ
 
