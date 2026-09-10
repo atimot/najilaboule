@@ -13,7 +13,7 @@ const t = getCopy(Astro.currentLocale);
   </a>
   <nav class="nav" aria-label={t.common.navLabel}>
     <a href="#access" class="nav__link">{t.header.navAccess}</a>
-    <Button href={SITE.phoneHref} ariaLabel={`${t.common.reserveByPhone} (${SITE.phone})`} variant="outline" size="sm">
+    <Button href={SITE.phoneHref} ariaLabel={`RESERVATION: ${t.common.reserveByPhone} (${SITE.phone})`} variant="outline" size="sm">
       RESERVATION
     </Button>
   </nav>
@@ -34,7 +34,7 @@ const t = getCopy(Astro.currentLocale);
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
     /* 開演の最後にヘッダーが現れる (spec §7.1) */
-    animation: fade-in 1s var(--ease-out) 1.8s both;
+    animation: fade-in 1s var(--ease-out) 1.4s both;
   }
 
   .brand {

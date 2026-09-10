@@ -99,8 +99,8 @@ const DOTS = ['white', 'black', 'red', 'blue', 'yellow', 'green', 'orange', 'pin
     box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-purple) 30%, transparent);
   }
 
-  /* 開演: 0.3s から 0.1s 刻みで 9 つが灯る (spec §7.1) */
+  /* 開演: 0.2s から 0.08s 刻みで 9 つが灯る (spec §7.1) */
   .dots--animated .dot {
-    animation: dot-in 0.5s var(--ease-out) calc(0.3s + var(--i) * 0.1s) both;
+    animation: dot-in 0.5s var(--ease-out) calc(0.2s + var(--i) * 0.08s) both;
   }
 </style>

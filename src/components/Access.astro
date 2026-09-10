@@ -44,7 +44,7 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
           <p class="field__value reservation__heading">{t.access.reservationHeading}</p>
           <p class="reservation__note">{t.access.reservationNote}</p>
         </div>
-        <Button href={SITE.phoneHref} ariaLabel={`${t.common.reserveByPhone} (${SITE.phone})`} variant="filled" size="lg">
+        <Button href={SITE.phoneHref} ariaLabel={`RESERVATION: ${t.common.reserveByPhone} (${SITE.phone})`} variant="filled" size="lg">
           RESERVATION
         </Button>
       </div>

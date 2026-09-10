@@ -18,7 +18,7 @@ const t = getCopy(Astro.currentLocale);
     <span class="label">BOUTIQUE</span>
     <h2 id="boutique-title" class="boutique__title">{t.boutique.title}</h2>
     <p class="boutique__body">{t.boutique.body}</p>
-    <Button href={SITE.riceShopUrl} ariaLabel={t.boutique.ctaAriaLabel} variant="outline" size="md" external class="boutique__cta">
+    <Button href={SITE.riceShopUrl} ariaLabel={`ONLINE SHOP: ${t.boutique.ctaAriaLabel}`} variant="outline" size="md" external class="boutique__cta">
       ONLINE SHOP <span aria-hidden="true">↗</span>
     </Button>
   </div>

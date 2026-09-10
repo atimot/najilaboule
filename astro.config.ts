@@ -49,4 +49,10 @@ export default defineConfig({
       },
     },
   ],
+  vite: {
+    build: {
+      // Lightning CSS が animation-timeline を animation ショートハンドに畳み込み無効な宣言を出すため、esbuild で圧縮する
+      cssMinify: 'esbuild',
+    },
+  },
 });

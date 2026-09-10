@@ -47,7 +47,7 @@ const t = getCopy(Astro.currentLocale);
     display: contents;
   }
 
-  /* 開演: 0.15 → 0.5 に 1.8s で明るくなる (0 から始めないのは LCP を遅らせないため)。
+  /* 開演: 0.15 → 0.5 に 1.2s で明るくなる (0 から始めないのは LCP を遅らせないため)。
      slow-zoom は 20s で 1.1 → 1.2 倍を往復 (単一スケール、spec §14 #6) */
   .hero :global(.hero__img) {
     width: 100%;
@@ -56,7 +56,7 @@ const t = getCopy(Astro.currentLocale);
     filter: grayscale(100%);
     opacity: 0.5;
     animation:
-      hero-photo-in 1.8s var(--ease-out) both,
+      hero-photo-in 1.2s var(--ease-out) both,
       slow-zoom 20s ease infinite alternate;
   }
 
@@ -93,7 +93,7 @@ const t = getCopy(Astro.currentLocale);
     line-height: var(--leading-display);
     letter-spacing: var(--tracking-display);
     white-space: pre-line;
-    animation: rise-in 1.5s var(--ease-out) 0.8s both;
+    animation: rise-in 1s var(--ease-out) 0.5s both;
   }
 
   .hero__tagline {
@@ -101,7 +101,7 @@ const t = getCopy(Astro.currentLocale);
     line-height: var(--leading-body);
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-muted);
-    animation: fade-in 1.5s var(--ease-out) 1.3s both;
+    animation: fade-in 1s var(--ease-out) 0.9s both;
   }
 
   @media (min-width: 48rem) {
