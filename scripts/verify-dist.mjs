@@ -18,6 +18,10 @@ const checks = [
   ['<header> がある', /<header\b/.test(html)],
   ['ヘッダーに電話予約リンク', /<header[\s\S]*?href="tel:03-6228-5803"[\s\S]*?<\/header>/.test(html)],
   ['ナビに aria-label', /<nav[^>]*aria-label="メインナビゲーション"/.test(html)],
+  ['h1 はちょうど 1 つ', count(/<h1\b/g) === 1],
+  ['#top セクション', /<section[^>]*id="top"/.test(html)],
+  ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
+  ['Hero 画像の preload (avif)', /<link rel="preload" as="image" type="image\/avif" imagesrcset="[^"]+" imagesizes="100vw" fetchpriority="high">/.test(html)],
 ];
 
 let failed = 0;

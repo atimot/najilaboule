@@ -1,9 +1,18 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Header from '@/components/Header.astro';
+import Hero from '@/components/Hero.astro';
+import { images } from '@/assets/images';
+
+// Hero の <Picture> と同じ設定で AVIF の srcset を得て、<head> で preload する
+const heroAvif = await getImage({ src: images.hero.src, format: 'avif', widths: [800, 1600, 2400] });
+const heroPreload = { srcSet: heroAvif.srcSet.attribute, sizes: '100vw', type: 'image/avif' };
 ---
 
-<Base lang="ja">
+<Base lang="ja" preload={heroPreload}>
   <Header />
-  <main id="main"></main>
+  <main id="main">
+    <Hero />
+  </main>
 </Base>
