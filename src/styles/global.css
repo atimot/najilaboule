@@ -47,6 +47,11 @@ svg {
   max-width: 100%;
 }
 
+/* Astro の <Picture> が描く <picture> はレイアウトに関与させない */
+picture {
+  display: contents;
+}
+
 input,
 button,
 textarea,

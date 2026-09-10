@@ -42,6 +42,7 @@ scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、�
 - `dist/` と `package-lock.json` は直接編集しない
 - Performance / Accessibility / SEO のスコアを下げる回帰を出さない (`verify-dist.mjs` が最低限を守る)
 - `astro.config.ts` の `vite.build.cssMinify` は `esbuild` 固定。Lightning CSS は `animation-timeline` を `animation` ショートハンドに畳み込んで無効な宣言を出す (Philosophy のクロスフェードと `.reveal` が止まる)
+- Shippori Mincho は `astro.config.ts` の `collectGlyphs` が `src/content/ja.ts`・`src/config.ts`・`src/assets/images.ts` から集めた文字だけにサブセットされる。日本語の文字列をそれ以外の場所に置くとフォールバック書体で描かれるので、文言は必ずそこに置く
 
 ## デザイン決め事 (重要)
 

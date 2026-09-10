@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig, fontProviders } from 'astro/config';
 import { ja } from './src/content/ja';
 import { SITE } from './src/config';
@@ -12,7 +13,7 @@ function collectGlyphs(...sources: unknown[]): string[] {
   };
   sources.forEach(walk);
   // 数字・記号は Playfair 側で出るが、フォールバック順の保険として含める
-  for (const c of '0123456789©–—’“”…') chars.add(c);
+  for (const c of '0123456789©–—’“”…↗') chars.add(c);
   return [...chars];
 }
 
@@ -44,7 +45,7 @@ export default defineConfig({
       // 使用文字だけにサブセット。ビルドで問題が出たら options を外して unicode-range スライスに任せる (spec §16)
       options: {
         experimental: {
-          glyphs: collectGlyphs(ja, SITE),
+          glyphs: collectGlyphs(ja, SITE, readFileSync(new URL('./src/assets/images.ts', import.meta.url), 'utf8')),
         },
       },
     },

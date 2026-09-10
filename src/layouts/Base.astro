@@ -28,10 +28,14 @@ const jsonLd = buildJsonLd(canonical, ogImage);
     <meta name="description" content={t.meta.description} />
     <link rel="canonical" href={canonical} />
     {
-      SUPPORTED_LANGS.length > 1 &&
-        SUPPORTED_LANGS.map((l) => (
-          <link rel="alternate" hreflang={l} href={l === 'ja' ? canonical : `${canonical}${l}/`} />
-        ))
+      SUPPORTED_LANGS.length > 1 && (
+        <>
+          {SUPPORTED_LANGS.map((l) => (
+            <link rel="alternate" hreflang={l} href={l === SUPPORTED_LANGS[0] ? canonical : `${canonical}${l}/`} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={canonical} />
+        </>
+      )
     }
     <meta name="theme-color" content="#241816" />
     <link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32x32.png`} />

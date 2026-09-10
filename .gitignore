@@ -31,3 +31,4 @@ test-results
 
 # superpowers SDD ワークスペース (ローカル専用)
 .superpowers/
+.playwright-mcp/

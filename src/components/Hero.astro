@@ -43,10 +43,6 @@ const t = getCopy(Astro.currentLocale);
     z-index: 0;
   }
 
-  .hero__bg :global(picture) {
-    display: contents;
-  }
-
   /* 開演: 0.15 → 0.5 に 1.2s で明るくなる (0 から始めないのは LCP を遅らせないため)。
      slow-zoom は 20s で 1.1 → 1.2 倍を往復 (単一スケール、spec §14 #6) */
   .hero :global(.hero__img) {

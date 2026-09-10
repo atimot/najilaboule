@@ -3,7 +3,7 @@ version: alpha
 name: Naji la boule
 description: 銀座の和食店「Naji la boule」の公式サイトと姉妹ショップが共有する視覚言語。深い焦茶の闇に、ひと筋の金、明朝体だけの静謐。
 colors:
-  # キー名は LP の Tailwind @theme (--color-*) と一致させている。primary は DESIGN.md 仕様互換の別名で、値は accent と同一。
+  # キー名は LP の src/styles/tokens.css (--color-*) と一致させている。primary は DESIGN.md 仕様互換の別名で、値は accent と同一。
   primary: "#C8A67B"
   accent: "#C8A67B"
   brand: "#241816"
@@ -25,6 +25,8 @@ colors:
   dot-orange: "#F39800"
   dot-pink: "#E6007F"
   dot-purple: "#920783"
+  # 黒ドットの輪郭 (tokens.css --color-dot-border)
+  dot-border: "oklch(44.6% 0.03 256.802)"
 typography:
   # fontSize は 768px 以上の値。モバイル値は本文 Typography の表を参照。
   display:
@@ -123,6 +125,7 @@ components:
     typography: "{typography.menu}"
   nav-link-hover:
     textColor: "{colors.accent}"
+  # 英語版を追加するまで非表示のコンポーネント (Header & Navigation 参照)
   language-switch:
     textColor: "{colors.text}"
     typography: "{typography.label}"
@@ -135,16 +138,9 @@ components:
   field-label:
     textColor: "{colors.text-muted}"
     typography: "{typography.label}"
-  mobile-menu-overlay:
-    backgroundColor: "rgba(36, 24, 22, 0.8)"
-    textColor: "{colors.text}"
   brand-dot:
     rounded: "{rounded.full}"
     size: "12px"
-  slide-indicator:
-    backgroundColor: "{colors.dot-white}"
-    rounded: "{rounded.full}"
-    size: "8px"
   footer-text:
     textColor: "{colors.text-muted}"
     typography: "{typography.caption}"
@@ -187,7 +183,7 @@ components:
 - **金 (`accent` / `primary`, #C8A67B)**: 唯一の差し色。ボタンのホバー反転面、リンクのホバー色、フォーカスリング (2px / offset 2px)、`RIZ` `SOUPE` `BOUTIQUE` などの仏語小ラベル、言語スイッチのアクティブ表示に使う。静止状態の面を塗ることはない。
 
 ### Neutral
-- **焦茶 (`brand`, #241816)**: 全体の背景。Loader の面、モバイルメニューの半透明面 (80%)、写真の下端を溶かすグラデーションの終点も同じ色。
+- **焦茶 (`brand`, #241816)**: 全体の背景。写真の下端を溶かすグラデーションの終点も同じ色。
 - **深い焦茶 (`brand-dark`, #1f1513)**: Access セクションの背景と、body 背景の右下に落とすラジアルグラデーションの暗部。
 - **浮いた焦茶 (`brand-light`, #2a1d1b)**: body 背景の左上に差す微光の起点 (`accent` を 6% 混ぜる)。カードやホバー面にも使えるが、LP では背景以外に使っていない。
 - **本文の白 (`text`, #f8f8f8)**: 見出し・本文・ボタン文字の既定色。純白 (#fff) は使わない。
@@ -217,15 +213,15 @@ components:
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。改行は文言側で明示する。モバイル 2.25rem。
 - **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): Experience・BOUTIQUE・Access の h2。モバイル 1.875rem。
 - **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): Philosophy スライドの h2。行間を広めに取り 2 行タイトルを収める。モバイル 1.5rem。
-- **Brand** (`brand`, 400, 1.5rem / 1.33 / 0.1em): ヘッダーの店名。モバイル 1.25rem。直下にカナ表記 (`label` サイズ、字間 0.2em、`text-muted`) を添える。Loader の店名は同じ 1.5rem で字間だけ 0.3em。
+- **Brand** (`brand`, 400, 1.5rem / 1.33 / 0.1em): ヘッダーの店名。モバイル 1.25rem。直下にカナ表記 (`label` サイズ、字間 0.2em、`text-muted`) を添える。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。
-- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)、Access の予約注記。モバイルメニューの項目は 1.125rem。
+- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)、Access の予約注記。
 - **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、`ADDRESS` `TEL` `HOURS` `RESERVATION` のフィールドラベル、sm ボタン、営業時間の注記。
 - **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `RIZ` `SOUPE` `MARIAGE` `BOUTIQUE` `GINZA` のセクションラベル。金または `text-muted`。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
 ### 数字と約物
-- 電話番号・営業時間・年号は `font-variant-numeric: tabular-nums` を数字を含む要素に直接付ける (Tailwind v4 の `tabular-nums` は子に継承されない)
+- 電話番号・営業時間・年号は `font-variant-numeric: tabular-nums` を数字を含む要素に直接付ける (継承に頼らず、数字を含む要素に直接)
 - アポストロフィは曲線 `’`、レンジは en dash `–` (`18:30 – 23:30`)、三点リーダーは `…`
 - 引用符は和文で「」、欧文で曲線の “ ”
 - 体言止め + 読点のブランド語感 (「結ぶ、米。」「ほどける、汁。」「揺蕩う、盃。」) を新規コピーでも維持する。主要カテゴリには仏語の小ラベルを添える
@@ -241,7 +237,7 @@ components:
 
 **単一ブレークポイント。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない。
 
-**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`、Philosophy はモバイルで `min-height: 100vh`。「1 セクション = 1 画面ぶんの余白」が基準。
+**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`、Philosophy の各幕はモバイルで `min-height: 80vh`、デスクトップで `70vh`。「1 セクション = 1 画面ぶんの余白」が基準。
 
 **コンテナ幅。** 標準は 80rem (1280px) 中央寄せ。BOUTIQUE のように文章だけのセクションは 48rem (768px) に絞る。
 
@@ -249,9 +245,9 @@ components:
 
 **モバイルの画像の扱い。** Philosophy はモバイルで画像を文章の背面に敷き (絶対配置、25% 減光、上下を `brand` 85% で締める)、文章を中央揃えで前面に置く。Experience は画像 (16:9) の下に文章を積む。
 
-**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 2px の背景ぼかしで写真の上に浮かせる。モバイルでは右上 24px にハンバーガーだけを固定表示する。
+**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 2px の背景ぼかしで写真の上に浮かせる。モバイルでは Access リンクを省き、右上に RESERVATION ボタンだけを置く。
 
-**縦の積み方。** 見出し下 32px (`stack`)、段落下 32〜48px (`stack` / `stack-lg`)、インジケータや地図など補助要素の上 64px (`stack-xl`)。Experience のカード間は 96px / 128px (`card-gap` / `card-gap-md`)。
+**縦の積み方。** 見出し下 32px (`stack`)、段落下 32〜48px (`stack` / `stack-lg`)、地図など補助要素の上 64px (`stack-xl`)。Experience のカード間は 96px / 128px (`card-gap` / `card-gap-md`)。
 
 ## Elevation & Depth
 
@@ -259,26 +255,26 @@ components:
 
 1. **体の背景 3 層。** ベースの `brand` の上に、240px タイルの SVG フラクタルノイズ (`soft-light` 合成、不透明度 0.7) を敷き、左上から `accent` 6% を混ぜた `brand-light` の楕円グラデーション、右下から `brand-dark` の楕円グラデーションを差す。3 層とも `background-attachment: fixed`。
 2. **写真の減光とグラデーション。** 写真は Dimmed Photo Rule で暗くし、その上に `brand` へ溶けるグラデーションを重ねる。Hero は上 60% → 透明 → 下 100%、Experience は下から 100% → 透明 (全体 60%)、BOUTIQUE は上下 100% で中央 40%、Philosophy (モバイル) は上下 85% で中央 50%。
-3. **背景ぼかし。** ヘッダーは 2px、モバイルメニューは 28px + 彩度 150% のバックドロップフィルタで、下のコンテンツを感じさせながら読みやすさを確保する。
+3. **背景ぼかし。** ヘッダーは 2px のバックドロップフィルタで、下の写真を感じさせながら読みやすさを確保する。
 
 **唯一の発光。** ブランドドットだけが `0 0 10px` のグローを持つ (白ドット 50%、色ドット 30%、黒ドットはグローなし)。セクションに散らす光点は 1px のぼかしで滲ませる。
 
-**レイヤー順序。** ヘッダー 40 < モバイルメニュー 50 < ハンバーガー 60 < Loader 70。Loader は不透明な `brand` 面で、退場するまで下のコンテンツを完全に隠す。
+**レイヤー順序。** Hero の写真 0 < Hero の文字 10 < ヘッダー 40。全画面のオーバーレイは持たない。
 
 ### Named Rules
 **The Flat-Dark Rule.** 面は平らで、影で持ち上げない。手前にあるものは「暗い地に対して明るい」のではなく「地と同じ色で、光だけが違う」。
 
 ## Shapes
 
-**角は直角。** ボタン、写真、カード、iframe、すべて `border-radius: 0`。角丸は円形の要素 (ブランドドット、スライドインジケータ、装飾の光点) と WebKit スクロールバーのつまみ (4px) にしか現れない。
+**角は直角。** ボタン、写真、カード、iframe、すべて `border-radius: 0`。角丸は円形の要素 (ブランドドット、装飾の光点) と WebKit スクロールバーのつまみ (4px) にしか現れない。
 
-**線は 1px。** ボタンの枠、フッターの区切り、言語スイッチのアクティブ下線、ハンバーガーの 2 本線は、いずれも 1px の細線。太い罫線や塗りの分割線はない。
+**線は 1px。** ボタンの枠とフッターの区切りは、いずれも 1px の細線。太い罫線や塗りの分割線はない。
 
 **写真の比率。** Experience は 16:9 (`aspect-video`)、Philosophy はデスクトップで高さ 700px 固定、Hero と BOUTIQUE は画面いっぱいに `object-fit: cover`。
 
-**アイコンは持たない。** アイコンフォントも SVG アイコンセットも使わない。外部リンクの印は文字の `↗`、ハンバーガーは 2 本の線、ナビの区切りは `|` の文字。
+**アイコンは持たない。** アイコンフォントも SVG アイコンセットも使わない。外部リンクの印は文字の `↗`。
 
-**ブランドモチーフ。** 3×3 の 9 ドット (白・黒・赤 / 青・黄・緑 / 橙・桃・紫 の順) が唯一の図形要素。Loader (12px、間隔 8px)、Hero (12px → 16px、間隔 12px → 16px)、Access (8px、間隔 8px、不透明度 50%) の 3 箇所に置く。
+**ブランドモチーフ。** 3×3 の 9 ドット (白・黒・赤 / 青・黄・緑 / 橙・桃・紫 の順) が唯一の図形要素。Hero (12px → 16px、間隔 12px → 16px、開演で 1 つずつ灯る)、Access (8px、間隔 8px、不透明度 50%) の 2 箇所に置く。
 
 ## Components
 
@@ -286,7 +282,7 @@ components:
 - **Shape:** 直角、1px の枠、字間 0.1em、文字は `RESERVATION` のように英字大文字
 - **Outline (`button-outline`):** 透明地に `line-strong` (白 50%) の枠、文字は `text`。ホバーで地・枠ともに `accent`、文字は `brand` に反転
 - **Filled (`button-filled`):** 白 5% の地に `line` (白 20%) の枠。ホバーで地が白、文字が `brand`。Access の予約ボタンで幅 100% にして使う
-- **Sizes:** sm 8px × 24px / 0.75rem (ヘッダー)、md 12px × 32px / 0.875rem (モバイルメニュー、BOUTIQUE は横 40px)、lg 16px × 32px / 0.875rem (Access)
+- **Sizes:** sm 8px × 24px / 0.75rem (ヘッダー)、md 12px × 32px / 0.875rem (BOUTIQUE、横 40px)、lg 16px × 32px / 0.875rem (Access)
 - **Transition:** 背景色・枠色・文字色を 500ms で同時に遷移
 - **Focus:** `accent` 2px のアウトライン、offset 2px (全リンク・ボタン共通)
 
@@ -306,8 +302,8 @@ components:
 - **BOUTIQUE:** 30% に減光して全面背景に、上下を `brand` で締める
 
 ### Brand Dots
-- **Style:** 3×3 グリッド、色順固定、各ドットにグロー。Loader では 9 個が 0.1 秒ずつずれて 0.5 秒で拡大しながら現れる
-- **Usage:** Loader / Hero / Access の 3 箇所。他では使わない
+- **Style:** 3×3 グリッド、色順固定、各ドットにグロー。Hero の開演では 9 個が 0.2 秒から 0.08 秒ずつずれて 0.5 秒で拡大しながら現れる
+- **Usage:** Hero / Access の 2 箇所。他では使わない
 
 ### Footer
 - **Style:** 上に `line-faint` の 1px 罫線、縦 32px、中央揃え、`footer-text` (`text-muted`、10px、字間 0.1em、`tabular-nums`)。文言は `© {年} Naji la boule. All Rights Reserved.`
@@ -329,7 +325,7 @@ components:
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす
 - **Do** セクション余白は縦 96px / 160px、横 24px / 80px。迷ったら広い方
 - **Do** 動きは 1 秒のフェード (不透明度、必要なら y +30px) を基本にし、ホバーは 300〜500ms
-- **Do** `prefers-reduced-motion` を CSS と JS の両方で尊重する
+- **Do** `prefers-reduced-motion` を CSS で尊重する (全 animation / transition を無効化)
 - **Do** 数字は `tabular-nums`、約物は `’` `–` `…`、和文の引用は「」
 - **Do** フォーカスリングは `accent` 2px / offset 2px を全リンク・ボタンに
 - **Do** 暗背景の小さい文字は `text-muted` (≈ #99a1af) を下限にする
@@ -344,7 +340,7 @@ components:
 - **Don't** ブランドドットの 9 色を UI の意味色や装飾以外に転用しない
 - **Don't** 写真を原色・全輝度で置かない
 - **Don't** ハイフンでレンジを書かない (en dash を使う)。直線のアポストロフィを使わない
-- **Don't** `text-muted` より薄い灰色 (Tailwind の gray-500 以下、≈ #6a7282 以下) を文字色に使わない。コントラスト比 4.5:1 を割る
+- **Don't** `text-muted` より薄い灰色 (≈ #6a7282 以下) を文字色に使わない。コントラスト比 4.5:1 を割る
 - **Don't** 太字で強調しない。`font-weight: 300` も使わない
 - **Don't** フェードを 1 秒より速くしない。スプリング・バウンス系のイージングを使わない
 - **Don't** アイコンライブラリを入れない。矢印は `↗` の文字で

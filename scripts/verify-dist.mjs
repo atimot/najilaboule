@@ -1,9 +1,16 @@
 // dist/index.html の不変条件を検査する。`npm run build` の最後に走る。
 // 検査を足すときは checks に [名前, 真偽値] を追加する。
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
 const count = (re) => (html.match(re) ?? []).length;
+
+const assetsDir = new URL('../dist/_astro/', import.meta.url);
+const css = readdirSync(assetsDir)
+  .filter((f) => f.endsWith('.css'))
+  .map((f) => readFileSync(new URL(f, assetsDir), 'utf8'))
+  .join('\n')
+  .replace(/\s+/g, '');
 
 const checks = [
   ['html lang="ja"', /<html[^>]*\slang="ja"/.test(html)],
@@ -21,7 +28,7 @@ const checks = [
   ['h1 はちょうど 1 つ', count(/<h1\b/g) === 1],
   ['#top セクション', /<section[^>]*id="top"/.test(html)],
   ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
-  ['Hero 画像の preload (avif)', /<link rel="preload" as="image" type="image\/avif" imagesrcset="[^"]+" imagesizes="100vw" fetchpriority="high">/.test(html)],
+  ['Hero 画像の preload (avif)', (() => { const tags = html.match(/<link[^>]*rel="preload"[^>]*>/g) ?? []; return tags.some((tag) => /as="image"/.test(tag) && /type="image\/avif"/.test(tag) && /imagesrcset="[^"]+"/.test(tag) && /imagesizes="100vw"/.test(tag) && /fetchpriority="high"/.test(tag)); })()],
   ['#philosophy セクション', /<section[^>]*id="philosophy"/.test(html)],
   ['Philosophy の 3 幕 (article ×3)', count(/<article\b/g) === 3],
   ['Philosophy の写真 alt (デスクトップ用とモバイル用)', count(/alt="指先に乗せた一粒の米"/g) === 2 && count(/alt="水引で結ばれた米の贈り物"/g) >= 2],
@@ -31,9 +38,12 @@ const checks = [
   ['#shop セクション', /<section[^>]*id="shop"/.test(html)],
   ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/iyahiko\.square\.site\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
   ['#access セクション', /<section[^>]*id="access"/.test(html)],
-  ['地図 iframe に title と lazy', /<iframe[^>]*title="店舗の地図[^"]*"[^>]*loading="lazy"/.test(html)],
+  ['地図 iframe に title と lazy', (() => { const m = html.match(/<iframe[^>]*>/); return !!m && /title="店舗の地図[^"]*"/.test(m[0]) && /loading="lazy"/.test(m[0]); })()],
   ['<footer> に著作権表記', /<footer[^>]*>[\s\S]*All Rights Reserved\.[\s\S]*<\/footer>/.test(html)],
   ['h2 は 8 つ', count(/<h2\b/g) === 8],
+  ['CSS: .reveal の animation-timeline が longhand で残っている', css.includes('animation-timeline:view()')],
+  ['CSS: Philosophy の animation-timeline --act-2 / --act-3 が longhand で残っている', css.includes('animation-timeline:--act-2') && css.includes('animation-timeline:--act-3')],
+  ['CSS: animation ショートハンドに timeline が畳み込まれていない', !/animation:[^;}]*(view\(\)|--act-)/.test(css)],
 ];
 
 let failed = 0;
