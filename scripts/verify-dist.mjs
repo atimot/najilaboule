@@ -15,6 +15,9 @@ const checks = [
   ['og:image', html.includes('content="https://atimot.github.io/najilaboule/images/ogp.jpg"')],
   ['skip link', html.includes('class="skip-link"')],
   ['theme-color', html.includes('<meta name="theme-color" content="#241816"')],
+  ['<header> がある', /<header\b/.test(html)],
+  ['ヘッダーに電話予約リンク', /<header[\s\S]*?href="tel:03-6228-5803"[\s\S]*?<\/header>/.test(html)],
+  ['ナビに aria-label', /<nav[^>]*aria-label="メインナビゲーション"/.test(html)],
 ];
 
 let failed = 0;

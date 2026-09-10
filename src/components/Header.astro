@@ -1,0 +1,95 @@
+---
+import Button from '@/components/Button.astro';
+import { SITE } from '@/config';
+import { getCopy } from '@/i18n';
+
+const t = getCopy(Astro.currentLocale);
+---
+
+<header class="header">
+  <a href="#top" class="brand">
+    {SITE.name}
+    <span lang="ja" class="brand__kana">{t.header.kana}</span>
+  </a>
+  <nav class="nav" aria-label={t.common.navLabel}>
+    <a href="#access" class="nav__link">{t.header.navAccess}</a>
+    <Button href={SITE.phoneHref} ariaLabel={`${t.common.reserveByPhone} (${SITE.phone})`} variant="outline" size="sm">
+      RESERVATION
+    </Button>
+  </nav>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-header);
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--color-brand) 90%, transparent), transparent);
+    color: #fff;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    /* 開演の最後にヘッダーが現れる (spec §7.1) */
+    animation: fade-in 1s var(--ease-out) 1.8s both;
+  }
+
+  .brand {
+    display: block;
+    font-size: var(--text-brand-mobile);
+    line-height: 1.4;
+    letter-spacing: var(--tracking-wide);
+    text-align: left;
+  }
+
+  .brand__kana {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-muted);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    font-size: var(--text-menu);
+    line-height: var(--leading-menu);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* モバイルでは Access リンクを省き、RESERVATION だけを置く (spec §14 #3) */
+  .nav__link {
+    display: none;
+    transition: color var(--duration-hover);
+  }
+
+  .nav__link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .header {
+      padding: var(--space-header-md);
+    }
+
+    .brand {
+      font-size: var(--text-brand);
+      line-height: var(--leading-brand);
+    }
+
+    .brand__kana {
+      font-size: var(--text-menu);
+      line-height: var(--leading-menu);
+    }
+
+    .nav__link {
+      display: inline;
+    }
+  }
+</style>

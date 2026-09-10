@@ -1,0 +1,106 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+  /** Hero の開演で 1 つずつ灯る */
+  animated?: boolean;
+  class?: string;
+}
+
+const { size = 'md', animated = false, class: className } = Astro.props;
+const DOTS = ['white', 'black', 'red', 'blue', 'yellow', 'green', 'orange', 'pink', 'purple'] as const;
+---
+
+<div aria-hidden="true" class:list={['dots', `dots--${size}`, animated && 'dots--animated', className]}>
+  {DOTS.map((name, i) => <span class={`dot dot--${name}`} style={`--i: ${i}`}></span>)}
+</div>
+
+<style>
+  .dots {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: fit-content;
+  }
+
+  .dots--sm {
+    gap: 8px;
+  }
+
+  .dots--sm .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dots--md {
+    gap: 12px;
+  }
+
+  .dots--md .dot {
+    width: 12px;
+    height: 12px;
+  }
+
+  @media (min-width: 48rem) {
+    .dots--md {
+      gap: 16px;
+    }
+
+    .dots--md .dot {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .dot {
+    border-radius: var(--radius-full);
+  }
+
+  .dot--white {
+    background: var(--color-dot-white);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-white) 50%, transparent);
+  }
+
+  .dot--black {
+    background: var(--color-dot-black);
+    border: 1px solid var(--color-dot-border);
+  }
+
+  .dot--red {
+    background: var(--color-dot-red);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-red) 30%, transparent);
+  }
+
+  .dot--blue {
+    background: var(--color-dot-blue);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-blue) 30%, transparent);
+  }
+
+  .dot--yellow {
+    background: var(--color-dot-yellow);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-yellow) 30%, transparent);
+  }
+
+  .dot--green {
+    background: var(--color-dot-green);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-green) 30%, transparent);
+  }
+
+  .dot--orange {
+    background: var(--color-dot-orange);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-orange) 30%, transparent);
+  }
+
+  .dot--pink {
+    background: var(--color-dot-pink);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-pink) 30%, transparent);
+  }
+
+  .dot--purple {
+    background: var(--color-dot-purple);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-dot-purple) 30%, transparent);
+  }
+
+  /* 開演: 0.3s から 0.1s 刻みで 9 つが灯る (spec §7.1) */
+  .dots--animated .dot {
+    animation: dot-in 0.5s var(--ease-out) calc(0.3s + var(--i) * 0.1s) both;
+  }
+</style>

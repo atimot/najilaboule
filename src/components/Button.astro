@@ -1,0 +1,79 @@
+---
+interface Props {
+  href: string;
+  ariaLabel: string;
+  variant?: 'outline' | 'filled';
+  size?: 'sm' | 'md' | 'lg';
+  /** 外部リンク: 新しいタブで開き rel を付ける */
+  external?: boolean;
+  class?: string;
+}
+
+const { href, ariaLabel, variant = 'outline', size = 'md', external = false, class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  aria-label={ariaLabel}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  class:list={['button', `button--${variant}`, `button--${size}`, className]}
+>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-block;
+    border: 1px solid;
+    text-align: center;
+    letter-spacing: var(--tracking-wide);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-button),
+      border-color var(--duration-button),
+      color var(--duration-button);
+  }
+
+  .button--outline {
+    background: transparent;
+    border-color: var(--color-line-strong);
+    color: inherit;
+  }
+
+  .button--outline:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-brand);
+  }
+
+  .button--filled {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-line);
+    color: inherit;
+  }
+
+  .button--filled:hover {
+    background: #fff;
+    color: var(--color-brand);
+  }
+
+  .button--sm {
+    padding: 8px 24px;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+  }
+
+  .button--md {
+    padding: 12px 32px;
+    font-size: var(--text-menu);
+    line-height: var(--leading-menu);
+  }
+
+  .button--lg {
+    width: 100%;
+    padding: 16px 32px;
+    font-size: var(--text-menu);
+    line-height: var(--leading-menu);
+  }
+</style>
