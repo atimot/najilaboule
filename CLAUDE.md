@@ -25,7 +25,8 @@ src/
 ├── content/ja.ts      文言 (型 Copy)。英語版は en.ts を追加
 ├── i18n/              Lang / Copy 型、getCopy(lang)、SUPPORTED_LANGS
 ├── assets/images/     元画像 (JPEG)。<Picture> が AVIF/WebP をビルド時生成
-├── assets/images.ts   画像の import と alt (ja/en)
+├── assets/images.ts   画像の import と alt (alt の文字列は assets/alts.ts)
+├── assets/alts.ts     画像 alt (ja/en)。字形サブセットの収集元
 ├── config.ts          SITE (店名・電話・URL・地図) と JSON-LD
 └── styles/
     ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
@@ -42,7 +43,7 @@ scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、�
 - `dist/` と `package-lock.json` は直接編集しない
 - Performance / Accessibility / SEO のスコアを下げる回帰を出さない (`verify-dist.mjs` が最低限を守る)
 - `astro.config.ts` の `vite.build.cssMinify` は `esbuild` 固定。Lightning CSS は `animation-timeline` を `animation` ショートハンドに畳み込んで無効な宣言を出す (Philosophy のクロスフェードと `.reveal` が止まる)
-- Shippori Mincho は `astro.config.ts` の `collectGlyphs` が `src/content/ja.ts`・`src/config.ts`・`src/assets/images.ts` から集めた文字だけにサブセットされる。日本語の文字列をそれ以外の場所に置くとフォールバック書体で描かれるので、文言は必ずそこに置く
+- Shippori Mincho は `astro.config.ts` の `collectGlyphs` が `src/content/ja.ts`・`src/config.ts`・`src/assets/alts.ts` から集めた文字だけにサブセットされる。日本語の文字列をそれ以外の場所に置くとフォールバック書体で描かれるので、文言は必ずそこに置く
 
 ## デザイン決め事 (重要)
 

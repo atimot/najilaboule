@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
 import { defineConfig, fontProviders } from 'astro/config';
 import { ja } from './src/content/ja';
 import { SITE } from './src/config';
+import { imageAlts } from './src/assets/alts';
 
 /** ページで使う全文字 (Shippori Mincho を使用文字だけにサブセットするため) */
 function collectGlyphs(...sources: unknown[]): string[] {
@@ -45,7 +45,7 @@ export default defineConfig({
       // 使用文字だけにサブセット。ビルドで問題が出たら options を外して unicode-range スライスに任せる (spec §16)
       options: {
         experimental: {
-          glyphs: collectGlyphs(ja, SITE, readFileSync(new URL('./src/assets/images.ts', import.meta.url), 'utf8')),
+          glyphs: collectGlyphs(ja, SITE, imageAlts),
         },
       },
     },
