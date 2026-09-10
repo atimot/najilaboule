@@ -165,6 +165,8 @@ DOM 順: skip link → `<header>` → `<main>` (Hero `#top` → Philosophy `#phi
 
 ### 7.3 Philosophy の 3 幕 (自動スライダーの代替)
 
+> **2026-09-10 更新:** 3 幕構成はユーザーの判断で廃止し、写真 1 枚 + 見出し + 本文の 1 コンテンツに畳んだ (`src/components/Philosophy.astro`)。以下は実装当時の設計として残す。
+
 **デスクトップ (≥ 768px)**: 2 カラム。左 55% に高さ 700px の figure を `position: sticky; top: calc((100vh - 700px) / 2)` で留め、3 枚の写真を重ねる (25% 減光)。右 45% に 3 幕の文 (h2 + 本文) を縦に並べ、各幕は `min-height: 70vh` で中央揃え。各幕に `view-timeline-name: --act-N` を付け、section に `timeline-scope: --act-1, --act-2, --act-3`。写真 2・3 は対応する幕の `animation-timeline` で `entry 0% → cover 30%` の間に opacity 0 → 1 (`fill-mode: both`)。写真 1 は常時表示。スクロールを戻せば逆再生される。
 
 **モバイル (< 768px)**: 3 幕を縦積み。各幕は `min-height: 80vh` で、背景に対応する写真を 25% 減光 + 上下 `brand` 85% のグラデーションで敷き、文は中央揃え (現行モバイルの見た目を幕ごとに再現)。

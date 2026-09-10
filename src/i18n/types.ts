@@ -24,9 +24,7 @@ export interface Copy {
     title: string;
     tagline: string;
   };
-  philosophy: {
-    acts: [TitledText, TitledText, TitledText];
-  };
+  philosophy: TitledText;
   experience: {
     riz: TitledText;
     soupe: TitledText;

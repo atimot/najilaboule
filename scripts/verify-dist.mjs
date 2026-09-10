@@ -30,8 +30,8 @@ const checks = [
   ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
   ['Hero 画像の preload (avif)', (() => { const tags = html.match(/<link[^>]*rel="preload"[^>]*>/g) ?? []; return tags.some((tag) => /as="image"/.test(tag) && /type="image\/avif"/.test(tag) && /imagesrcset="[^"]+"/.test(tag) && /imagesizes="100vw"/.test(tag) && /fetchpriority="high"/.test(tag)); })()],
   ['#philosophy セクション', /<section[^>]*id="philosophy"/.test(html)],
-  ['Philosophy の 3 幕 (article ×3)', count(/<article\b/g) === 3],
-  ['Philosophy の写真 alt (デスクトップ用とモバイル用)', count(/alt="指先に乗せた一粒の米"/g) === 2 && count(/alt="水引で結ばれた米の贈り物"/g) >= 2],
+  ['Philosophy は h2 1 つの単一コンテンツ (article なし)', /<h2[^>]*id="philosophy-title"/.test(html) && count(/<article\b/g) === 0],
+  ['Philosophy の写真は 1 枚 (alt が 1 回)', count(/alt="指先に乗せた一粒の米"/g) === 1],
   ['#experience セクション', /<section[^>]*id="experience"/.test(html)],
   ['RIZ / SOUPE / MARIAGE ラベル', ['RIZ', 'SOUPE', 'MARIAGE'].every((l) => html.includes(`>${l}</span>`))],
   ['Experience の h2 ×3', ['結ぶ、米。', 'ほどける、汁。', '揺蕩う、盃。'].every((s) => new RegExp(`<h2[^>]*>\\s*${s}\\s*</h2>`).test(html))],
@@ -40,10 +40,9 @@ const checks = [
   ['#access セクション', /<section[^>]*id="access"/.test(html)],
   ['地図 iframe に title と lazy', (() => { const m = html.match(/<iframe[^>]*>/); return !!m && /title="店舗の地図[^"]*"/.test(m[0]) && /loading="lazy"/.test(m[0]); })()],
   ['<footer> に著作権表記', /<footer[^>]*>[\s\S]*All Rights Reserved\.[\s\S]*<\/footer>/.test(html)],
-  ['h2 は 8 つ', count(/<h2\b/g) === 8],
+  ['h2 は 6 つ', count(/<h2\b/g) === 6],
   ['CSS: .reveal の animation-timeline が longhand で残っている', css.includes('animation-timeline:view()')],
-  ['CSS: Philosophy の animation-timeline --act-2 / --act-3 が longhand で残っている', css.includes('animation-timeline:--act-2') && css.includes('animation-timeline:--act-3')],
-  ['CSS: animation ショートハンドに timeline が畳み込まれていない', !/animation:[^;}]*(view\(\)|--act-)/.test(css)],
+  ['CSS: animation ショートハンドに timeline が畳み込まれていない', !/animation:[^;}]*view\(\)/.test(css)],
 ];
 
 let failed = 0;
