@@ -1,0 +1,196 @@
+---
+import { Picture } from 'astro:assets';
+import { images } from '@/assets/images';
+import { getCopy } from '@/i18n';
+
+const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
+const t = getCopy(lang);
+
+// reverse = 画像を右に置く。RIZ / MARIAGE が右、SOUPE が左 (現行どおり)
+const CARDS = [
+  { key: 'riz', label: 'RIZ', reverse: true },
+  { key: 'soupe', label: 'SOUPE', reverse: false },
+  { key: 'mariage', label: 'MARIAGE', reverse: true },
+] as const;
+---
+
+<section id="experience" class="experience section" aria-labelledby="experience-title">
+  <div class="deco" aria-hidden="true">
+    <span class="deco__dot deco__dot--1"></span>
+    <span class="deco__dot deco__dot--2"></span>
+    <span class="deco__dot deco__dot--3"></span>
+  </div>
+
+  <div class="cards container">
+    {
+      CARDS.map(({ key, label, reverse }, i) => (
+        <div class:list={['card', reverse && 'card--reverse']}>
+          <div class="card__media reveal">
+            <div class="card__frame">
+              <Picture
+                src={images.experience[key].src}
+                formats={['avif', 'webp']}
+                widths={[800, 1600]}
+                sizes="(min-width: 48rem) 40rem, 100vw"
+                alt={images.experience[key].alt[lang]}
+              />
+            </div>
+          </div>
+          <div class="card__text reveal">
+            <span class="label">{label}</span>
+            <h2 id={i === 0 ? 'experience-title' : undefined} class="card__title">
+              {t.experience[key].title}
+            </h2>
+            <p class="card__body">{t.experience[key].body}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .experience {
+    position: relative;
+  }
+
+  .deco {
+    display: none;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-card-gap);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-stack-lg);
+  }
+
+  .card__media,
+  .card__text {
+    width: 100%;
+  }
+
+  .card__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .card__frame :global(picture) {
+    display: contents;
+  }
+
+  .card__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9);
+    transition: scale 2s;
+  }
+
+  .card__frame:hover :global(img) {
+    scale: 1.05;
+  }
+
+  .card__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--color-brand), transparent, transparent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .card__title {
+    margin-bottom: var(--space-stack);
+    font-size: var(--text-headline-mobile);
+    line-height: var(--leading-headline);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .card__body {
+    margin-bottom: var(--space-stack);
+    font-size: var(--text-body-mobile);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    white-space: pre-line;
+  }
+
+  @media (min-width: 48rem) {
+    .deco {
+      display: block;
+      pointer-events: none;
+    }
+
+    .deco__dot {
+      position: absolute;
+      border-radius: var(--radius-full);
+      filter: blur(1px);
+    }
+
+    .deco__dot--1 {
+      top: 18%;
+      left: 6%;
+      width: 6px;
+      height: 6px;
+      background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    }
+
+    .deco__dot--2 {
+      top: 48%;
+      right: 5%;
+      width: 4px;
+      height: 4px;
+      background: color-mix(in srgb, var(--color-dot-red) 25%, transparent);
+    }
+
+    .deco__dot--3 {
+      bottom: 20%;
+      left: 10%;
+      width: 4px;
+      height: 4px;
+      background: color-mix(in srgb, var(--color-dot-blue) 25%, transparent);
+    }
+
+    .cards {
+      gap: var(--space-card-gap-md);
+    }
+
+    .card {
+      flex-direction: row;
+    }
+
+    .card--reverse {
+      flex-direction: row-reverse;
+    }
+
+    .card__media,
+    .card__text {
+      width: 50%;
+    }
+
+    .card__text {
+      padding-left: 40px;
+    }
+
+    .card--reverse .card__text {
+      padding-right: 40px;
+      padding-left: 0;
+    }
+
+    .card__title {
+      font-size: var(--text-headline);
+    }
+
+    .card__body {
+      font-size: var(--text-body);
+    }
+  }
+</style>

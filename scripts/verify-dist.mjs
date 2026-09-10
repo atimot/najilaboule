@@ -25,6 +25,9 @@ const checks = [
   ['#philosophy セクション', /<section[^>]*id="philosophy"/.test(html)],
   ['Philosophy の 3 幕 (article ×3)', count(/<article\b/g) === 3],
   ['Philosophy の写真 alt (デスクトップ用とモバイル用)', count(/alt="指先に乗せた一粒の米"/g) === 2 && count(/alt="水引で結ばれた米の贈り物"/g) >= 2],
+  ['#experience セクション', /<section[^>]*id="experience"/.test(html)],
+  ['RIZ / SOUPE / MARIAGE ラベル', ['RIZ', 'SOUPE', 'MARIAGE'].every((l) => html.includes(`>${l}</span>`))],
+  ['Experience の h2 ×3', ['結ぶ、米。', 'ほどける、汁。', '揺蕩う、盃。'].every((s) => new RegExp(`<h2[^>]*>\\s*${s}\\s*</h2>`).test(html))],
 ];
 
 let failed = 0;
