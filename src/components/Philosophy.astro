@@ -5,9 +5,7 @@ import { getCopy } from '@/i18n';
 
 const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
 const t = getCopy(lang);
-const acts = t.philosophy.acts;
-const photos = images.philosophy;
-const SIZES = '(min-width: 48rem) 44rem, 100vw';
+const photo = images.philosophy;
 ---
 
 <section id="philosophy" class="philosophy" aria-labelledby="philosophy-title">
@@ -17,33 +15,20 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
   </div>
 
   <div class="philosophy__inner">
-    <!-- デスクトップ: 左に留まる写真。幕が進むと次の写真がクロスフェードする -->
-    <figure class="stage">
-      {
-        photos.map((photo, i) => (
-          <div class={`stage__photo stage__photo--${i + 1}`}>
-            <Picture src={photo.src} formats={['avif', 'webp']} widths={[800, 1600]} sizes={SIZES} alt={photo.alt[lang]} />
-          </div>
-        ))
-      }
+    <!-- 写真は 1 枚。モバイルでは文章の背面に敷き、デスクトップでは左 55% に置く -->
+    <figure class="philosophy__photo">
+      <Picture
+        src={photo.src}
+        formats={['avif', 'webp']}
+        widths={[800, 1600]}
+        sizes="(min-width: 48rem) 44rem, 100vw"
+        alt={photo.alt[lang]}
+      />
     </figure>
 
-    <div class="acts">
-      {
-        acts.map((act, i) => (
-          <article class="act" style={`view-timeline-name: --act-${i + 1}`}>
-            <div class="act__photo">
-              <Picture src={photos[i].src} formats={['avif', 'webp']} widths={[800, 1600]} sizes={SIZES} alt={photos[i].alt[lang]} />
-            </div>
-            <div class="act__text">
-              <h2 id={i === 0 ? 'philosophy-title' : undefined} class="act__title">
-                {act.title}
-              </h2>
-              <p class="act__body">{act.body}</p>
-            </div>
-          </article>
-        ))
-      }
+    <div class="philosophy__text reveal">
+      <h2 id="philosophy-title" class="philosophy__title">{t.philosophy.title}</h2>
+      <p class="philosophy__body">{t.philosophy.body}</p>
     </div>
   </div>
 </section>
@@ -57,12 +42,8 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     display: none;
   }
 
-  /* ---- モバイル (既定): 3 幕を縦積み、各幕の背面に写真 ---- */
-  .stage {
-    display: none;
-  }
-
-  .act {
+  /* ---- モバイル (既定): 写真を文章の背面に敷き、中央揃え ---- */
+  .philosophy__inner {
     position: relative;
     display: flex;
     align-items: center;
@@ -72,21 +53,21 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     text-align: center;
   }
 
-  .act__photo {
+  .philosophy__photo {
     position: absolute;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
+    margin: 0;
   }
 
-  .act__photo :global(img) {
+  .philosophy__photo :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: brightness(0.25);
   }
 
-  .act__photo::after {
+  .philosophy__photo::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -98,14 +79,14 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     );
   }
 
-  .act__text {
+  .philosophy__text {
     position: relative;
     z-index: 1;
     max-width: 92vw;
     margin-inline: auto;
   }
 
-  .act__title {
+  .philosophy__title {
     margin-bottom: var(--space-stack);
     font-size: var(--text-title-mobile);
     line-height: var(--leading-title);
@@ -113,7 +94,7 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     white-space: pre-line;
   }
 
-  .act__body {
+  .philosophy__body {
     font-size: var(--text-body-mobile);
     line-height: var(--leading-body);
     letter-spacing: var(--tracking-wide);
@@ -121,11 +102,10 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     white-space: pre-line;
   }
 
-  /* ---- デスクトップ: 左 55% に sticky の写真、右 45% に 3 幕 ---- */
+  /* ---- デスクトップ: 左 55% に高さ 700px の写真、右 45% に文章を縦中央で並べる ---- */
   @media (min-width: 48rem) {
     .philosophy {
       padding: var(--space-section-y-md) var(--space-section-x-md);
-      timeline-scope: --act-1, --act-2, --act-3;
     }
 
     .deco {
@@ -156,26 +136,27 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
     }
 
     .philosophy__inner {
-      display: flex;
-      align-items: flex-start;
+      position: static;
       justify-content: space-between;
       gap: 32px;
       width: 100%;
       max-width: var(--container);
+      min-height: 0;
       margin-inline: auto;
+      padding: 0;
+      text-align: left;
     }
 
-    .stage {
-      position: sticky;
-      top: calc((100vh - 700px) / 2);
-      display: block;
+    .philosophy__photo {
+      position: relative;
+      inset: auto;
+      flex: none;
       width: 55%;
       height: 700px;
-      margin: 0;
     }
 
     /* 現行の左上の赤い光点 */
-    .stage::before {
+    .philosophy__photo::before {
       content: '';
       position: absolute;
       top: -40px;
@@ -188,70 +169,23 @@ const SIZES = '(min-width: 48rem) 44rem, 100vw';
       filter: blur(1px);
     }
 
-    .stage__photo {
-      position: absolute;
-      inset: 0;
-    }
-
-    .stage__photo :global(img) {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.25);
-    }
-
-    /* 写真 2・3 は対応する幕が入ってくる区間で現れる。非対応ブラウザと reduced-motion では写真 1 のみ */
-    .stage__photo--2,
-    .stage__photo--3 {
-      opacity: 0;
-    }
-
-    @supports (animation-timeline: view()) {
-      .stage__photo--2 {
-        animation: photo-in linear both;
-        animation-timeline: --act-2;
-        animation-range: entry 0% cover 30%;
-      }
-
-      .stage__photo--3 {
-        animation: photo-in linear both;
-        animation-timeline: --act-3;
-        animation-range: entry 0% cover 30%;
-      }
-    }
-
-    .acts {
-      width: 45%;
-    }
-
-    .act {
-      justify-content: flex-start;
-      min-height: 70vh;
-      padding: 0;
-      text-align: left;
-    }
-
-    .act__photo {
+    .philosophy__photo::after {
       display: none;
     }
 
-    .act__text {
+    .philosophy__text {
+      width: 45%;
       max-width: none;
       margin: 0;
     }
 
-    .act__title {
+    .philosophy__title {
       margin-bottom: var(--space-stack-lg);
       font-size: var(--text-title);
     }
 
-    .act__body {
+    .philosophy__body {
       font-size: var(--text-body);
     }
-  }
-
-  @keyframes photo-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
   }
 </style>

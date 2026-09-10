@@ -212,7 +212,7 @@ components:
 
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。改行は文言側で明示する。モバイル 2.25rem。
 - **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): Experience・BOUTIQUE・Access の h2。モバイル 1.875rem。
-- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): Philosophy スライドの h2。行間を広めに取り 2 行タイトルを収める。モバイル 1.5rem。
+- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): Philosophy の h2。行間を広めに取り 2 行タイトルを収める。モバイル 1.5rem。
 - **Brand** (`brand`, 400, 1.5rem / 1.33 / 0.1em): ヘッダーの店名。モバイル 1.25rem。直下にカナ表記 (`label` サイズ、字間 0.2em、`text-muted`) を添える。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。
 - **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)、Access の予約注記。
@@ -237,7 +237,7 @@ components:
 
 **単一ブレークポイント。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない。
 
-**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`、Philosophy の各幕はモバイルで `min-height: 80vh`、デスクトップで `70vh`。「1 セクション = 1 画面ぶんの余白」が基準。
+**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`、Philosophy はモバイルで `min-height: 80vh`。「1 セクション = 1 画面ぶんの余白」が基準。
 
 **コンテナ幅。** 標準は 80rem (1280px) 中央寄せ。BOUTIQUE のように文章だけのセクションは 48rem (768px) に絞る。
 
@@ -297,7 +297,7 @@ components:
 
 ### Photo Treatment
 - **Hero:** `object-fit: cover`、不透明度 50%、グレースケール、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 60% → 透明 → 100% のグラデーション
-- **Philosophy:** 25% に減光。デスクトップでは左の写真が留まり (sticky、高さ 700px)、右の 3 幕を読み進めると次の写真へクロスフェードする (CSS scroll-driven)。モバイルは 3 幕を縦積みし、各幕の背面に敷く。非対応ブラウザと reduced-motion では写真 1 枚に固定
+- **Philosophy:** 25% に減光。写真は 1 枚だけ。デスクトップでは左 55% に高さ 700px で置き、右の文章を縦中央に並べる。モバイルは文章の背面に敷き、上下を `brand` 85% のグラデーションで締める
 - **Experience:** 90% に減光、16:9、ホバーで 2 秒かけて 1.05 倍。下から `brand` へ溶かす
 - **BOUTIQUE:** 30% に減光して全面背景に、上下を `brand` で締める
 
