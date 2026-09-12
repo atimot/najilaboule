@@ -125,11 +125,6 @@ const titleId = `${chapter}-title`;
     object-fit: cover;
     object-position: var(--photo-position);
     filter: brightness(var(--photo-brightness));
-    transition: scale 2s;
-  }
-
-  .chapter__frame:hover :global(img) {
-    scale: 1.05;
   }
 
   /* 下勾配: 写真の下端を brand に溶かす。スライド (z-index 0〜2) より上に置く */
@@ -143,15 +138,14 @@ const titleId = `${chapter}-title`;
     pointer-events: none;
   }
 
-  /* スライドショー (2 枚以上): 各写真を 1 秒見せ、0.4 秒で次の写真が上に溶けて現れ、
+  /* スライドショー (2 枚以上): 各写真を 5 秒見せ、1 秒で次の写真が上に溶けて現れ、
      隠れた前の写真は次が現れきってから瞬時に消える (両方が半透明になる瞬間を作らず、焦茶を透けさせない)。
-     1 枚あたりの周期は hold + fade = 1.4 秒、1 周は枚数 × 周期。
-     i 枚目は i 周期ぶん遅らせて始め、全体を fade ぶん前倒しして 1 枚目が最初から見えているようにする。
-     ホバー中は止める (写真のゆっくりズームと同時に働く) */
+     1 枚あたりの周期 (--slide-period) は 6 秒。フェードは周期の 1/6 に固定してあるので、周期だけ変えれば keyframes はそのまま使える。
+     1 周は枚数 × 周期。i 枚目は i 周期ぶん遅らせて始め、全体を fade ぶん前倒しして 1 枚目が最初から見えているようにする。
+     ホバーで止めたり拡大したりはしない (挙動を単純に保つ) */
   .chapter__frame--slideshow {
-    --slide-hold: 1s;
-    --slide-fade: 0.4s;
-    --slide-period: calc(var(--slide-hold) + var(--slide-fade));
+    --slide-period: 6s;
+    --slide-fade: calc(var(--slide-period) / 6);
   }
 
   .chapter__frame--slideshow .chapter__slide {
@@ -159,43 +153,39 @@ const titleId = `${chapter}-title`;
       calc(var(--i) * var(--slide-period) - var(--slide-fade)) infinite;
   }
 
-  .chapter__frame--slideshow:hover .chapter__slide {
-    animation-play-state: paused;
-  }
-
   /* keyframes は枚数 n ごとに割合が変わるので 2〜5 枚ぶんを置く (MAX_SLIDES)。
      1 周を 100% として、a = fade / 周 (現れきる)、b = 1 / n (次が上に現れ始める)、c = (period + fade) / 周 (次が現れきる)。
-     z-index は現れる間 2、見せている間 1 (次が上に来る)、消えたら 0。c から 100% は step-start で瞬時に消す。
-     n を増やすときは a = 28.5714 / n、b = 100 / n、c = 128.5714 / n (%) */
+     フェードが周期の 1/6 なので a = 100 / (6n)、b = 100 / n、c = 700 / (6n) (%)。
+     z-index は現れる間 2、見せている間 1 (次が上に来る)、消えたら 0。c から 100% は step-start で瞬時に消す */
   @keyframes chapter-slide-2 {
     0% { opacity: 0; z-index: 2; }
-    14.2857% { opacity: 1; z-index: 2; }
+    8.3333% { opacity: 1; z-index: 2; }
     50% { opacity: 1; z-index: 1; }
-    64.2857% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    58.3333% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
     100% { opacity: 0; z-index: 0; }
   }
 
   @keyframes chapter-slide-3 {
     0% { opacity: 0; z-index: 2; }
-    9.5238% { opacity: 1; z-index: 2; }
+    5.5556% { opacity: 1; z-index: 2; }
     33.3333% { opacity: 1; z-index: 1; }
-    42.8571% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    38.8889% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
     100% { opacity: 0; z-index: 0; }
   }
 
   @keyframes chapter-slide-4 {
     0% { opacity: 0; z-index: 2; }
-    7.1429% { opacity: 1; z-index: 2; }
+    4.1667% { opacity: 1; z-index: 2; }
     25% { opacity: 1; z-index: 1; }
-    32.1429% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    29.1667% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
     100% { opacity: 0; z-index: 0; }
   }
 
   @keyframes chapter-slide-5 {
     0% { opacity: 0; z-index: 2; }
-    5.7143% { opacity: 1; z-index: 2; }
+    3.3333% { opacity: 1; z-index: 2; }
     20% { opacity: 1; z-index: 1; }
-    25.7143% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    23.3333% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
     100% { opacity: 0; z-index: 0; }
   }
 

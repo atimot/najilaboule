@@ -3,6 +3,7 @@ import type { ChapterKey } from '../i18n/types';
 import { imageAlts } from './alts';
 import hero from './images/hero/background.jpg';
 import concept from './images/chapters/concept.jpg';
+import concept2 from './images/chapters/concept-2.jpg';
 import sake from './images/chapters/sake.jpg';
 import obanzai from './images/chapters/obanzai.jpg';
 import riz from './images/chapters/riz.jpg';
@@ -28,8 +29,11 @@ export const images = {
   /** najila_top2 — 炎の写真。全画面 cover */
   hero: { src: hero },
   chapters: {
-    /** najila_top3 — 湯気を上げる釜 */
-    concept: [{ src: concept, alt: imageAlts.concept }],
+    /** najila_top3 — 湯気を上げる釜 → najila_top6 — 釜の中のご飯と杓文字 (長辺 2000px に縮小) */
+    concept: [
+      { src: concept, alt: imageAlts.concept },
+      { src: concept2, alt: imageAlts.concept2 },
+    ],
     /** najila_top12 — カウンターの酒 */
     sake: [{ src: sake, alt: imageAlts.sake }],
     /** obanzai_smp — 仮写真。正式な写真に差し替え予定 (ja.ts の chapters.obanzai.note も一緒に外す) */
