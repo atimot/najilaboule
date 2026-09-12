@@ -205,7 +205,7 @@ components:
 右列はモバイル (768px 未満) の値。フロントマターの `typography` はデスクトップ値。
 
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。**縦書き** (`writing-mode: vertical-rl`) で、高さに収めるため `min(display, 6.5vh)` を上限にし、行間 1.7 (= 2 列の間隔)。改行は文言側で明示する (右列「銀座の夜、」左列「米と汁を嗜む。」)。モバイル 2.25rem。
-- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、2 列に分ける改行は文言側で明示する (「寄り添う、\n旬菜（しゅんさい）。」)。1 列 10 文字以内 (PC の高さ 448px に折り返さずに入る上限)。モバイル 1.875rem。
+- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、2 列に分ける改行は文言側で明示する (「寄り添う、\n駿菜（しゅんさい）。」。「駿菜」は造語で読み仮名つき)。1 列 10 文字以内 (PC の高さ 448px に折り返さずに入る上限)。モバイル 1.875rem。
 - **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): 現在の LP では未使用 (Philosophy を 2026-09-12 に廃止)。姉妹ショップで使えるようトークンは残す。モバイル 1.5rem。
 - **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
