@@ -7,6 +7,7 @@ import concept2 from './images/chapters/concept-2.jpg';
 import sake from './images/chapters/sake.jpg';
 import obanzai from './images/chapters/obanzai.jpg';
 import riz from './images/chapters/riz.jpg';
+import riz2 from './images/chapters/riz-2.jpg';
 import accessBg from './images/access/background.jpg';
 
 export interface SiteImage {
@@ -38,8 +39,11 @@ export const images = {
     sake: [{ src: sake, alt: imageAlts.sake }],
     /** obanzai_smp — 仮写真。正式な写真に差し替え予定 (ja.ts の chapters.obanzai.note も一緒に外す) */
     obanzai: [{ src: obanzai, alt: imageAlts.obanzai }],
-    /** najila_top7 — 炊きあがったご飯と汁 */
-    riz: [{ src: riz, alt: imageAlts.riz }],
+    /** najila_ozen — お膳 (ご飯・汁・梅干し) → najila_shiru1 — ご飯に汁を注ぐ (いずれも長辺 2000px に縮小) */
+    riz: [
+      { src: riz, alt: imageAlts.riz },
+      { src: riz2, alt: imageAlts.riz2 },
+    ],
   },
   /** najila_map1 — ACCÈS の背景 */
   access: { src: accessBg },
