@@ -18,15 +18,14 @@ colors:
   scrollbar-thumb: "#443330"
   dot-white: "#FFFFFF"
   dot-black: "#000000"
-  dot-red: "#E60012"
-  dot-blue: "#0099CC"
-  dot-yellow: "#FFD700"
-  dot-green: "#009944"
-  dot-orange: "#F39800"
-  dot-pink: "#E6007F"
-  dot-purple: "#920783"
-  # 黒ドットの輪郭 (tokens.css --color-dot-border)
-  dot-border: "oklch(44.6% 0.03 256.802)"
+  # ドット 9 色は公式アイコン (public/favicon.svg) の値が正。黒ドットの縁取りは dot-white
+  dot-red: "#E70012"
+  dot-blue: "#00A0EA"
+  dot-yellow: "#FFF100"
+  dot-green: "#23AC38"
+  dot-orange: "#E95412"
+  dot-pink: "#E84191"
+  dot-purple: "#611987"
 typography:
   # fontSize は 768px 以上の値。モバイル値は本文 Typography の表を参照。
   display:
@@ -46,12 +45,6 @@ typography:
     fontSize: "1.875rem"
     fontWeight: 400
     lineHeight: 1.625
-    letterSpacing: "0.1em"
-  brand:
-    fontFamily: Zen Old Mincho, serif
-    fontSize: "1.5rem"
-    fontWeight: 400
-    lineHeight: 1.33
     letterSpacing: "0.1em"
   body:
     fontFamily: Zen Old Mincho, serif
@@ -138,9 +131,10 @@ components:
   field-label:
     textColor: "{colors.text-muted}"
     typography: "{typography.label}"
-  brand-dot:
-    rounded: "{rounded.full}"
-    size: "12px"
+  # アイコン + ロゴの横並びロックアップ (BrandLockup)。size はヘッダー (768px 以上) の高さ
+  brand-lockup:
+    rounded: "{rounded.none}"
+    size: "48px"
   footer-text:
     textColor: "{colors.text-muted}"
     typography: "{typography.caption}"
@@ -193,7 +187,7 @@ components:
 - **スクロールバー (`scrollbar-thumb`, #443330)**: WebKit スクロールバーのつまみ。トラックは `brand`。
 
 ### Brand Dots (装飾専用)
-白・黒・赤・青・黄・緑・橙・桃・紫の 9 色 (`dot-*`) は、ロゴモチーフの 3×3 ドットと、セクションに散らす微小な光点にだけ使う。UI の意味色 (成功・警告・リンクなど) に転用しない。ドットは 30〜50% のグローを伴い、黒ドットだけは #4a5565 相当の 1px 枠で輪郭を出す。
+白・黒・赤・青・黄・緑・橙・桃・紫の 9 色 (`dot-*`) は、公式アイコンの 3×3 ドットと、セクションに散らす微小な光点にだけ使う。UI の意味色 (成功・警告・リンクなど) に転用しない。値は公式アイコン (`public/favicon.svg`) が正。ページ内ではロックアップ (`BrandLockup`) の左側に同じ SVG (`src/assets/icon.svg`) を焦茶の四角ごと inline で置き、色は SVG 内の値をそのまま使う (グローや縁取りの加工はしない)。
 
 ### Named Rules
 **The One Gold Rule.** 金は 1 画面のうちごく一部にしか現れない。CTA も静止時は白の罫線で、ホバーして初めて金に反転する。金が面として存在する時間は「触れている間」だけ。
@@ -213,11 +207,11 @@ components:
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。改行は文言側で明示する。モバイル 2.25rem。
 - **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): Experience・BOUTIQUE・Access の h2。モバイル 1.875rem。
 - **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): Philosophy の h2。行間を広めに取り 2 行タイトルを収める。モバイル 1.5rem。
-- **Brand** (`brand`, 400, 1.5rem / 1.33 / 0.1em): ヘッダーの店名。モバイル 1.25rem。直下にカナ表記 (`label` サイズ、字間 0.2em、`text-muted`) を添える。
+- **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。
 - **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)、Access の予約注記。
 - **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、`ADDRESS` `TEL` `HOURS` `RESERVATION` のフィールドラベル、sm ボタン、営業時間の注記。
-- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `RIZ` `SOUPE` `MARIAGE` `BOUTIQUE` `GINZA` のセクションラベル。金または `text-muted`。
+- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `RIZ` `SOUPE` `MARIAGE` `BOUTIQUE` のセクションラベル。金または `text-muted`。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
 ### 数字と約物
@@ -287,12 +281,12 @@ components:
 - **Focus:** `accent` 2px のアウトライン、offset 2px (全リンク・ボタン共通)
 
 ### Header & Navigation
-- **Desktop:** 左に店名 (`brand`) とカナ表記、右に `Access` リンク (`nav-link`、ホバーで `accent` へ 300ms) と sm の Outline ボタン。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
-- **Mobile:** `Access` リンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (Access セクションへはスクロールで届く)
+- **Desktop:** 左にアイコン + ロゴのロックアップ (高さ 48px)、右に `Access` リンク (`nav-link`、ホバーで `accent` へ 300ms) と sm の Outline ボタン。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
+- **Mobile:** ロックアップは高さ 28px (RESERVATION ボタンと並べて 375px に収める)。`Access` リンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (Access セクションへはスクロールで届く)
 - **Language Switch:** 英語版を追加するまで非表示。追加時は `JP | EN` の静的リンク (0.75rem、字間 0.1em、アクティブは `accent` + 700 + 1px 下線) をナビの右に置く
 
 ### Section Label + Heading
-- **Pattern:** `label-wide` の仏語/英語ラベル (`RIZ` `BOUTIQUE` `GINZA`) を `accent` (Access の `GINZA` は `text-muted`) で置き、8px 下に `headline` の h2、32px 下に本文
+- **Pattern:** `label-wide` の仏語/英語ラベル (`RIZ` `BOUTIQUE`) を `accent` で置き、8px 下に `headline` の h2、32px 下に本文。Access だけは例外で、h2 としてアイコン + ロゴのロックアップ (高さ 72px、モバイル 52px) を置き、ラベルは持たない
 - **Field Label:** Access の `ADDRESS` `TEL` `HOURS` `RESERVATION` は `field-label` (`text-muted`、0.75rem、字間 0.1em) で、4px 下に値
 
 ### Photo Treatment
@@ -301,15 +295,15 @@ components:
 - **Experience:** 90% に減光、16:9、ホバーで 2 秒かけて 1.05 倍。下から `brand` へ溶かす
 - **BOUTIQUE:** 30% に減光して全面背景に、上下を `brand` で締める
 
-### Brand Dots
-- **Style:** 3×3 グリッド、色順固定、各ドットにグロー。Hero の開演では 9 個が 0.2 秒から 0.08 秒ずつずれて 0.5 秒で拡大しながら現れる
-- **Usage:** Hero / Access の 2 箇所。他では使わない
+### Brand Lockup (アイコン + ロゴ)
+- **Style:** 公式アイコン SVG (焦茶の四角 + 3×3 ドット) を左、ロゴを右に同じ高さで横並び。間隔は高さの 0.3 倍。アニメーションは付けない (2026-09-12 のユーザー指示。必要になったら指示がある)
+- **Usage:** ヘッダー (リンク、48px / 28px)、Access の見出し (h2、72px / 52px)、Footer (40px) の 3 箇所。Hero には置かない (h1 とタグラインだけ)
 
 ### Footer
-- **Style:** 上に `line-faint` の 1px 罫線、縦 32px、中央揃え、`footer-text` (`text-muted`、10px、字間 0.1em、`tabular-nums`)。文言は `© {年} Naji la boule. All Rights Reserved.`
+- **Style:** 上に `line-faint` の 1px 罫線、上 64px / 下 32px、中央揃え。アイコン + ロゴのロックアップ (高さ 40px、ロゴの色は `text-soft`) を置き、32px 下に `footer-text` (`text-muted`、10px、字間 0.1em、`tabular-nums`)。文言は `© {年} Naji la boule. All Rights Reserved.`
 
 ### Motion Grammar
-- **開演 (ページ表示時):** 写真が 0.15 → 0.5 に 1.2s で明るくなり、9 つのドットが 0.2s から 0.08s 刻みで灯り、見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。合計約 2.4s、ブロッキングしない
+- **開演 (ページ表示時):** 写真が 0.15 → 0.5 に 1.2s で明るくなり、見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。Hero にアイコンは置かない (2026-09-12 に撤去)。合計約 2.4s、ブロッキングしない
 - **スクロール時の浮き上がり:** `animation-timeline: view()` で、要素が視界に入る区間 (entry 0% → 40%) に不透明度 0 → 1、y +30px → 0。`@supports` で段階適用し、非対応では常時表示
 - **ホバー:** 色は 300ms、ボタンの反転は 500ms、写真の拡大は 2 秒。いずれも ease-out
 - **イージング:** ease-out / ease-in-out のみ。スプリング、バウンス、オーバーシュートは使わない
@@ -319,7 +313,7 @@ components:
 ## Do's and Don'ts
 
 ### Do:
-- **Do** すべての文字を Zen Old Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ
+- **Do** すべての文字を Zen Old Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ。例外はロゴだけ (アウトライン化した SVG なので書体を読み込まない)
 - **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`RIZ` `SOUPE` `MARIAGE` `BOUTIQUE`)
 - **Do** 本文は行間 2、字間 0.1em、色は `text-soft` か `text-muted`
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす

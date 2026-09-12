@@ -21,23 +21,26 @@ astro.config.ts        site / base / fonts (Astro Fonts API、自前ホスト)
 src/
 ├── pages/index.astro  日本語ページ。Base に各セクションを並べ、Hero の preload を渡す
 ├── layouts/Base.astro <head> 一式 (meta / OGP / JSON-LD / フォント / preload)、skip link
-├── components/        Header / Hero / Philosophy / Experience / Boutique / Access / Footer / Button / BrandDots
+├── components/        Header / Hero / Philosophy / Experience / Boutique / Access / Footer / Button / BrandLockup (アイコン + ロゴ)
 ├── content/ja.ts      文言 (型 Copy)。英語版は en.ts を追加
 ├── i18n/              Lang / Copy 型、getCopy(lang)、SUPPORTED_LANGS
 ├── assets/images/     元画像 (JPEG)。<Picture> が AVIF/WebP をビルド時生成
 ├── assets/images.ts   画像の import と alt (alt の文字列は assets/alts.ts)
 ├── assets/alts.ts     画像 alt (ja/en)。字形サブセットの収集元
+├── assets/logo.svg    ロゴ (アウトライン化した SVG、fill=currentColor)。BrandLockup.astro が SVG コンポーネントとして inline 展開
+├── assets/icon.svg    公式アイコン (public/favicon.svg と同一内容。verify-dist が照合)。BrandLockup.astro がロゴの左に inline 展開
 ├── config.ts          SITE (店名・電話・URL・地図) と JSON-LD
 └── styles/
     ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
     └── global.css     リセット、body 背景 3 層、focus ring、.container/.section/.label/.reveal、共通 keyframes、reduced-motion
 scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、外部フォントなし、h1 が 1 つ、preload 等)
+public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドット)。favicon-*.png / apple-touch-icon.png / android-chrome-*.png はここから生成したもの (手編集しない)。ドット色の正でもある (tokens.css の --color-dot-* と同値)
 ```
 
 ## ルール
 
 - **配信 JS を増やさない**。動きは CSS (keyframes / scroll-driven animations) で書き、`@supports` と `prefers-reduced-motion` で段階的に落とす
-- **文言のハードコード禁止**。表示文字列は `src/content/ja.ts` に置き、`getCopy()` 経由で参照する。例外: 欧文の装飾ラベル (RIZ / SOUPE / MARIAGE / BOUTIQUE / GINZA / ADDRESS / TEL / HOURS / RESERVATION / ONLINE SHOP) と画像 alt (`src/assets/images.ts` に ja/en 併記)
+- **文言のハードコード禁止**。表示文字列は `src/content/ja.ts` に置き、`getCopy()` 経由で参照する。例外: 欧文の装飾ラベル (RIZ / SOUPE / MARIAGE / BOUTIQUE / ADDRESS / TEL / HOURS / RESERVATION / ONLINE SHOP) と画像 alt (`src/assets/images.ts` に ja/en 併記)
 - **英語版の継ぎ目を壊さない**。`Copy` 型・`getCopy(lang)`・`Base` の `lang` prop・alt の ja/en 併記を維持する。英語版を足すときは `content/en.ts`、`pages/en/index.astro`、`astro.config.ts` の `i18n`、`SUPPORTED_LANGS` を追加する
 - ブレークポイントは 768px (`48rem`) の 1 本だけ
 - `dist/` と `package-lock.json` は直接編集しない

@@ -1,4 +1,4 @@
-# Naji la boule LP — Astro によるゼロからの再構築 設計
+左に店名 (1.25 / 1.5rem、字間 0.1em) とカナ。右に Access リンク (md 以上のみ) と RESERVATION outline sm (blueprint §5.1)。2026-09-12 更新: 店名テキストをアイコン + ロゴの横並びロックアップ (高さ 28 / 48px) に差し替え |# Naji la boule LP — Astro によるゼロからの再構築 設計
 
 日付: 2026-09-10
 状態: ユーザーレビュー待ち
@@ -70,7 +70,7 @@ src/
 ├── layouts/
 │   └── Base.astro          <html lang> / <head> 一式 / skip link / <slot />
 ├── components/
-│   ├── Header.astro        固定ヘッダー (店名 + カナ / Access リンク (md 以上) / RESERVATION ボタン)
+│   ├── Header.astro        固定ヘッダー (ロゴ SVG / Access リンク (md 以上) / RESERVATION ボタン。2026-09-12 に店名 + カナのテキストからロゴに差し替え)
 │   ├── Hero.astro
 │   ├── Philosophy.astro    3 幕の scrollytelling
 │   ├── Experience.astro    RIZ / SOUPE / MARIAGE のカード ×3
@@ -119,13 +119,14 @@ DOM 順: skip link → `<header>` → `<main>` (Hero `#top` → Philosophy `#phi
 
 | コンポーネント | 内容と見た目 (blueprint の対応節) | 変更点 |
 |---|---|---|
-| Header | 固定・上端・`brand` 90% → 透明のグラデーション + 2px ぼかし。左に店名 (1.25 / 1.5rem、字間 0.1em) とカナ。右に Access リンク (md 以上のみ) と RESERVATION outline sm (blueprint §5.1) | ハンバーガーと言語スイッチを廃止。モバイルでも RESERVATION を直置き |
-| Hero | 100vh、背景写真 (50% + grayscale + slow-zoom)、上下グラデーション、ドット md、h1、タグライン (§6) | 二重スケールを解消し 1.1 → 1.2 の単一スケールに。「開演」演出 (§7.1) |
+| Header | 固定・上端・`brand` 90% → 透明のグラデーション + 2px ぼかし。左に店名 (1.25 / 1.5rem、字間 0.1em) とカナ。右に Access リンク (md 以上のみ) と RESERVATION outline sm (blueprint §5.1)。2026-09-12 更新: 店名テキストをアイコン + ロゴの横並びロックアップ (高さ 28 / 48px) に差し替え | ハンバーガーと言語スイッチを廃止。モバイルでも RESERVATION を直置き |
+| Hero | 100vh、背景写真 (50% + grayscale + slow-zoom)、上下グラデーション、ドット md、h1、タグライン (§6) | 二重スケールを解消し 1.1 → 1.2 の単一スケールに。「開演」演出 (§7.1)。2026-09-12 更新: ドットを公式アイコン SVG に置き換えたのち、同日 Hero からアイコンを撤去 (h1 とタグラインのみ) |
 | Philosophy | 3 幕の scrollytelling (§7.3)。文言は `philoSlides` の 3 組 | 自動スライダーとインジケータを廃止 |
 | Experience | 画像 16:9 + 文章の 2 カラム、左右交互 (§8) | 変更なし |
 | Boutique | 背景写真 30% + 上下グラデーション、48rem の文章、ONLINE SHOP ボタン (§9) | 変更なし |
 | Access | `brand-dark` 背景、ドット sm、2 列グリッド、RESERVATION filled lg、地図 iframe (§10) | 変更なし |
-| Footer | 10px、罫線 5% (§11) | 変更なし |
+| Footer | 10px、罫線 5% (§11) | 変更なし。2026-09-12 更新: 著作権表記の上にアイコン + ロゴの横並びロックアップを追加 |
+| Access (補足) | アイコン sm + h2 店名 + GINZA ラベル | 2026-09-12 更新: h2 をアイコン + ロゴの横並びロックアップ (ロゴが role="img") に差し替え、GINZA ラベルを削除 |
 | BrandDots | 3×3、9 色、グロー (§3.1) | animated は Hero の開演でのみ使用 |
 | Button | outline / filled × sm / md / lg (§3.2) | 変更なし |
 
@@ -212,7 +213,7 @@ DOM 順: skip link → `<header>` → `<main>` (Hero `#top` → Philosophy `#phi
 
 - `<html lang="ja" class="dark" style="color-scheme: dark">`、`theme-color #241816`、viewport
 - title `Naji la boule | Ginza`、description (ja.ts)、canonical、OGP (ja_JP、`images/ogp.jpg`)、`twitter:card`、JSON-LD `Restaurant` (現行 index.html の内容を `config.ts` から生成)
-- favicon 一式と `site.webmanifest` は現状維持
+- favicon 一式と `site.webmanifest` は現状維持 (2026-09-12 更新: 正式アイコン `public/favicon.svg` を追加し、PNG 群をそこから再生成)
 - `public/sitemap.xml` は 1 URL、`robots.txt` は現状維持
 - skip link (「本文へ」)、ランドマーク、h1 は 1 つ、`section[aria-labelledby]`、`a:focus-visible` / `button:focus-visible` のリング、外部リンクの `rel="noopener noreferrer"` と aria-label、`tel:` リンクの aria-label、iframe title
 - noscript 文言は不要 (JS がないため)

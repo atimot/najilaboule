@@ -1,0 +1,38 @@
+---
+/**
+ * 公式アイコン (src/assets/icon.svg) を左、ロゴ (src/assets/logo.svg、ワードマーク + カナ) を右に並べたロックアップ。
+ * 高さは親要素が --lockup-height で指定する (アイコンもロゴも同じ高さ、間隔は高さの 0.3 倍)。
+ * label を渡すとロゴが role="img" として読まれる。省略時は装飾 (aria-hidden)。アニメーションは付けない。
+ */
+import Icon from '@/assets/icon.svg';
+import Logo from '@/assets/logo.svg';
+
+interface Props {
+  /** ロゴのアクセシブルネーム (Access の h2 など、読ませたいとき) */
+  label?: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<span class:list={['lockup', className]} aria-hidden={label ? undefined : 'true'}>
+  <Icon class="lockup__icon" aria-hidden="true" />
+  {label ? <Logo class="lockup__logo" role="img" aria-label={label} /> : <Logo class="lockup__logo" aria-hidden="true" />}
+</span>
+
+<style>
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--lockup-height) * 0.3);
+    vertical-align: top;
+  }
+
+  .lockup__icon,
+  .lockup__logo {
+    display: block;
+    width: auto;
+    height: var(--lockup-height);
+  }
+</style>
