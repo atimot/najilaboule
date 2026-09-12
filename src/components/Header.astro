@@ -2,7 +2,7 @@
 import BrandLockup from '@/components/BrandLockup.astro';
 import Button from '@/components/Button.astro';
 import { SITE } from '@/config';
-import { getCopy } from '@/i18n';
+import { NAV_TARGETS, getCopy } from '@/i18n';
 
 const t = getCopy(Astro.currentLocale);
 ---
@@ -12,7 +12,10 @@ const t = getCopy(Astro.currentLocale);
     <BrandLockup class="brand__lockup" />
   </a>
   <nav class="nav" aria-label={t.common.navLabel}>
-    <a href="#access" class="nav__link">{t.header.navAccess}</a>
+    <!-- Concept · Saké · Obanzai · Boutique · Access の 5 本 (並びとリンク先は NAV_TARGETS)。1024px 以上だけ表示 -->
+    <div class="nav__links">
+      {NAV_TARGETS.map((id) => <a href={`#${id}`} class="nav__link">{t.header.nav[id]}</a>)}
+    </div>
     <Button href={SITE.phoneHref} ariaLabel={`RESERVATION: ${t.common.reserveByPhone} (${SITE.phone})`} variant="outline" size="sm">
       RESERVATION
     </Button>
@@ -37,11 +40,13 @@ const t = getCopy(Astro.currentLocale);
     animation: fade-in 1s var(--ease-out) 1.4s both;
   }
 
-  /* アイコン + ロゴのロックアップ (BrandLockup)。ロゴは currentColor でヘッダーの文字色を継ぐ */
+  /* アイコン + ロゴのロックアップ (BrandLockup)。ロゴは currentColor でヘッダーの文字色を継ぐ。
+     flex-shrink: 0 でナビに押されて潰れないようにする */
   .brand {
     --lockup-height: var(--logo-height-mobile);
 
     display: block;
+    flex-shrink: 0;
     width: fit-content;
   }
 
@@ -54,9 +59,15 @@ const t = getCopy(Astro.currentLocale);
     letter-spacing: var(--tracking-wide);
   }
 
-  /* モバイルでは Access リンクを省き、RESERVATION だけを置く (spec §14 #3) */
-  .nav__link {
+  /* リンク 5 本は 1024px 以上だけ。ロックアップ + リンク 5 本 + RESERVATION は 768〜1023px に収まらない (handoff §4.0)。
+     それ未満は RESERVATION ボタンだけ (spec §14 #3) */
+  .nav__links {
     display: none;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav__link {
     transition: color var(--duration-hover);
   }
 
@@ -72,9 +83,11 @@ const t = getCopy(Astro.currentLocale);
     .brand {
       --lockup-height: var(--logo-height);
     }
+  }
 
-    .nav__link {
-      display: inline;
+  @media (min-width: 64rem) {
+    .nav__links {
+      display: flex;
     }
   }
 </style>

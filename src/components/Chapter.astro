@@ -1,0 +1,187 @@
+---
+/**
+ * 献立の 1 章 (壱〜四)。左右に写真 (4:3) と文章列を並べ、文章は縦書き (h2 が右、本文が左)。
+ * 4 章の並びと写真の扱いは Chapters.astro が持つ。
+ */
+import { Picture } from 'astro:assets';
+import { images } from '@/assets/images';
+import { getCopy, type ChapterKey } from '@/i18n';
+
+interface Props {
+  /** 章のキー = セクションの id (#concept など) */
+  chapter: ChapterKey;
+  /** 写真を右に置く (弐・四)。文章列は右寄せになる */
+  reverse?: boolean;
+  /** 写真の object-position (handoff §3) */
+  photoPosition?: string;
+  /** 写真の減光 brightness() (handoff §3) */
+  photoBrightness?: number;
+}
+
+const { chapter, reverse = false, photoPosition = '50% 50%', photoBrightness = 0.75 } = Astro.props;
+const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
+const t = getCopy(lang);
+const c = t.chapters[chapter];
+const photo = images.chapters[chapter];
+const titleId = `${chapter}-title`;
+---
+
+<section
+  id={chapter}
+  class:list={['chapter', reverse && 'chapter--reverse']}
+  aria-labelledby={titleId}
+  style={`--photo-position: ${photoPosition}; --photo-brightness: ${photoBrightness}`}
+>
+  <figure class="chapter__photo reveal">
+    <div class="chapter__frame">
+      <Picture
+        src={photo.src}
+        formats={['avif', 'webp']}
+        widths={[800, 1600]}
+        sizes="(min-width: 48rem) 48rem, 100vw"
+        alt={photo.alt[lang]}
+      />
+    </div>
+    {c.note && <figcaption class="chapter__note">{c.note}</figcaption>}
+  </figure>
+
+  <div class="chapter__text reveal">
+    <p class="chapter__kicker">
+      <span class="chapter__number">{c.number}</span>
+      <span class="chapter__label">{c.label}</span>
+    </p>
+    <!-- 縦書き。vertical-rl の flex column は右 → 左に並ぶので h2 が右、本文が左 -->
+    <div class="chapter__vertical">
+      <h2 id={titleId} class="chapter__title">{c.title}</h2>
+      <p class="chapter__body">{c.body}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* 写真 60 : 文章 40。300px を下限に、狭ければ写真 → 文章の順に 1 列へ折り返す */
+  .chapter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-stack-xl);
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+  }
+
+  /* 弐・四は写真が右。wrap しても行の順は変わらないので写真が上に来る */
+  .chapter--reverse {
+    flex-direction: row-reverse;
+  }
+
+  .chapter__photo {
+    flex: 60 1 0px;
+    min-width: min(100%, 300px);
+    margin: 0;
+  }
+
+  .chapter__frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .chapter__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--photo-position);
+    filter: brightness(var(--photo-brightness));
+    transition: scale 2s;
+  }
+
+  .chapter__frame:hover :global(img) {
+    scale: 1.05;
+  }
+
+  /* 下勾配: 写真の下端を brand に溶かす */
+  .chapter__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--color-brand), transparent 45%);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .chapter__note {
+    margin-top: 12px;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .chapter__text {
+    display: flex;
+    flex: 40 1 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    min-width: min(100%, 300px);
+  }
+
+  .chapter--reverse .chapter__text {
+    align-items: flex-end;
+  }
+
+  /* 章番号 (label / text-muted) + 仏語ラベル (label-wide / accent) */
+  .chapter__kicker {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+  }
+
+  .chapter__number {
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .chapter__label {
+    letter-spacing: var(--tracking-widest);
+    color: var(--color-accent);
+  }
+
+  /* 縦書きブロック。高さは本文 1 行 (23 文字以内) が折り返さない 420px 以上 */
+  .chapter__vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    height: clamp(420px, 34vw, 440px);
+    writing-mode: vertical-rl;
+  }
+
+  .chapter__title {
+    font-size: var(--text-headline-mobile);
+    line-height: var(--leading-headline);
+    letter-spacing: var(--tracking-wide);
+    white-space: pre-line;
+  }
+
+  /* 行間 2 が縦書きでは列の間隔になる */
+  .chapter__body {
+    font-size: var(--text-body-mobile);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-soft);
+    white-space: pre-line;
+  }
+
+  @media (min-width: 48rem) {
+    .chapter__title {
+      font-size: var(--text-headline);
+    }
+
+    .chapter__body {
+      font-size: var(--text-body);
+    }
+  }
+</style>

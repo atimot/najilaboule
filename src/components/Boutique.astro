@@ -1,20 +1,14 @@
 ---
-import { Picture } from 'astro:assets';
 import Button from '@/components/Button.astro';
-import { images } from '@/assets/images';
 import { SITE } from '@/config';
 import { getCopy } from '@/i18n';
 
 const t = getCopy(Astro.currentLocale);
 ---
 
-<section id="shop" class="boutique section" aria-labelledby="boutique-title">
-  <div class="boutique__bg" aria-hidden="true">
-    <Picture src={images.riceGift.src} formats={['avif', 'webp']} widths={[800, 1600, 2400]} sizes="100vw" alt="" />
-    <div class="boutique__overlay"></div>
-  </div>
-
-  <div class="boutique__content container container--narrow reveal">
+<section id="shop" class="boutique" aria-labelledby="boutique-title">
+  <!-- 背景写真は置かない。1px の罫線 (line) で囲った中央寄せの箱 -->
+  <div class="boutique__box container container--narrow reveal">
     <span class="label">BOUTIQUE</span>
     <h2 id="boutique-title" class="boutique__title">{t.boutique.title}</h2>
     <p class="boutique__body">{t.boutique.body}</p>
@@ -25,38 +19,14 @@ const t = getCopy(Astro.currentLocale);
 </section>
 
 <style>
+  /* 章の列 (Chapters) の直後なので上の余白は 0。下だけ section-y */
   .boutique {
-    position: relative;
-    overflow: hidden;
+    padding: 0 var(--space-section-x) var(--space-section-y);
   }
 
-  .boutique__bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .boutique__bg :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.3);
-  }
-
-  .boutique__overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      var(--color-brand),
-      color-mix(in srgb, var(--color-brand) 40%, transparent),
-      var(--color-brand)
-    );
-  }
-
-  .boutique__content {
-    position: relative;
-    z-index: 1;
+  .boutique__box {
+    padding: clamp(48px, 8vw, 96px) var(--space-section-x);
+    border: 1px solid var(--color-line);
     text-align: center;
   }
 
@@ -77,12 +47,20 @@ const t = getCopy(Astro.currentLocale);
     white-space: pre-line;
   }
 
-  /* 現行の ONLINE SHOP は md ボタンより左右が広い (px-10 = 40px) */
+  /* ONLINE SHOP は md ボタンより左右が広い (40px) */
   .boutique :global(.boutique__cta) {
     padding-inline: 40px;
   }
 
   @media (min-width: 48rem) {
+    .boutique {
+      padding: 0 var(--space-section-x-md) var(--space-section-y-md);
+    }
+
+    .boutique__box {
+      padding-inline: var(--space-section-x-md);
+    }
+
     .boutique__title {
       font-size: var(--text-headline);
     }

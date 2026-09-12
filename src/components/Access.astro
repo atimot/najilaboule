@@ -1,6 +1,7 @@
 ---
+import { Picture } from 'astro:assets';
 import BrandLockup from '@/components/BrandLockup.astro';
-import Button from '@/components/Button.astro';
+import { images } from '@/assets/images';
 import { SITE } from '@/config';
 import { getCopy } from '@/i18n';
 
@@ -10,8 +11,15 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
 ---
 
 <section id="access" class="access section" aria-labelledby="access-title">
+  <!-- 背景写真 (0.3 に減光 + 彩度 0.7)。上下を brand で締める -->
+  <div class="access__bg" aria-hidden="true">
+    <Picture src={images.access.src} formats={['avif', 'webp']} widths={[800, 1600, 2400]} sizes="100vw" alt="" />
+    <div class="access__overlay"></div>
+  </div>
+
   <div class="access__inner container">
     <div class="access__head reveal">
+      <span class="label access__label">{t.access.label}</span>
       <!-- 見出しはアイコン + ロゴのロックアップ。見出し文字列としてはロゴ (role="img") の aria-label が読まれる -->
       <h2 id="access-title" class="access__title">
         <BrandLockup label={`${SITE.name} ${SITE.kana}`} />
@@ -19,45 +27,34 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
     </div>
 
     <div class="info reveal">
-      <div class="info__col">
-        <div>
-          <p class="field__label">ADDRESS</p>
-          <p class="field__value">{t.access.address}</p>
-        </div>
-        <div>
-          <p class="field__label">TEL</p>
-          <p class="field__value">
-            <a href={SITE.phoneHref} class="tel">{SITE.phone}</a>
-          </p>
-        </div>
-        <div>
-          <p class="field__label">HOURS</p>
-          <p class="field__value field__value--nums">
-            {t.access.hoursMain}
-            <br />
-            <span class="field__note">{t.access.hoursClosed}</span>
-          </p>
-        </div>
+      <div>
+        <p class="field__label">ADDRESS</p>
+        <p class="field__value">{t.access.address}</p>
       </div>
-      <div class="info__col">
-        <div>
-          <p class="field__label">RESERVATION</p>
-          <p class="field__value reservation__heading">{t.access.reservationHeading}</p>
-          <p class="reservation__note">{t.access.reservationNote}</p>
-        </div>
-        <Button href={SITE.phoneHref} ariaLabel={`RESERVATION: ${t.common.reserveByPhone} (${SITE.phone})`} variant="filled" size="lg">
-          RESERVATION
-        </Button>
+      <div>
+        <p class="field__label">TEL</p>
+        <p class="field__value">
+          <a href={SITE.phoneHref} class="tel">{SITE.phone}</a>
+        </p>
+      </div>
+      <div>
+        <p class="field__label">HOURS</p>
+        <p class="field__value field__value--nums">
+          {t.access.hoursMain}
+          <br />
+          <span class="field__note">{t.access.hoursClosed}</span>
+        </p>
       </div>
     </div>
 
+    <!-- 地図はグレースケールにして世界観に沈める -->
     <div class="map reveal">
       <iframe
+        class="map__frame"
         title={t.access.mapTitle}
         src={mapSrc}
         width="100%"
         height="100%"
-        style="border: 0"
         allowfullscreen
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
@@ -69,15 +66,46 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
 <style>
   .access {
     position: relative;
-    background: var(--color-brand-dark);
+    overflow: hidden;
+  }
+
+  .access__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .access__bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% 40%;
+    filter: brightness(0.3) saturate(0.7);
+  }
+
+  .access__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--color-brand),
+      color-mix(in srgb, var(--color-brand) 40%, transparent),
+      var(--color-brand)
+    );
   }
 
   .access__inner {
+    position: relative;
+    z-index: 1;
     text-align: center;
   }
 
   .access__head {
-    margin-bottom: var(--space-stack-lg);
+    margin-bottom: var(--space-stack-xl);
+  }
+
+  .access__label {
+    margin-bottom: 24px;
   }
 
   .access__title {
@@ -86,17 +114,13 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
     margin: 0;
   }
 
+  /* ADDRESS / TEL / HOURS。200px を下限に 1〜3 列へ自動で折り返す。幅 56rem は 3 列が間延びしない上限 */
   .info {
     display: grid;
-    gap: var(--space-stack-lg);
-    margin-bottom: var(--space-stack-xl);
-    text-align: left;
-  }
-
-  .info__col {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: var(--space-stack) var(--space-stack-lg);
+    max-width: 56rem;
+    margin: 0 auto var(--space-stack-xl);
   }
 
   .field__label {
@@ -130,30 +154,20 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
     color: var(--color-text-muted);
   }
 
-  .reservation__heading {
-    margin-bottom: 8px;
-  }
-
-  .reservation__note {
-    font-size: var(--text-menu);
-    line-height: var(--leading-body);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-text-muted);
-    white-space: pre-line;
-  }
-
   .map {
     width: 100%;
-    height: 256px;
+    height: 320px;
+  }
+
+  .map__frame {
+    display: block;
+    border: 0;
+    filter: grayscale(100%) brightness(0.85);
   }
 
   @media (min-width: 48rem) {
     .access__title {
       --lockup-height: var(--logo-height-access);
-    }
-
-    .info {
-      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

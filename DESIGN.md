@@ -164,7 +164,7 @@ components:
 - 差し色は金 (`accent` #C8A67B) のみ。ホバー・フォーカス・小ラベルに限って使い、面を塗らない
 - 書体は Zen Old Mincho の 1 書体だけ (和文も欧文も)。サンセリフは存在しない
 - ウェイトは 400 が既定。700 は言語スイッチのアクティブ表示にしか使わない
-- 写真は必ず減光し (25〜90%)、下端を `brand` へ溶かすグラデーションを重ねる
+- 写真は必ず減光し (Hero 70% / 章 75〜80% / ACCÈS 30%)、下端を `brand` へ溶かすグラデーションを重ねる
 - 角丸も影もない。ブランドの 9 色ドットだけが円形で、淡いグローをまとう
 - 余白は広く。縦 96px / 160px、横 24px / 80px を標準とし、迷ったら広い方を選ぶ
 - 動きは 1 秒のフェードが基本。`prefers-reduced-motion` を必ず尊重する
@@ -174,16 +174,16 @@ components:
 パレットは「焦茶の階調 + 白の階調 + 金 1 色」で構成し、それ以外の彩度のある色はブランドドットの装飾にしか現れない。
 
 ### Primary
-- **金 (`accent` / `primary`, #C8A67B)**: 唯一の差し色。ボタンのホバー反転面、リンクのホバー色、フォーカスリング (2px / offset 2px)、`RIZ` `SOUPE` `BOUTIQUE` などの仏語小ラベル、言語スイッチのアクティブ表示に使う。静止状態の面を塗ることはない。
+- **金 (`accent` / `primary`, #C8A67B)**: 唯一の差し色。ボタンのホバー反転面、リンクのホバー色、フォーカスリング (2px / offset 2px)、`MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS` などの仏語小ラベル、言語スイッチのアクティブ表示に使う。静止状態の面を塗ることはない。
 
 ### Neutral
 - **焦茶 (`brand`, #241816)**: 全体の背景。写真の下端を溶かすグラデーションの終点も同じ色。
-- **深い焦茶 (`brand-dark`, #1f1513)**: Access セクションの背景と、body 背景の右下に落とすラジアルグラデーションの暗部。
+- **深い焦茶 (`brand-dark`, #1f1513)**: body 背景の右下に落とすラジアルグラデーションの暗部。以前は Access の背景にも使ったが、2026-09-12 に写真背景へ替えた。
 - **浮いた焦茶 (`brand-light`, #2a1d1b)**: body 背景の左上に差す微光の起点 (`accent` を 6% 混ぜる)。カードやホバー面にも使えるが、LP では背景以外に使っていない。
 - **本文の白 (`text`, #f8f8f8)**: 見出し・本文・ボタン文字の既定色。純白 (#fff) は使わない。
-- **やわらかい白 (`text-soft`, oklch(87.2% 0.01 258.338) ≈ #d1d5dc)**: Philosophy と BOUTIQUE の本文。長めの段落を白より一段落として読ませる。
-- **沈めた白 (`text-muted`, oklch(70.7% 0.022 261.325) ≈ #99a1af)**: タグライン、Experience 本文、`ADDRESS` `TEL` などのフィールドラベル、カナ表記、フッター。暗背景で許容するいちばん薄い文字色。
-- **罫線の白 (`line-strong` 50% / `line` 20% / `line-faint` 5%)**: それぞれ outline ボタンの枠、filled ボタンの枠、フッター上の区切り線。白のアルファで引き、実色の罫線は使わない。
+- **やわらかい白 (`text-soft`, oklch(87.2% 0.01 258.338) ≈ #d1d5dc)**: 章 (壱〜四) と BOUTIQUE の本文。長めの段落を白より一段落として読ませる。
+- **沈めた白 (`text-muted`, oklch(70.7% 0.022 261.325) ≈ #99a1af)**: タグライン、章番号 (壱弐参四)、仮写真の注記、`ADDRESS` `TEL` などのフィールドラベル、フッター。暗背景で許容するいちばん薄い文字色。
+- **罫線の白 (`line-strong` 50% / `line` 20% / `line-faint` 5%)**: それぞれ outline ボタンの枠、BOUTIQUE の箱の枠 (filled ボタンの枠も同じ)、フッター上の区切り線。白のアルファで引き、実色の罫線は使わない。
 - **スクロールバー (`scrollbar-thumb`, #443330)**: WebKit スクロールバーのつまみ。トラックは `brand`。
 
 ### Brand Dots (装飾専用)
@@ -192,7 +192,7 @@ components:
 ### Named Rules
 **The One Gold Rule.** 金は 1 画面のうちごく一部にしか現れない。CTA も静止時は白の罫線で、ホバーして初めて金に反転する。金が面として存在する時間は「触れている間」だけ。
 
-**The Dimmed Photo Rule.** 写真をそのままの明るさで置かない。Hero は 50% + グレースケール、Philosophy は 25%、BOUTIQUE は 30%、Experience は 90% に落とし、いずれも `brand` へのグラデーションで地に沈める。
+**The Dimmed Photo Rule.** 写真をそのままの明るさで置かない。Hero は brightness 0.8 × 彩度 0.8 × 不透明度 0.7、章の写真は brightness 0.75 (壱・弐) / 0.8 (参・四)、ACCÈS の背景は brightness 0.3 × 彩度 0.7 に落とし、いずれも `brand` へのグラデーションで地に沈める。BOUTIQUE に写真は置かない。
 
 ## Typography
 
@@ -204,21 +204,21 @@ components:
 ### Hierarchy
 右列はモバイル (768px 未満) の値。フロントマターの `typography` はデスクトップ値。
 
-- **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。改行は文言側で明示する。モバイル 2.25rem。
-- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): Experience・BOUTIQUE・Access の h2。モバイル 1.875rem。
-- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): Philosophy の h2。行間を広めに取り 2 行タイトルを収める。モバイル 1.5rem。
+- **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。**縦書き** (`writing-mode: vertical-rl`) で、高さに収めるため `min(display, 6.5vh)` を上限にし、行間 1.7 (= 2 列の間隔)。改行は文言側で明示する (右列「銀座の夜、」左列「米と汁を嗜む。」)。モバイル 2.25rem。
+- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、2 列に分ける改行は文言側で明示する (「寄り添う、\nおばんざい。」)。モバイル 1.875rem。
+- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): 現在の LP では未使用 (Philosophy を 2026-09-12 に廃止)。姉妹ショップで使えるようトークンは残す。モバイル 1.5rem。
 - **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
-- **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。
-- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)、Access の予約注記。
-- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、`ADDRESS` `TEL` `HOURS` `RESERVATION` のフィールドラベル、sm ボタン、営業時間の注記。
-- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `RIZ` `SOUPE` `MARIAGE` `BOUTIQUE` のセクションラベル。金または `text-muted`。
+- **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
+- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)。
+- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、仮写真の注記 (figcaption)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン、営業時間の注記。
+- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` (章番号の右に添える) と `BOUTIQUE` `ACCÈS` のセクションラベル。金。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
 ### 数字と約物
 - 電話番号・営業時間・年号は `font-variant-numeric: tabular-nums` を数字を含む要素に直接付ける (継承に頼らず、数字を含む要素に直接)
 - アポストロフィは曲線 `’`、レンジは en dash `–` (`18:30 – 23:30`)、三点リーダーは `…`
 - 引用符は和文で「」、欧文で曲線の “ ”
-- 体言止め + 読点のブランド語感 (「結ぶ、米。」「ほどける、汁。」「揺蕩う、盃。」) を新規コピーでも維持する。主要カテゴリには仏語の小ラベルを添える
+- 体言止め + 読点のブランド語感 (「一釜、一膳。」「待つという、贅沢。」「そして、一膳。」) を新規コピーでも維持する。章には漢数字の章番号 (壱弐参四) と仏語の小ラベルを添える
 
 ### Named Rules
 **The Serif-Only Rule.** すべての文字が明朝体。ラベルも数字もボタンも例外はない。
@@ -229,26 +229,26 @@ components:
 
 ## Layout
 
-**単一ブレークポイント。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない。
+**単一ブレークポイント (+ ナビだけ 1 本)。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない。唯一の例外はヘッダーのナビリンク 5 本で、ロックアップ + リンク 5 本 + RESERVATION が 768〜1023px に収まらないため 1024px (`64rem`) 以上で表示する (`Header.astro` のみ)。
 
-**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`、Philosophy はモバイルで `min-height: 80vh`。「1 セクション = 1 画面ぶんの余白」が基準。
+**セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`。章 4 つは 1 つの列 (padding 縦 section-y / 横 section-x) に `card-gap` で並べ、BOUTIQUE はその直後なので上の余白は 0。「1 セクション = 1 画面ぶんの余白」が基準。
 
-**コンテナ幅。** 標準は 80rem (1280px) 中央寄せ。BOUTIQUE のように文章だけのセクションは 48rem (768px) に絞る。
+**コンテナ幅。** 標準は 80rem (1280px) 中央寄せ。BOUTIQUE のように文章だけのセクションは 48rem (768px) に絞る。ACCÈS のフィールド 3 列は 56rem。
 
-**2 カラムの比率。** Philosophy は画像 55% : 文章 45%、Experience は 50% : 50% で左右を交互に反転 (RIZ 画像右、SOUPE 画像左、MARIAGE 画像右)、Access は等幅 2 列グリッド。カラム間は 32〜48px。
+**2 カラムの比率。** 章は写真 60 : 文章 40 (`flex: 60 1 0` / `40 1 0`、下限 300px、間 64px) で左右を交互に反転 (壱・参は写真左、弐・四は写真右。写真が右のときは文章列を右寄せ)。Access のフィールドは 200px 下限の auto-fit グリッド (1〜3 列、間 32px × 48px)。
 
-**モバイルの画像の扱い。** Philosophy はモバイルで画像を文章の背面に敷き (絶対配置、25% 減光、上下を `brand` 85% で締める)、文章を中央揃えで前面に置く。Experience は画像 (16:9) の下に文章を積む。
+**モバイルの画像の扱い。** 章は wrap で 1 列に積む。写真 (4:3) → 文章の順で、写真が右の章 (`row-reverse`) でも写真が上に来る。文章の縦書きブロックはモバイルでも縦書きのまま (高さ 420px)。
 
-**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 2px の背景ぼかしで写真の上に浮かせる。モバイルでは Access リンクを省き、右上に RESERVATION ボタンだけを置く。
+**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 2px の背景ぼかしで写真の上に浮かせる。ブランドのアンカーは `flex-shrink: 0` で潰れないようにする。ナビリンク 5 本 (Concept · Saké · Obanzai · Boutique · Access) は 1024px 以上だけで、それ未満は右上に RESERVATION ボタンだけを置く。
 
-**縦の積み方。** 見出し下 32px (`stack`)、段落下 32〜48px (`stack` / `stack-lg`)、地図など補助要素の上 64px (`stack-xl`)。Experience のカード間は 96px / 128px (`card-gap` / `card-gap-md`)。
+**縦の積み方。** 見出し下 32px (`stack`)、段落下 32〜48px (`stack` / `stack-lg`)、地図など補助要素の上 64px (`stack-xl`)。章の間は 96px / 128px (`card-gap` / `card-gap-md`)。章の中は、ラベル行 → 縦書きブロックの間 40px、縦書きの h2 → 本文の間 40px (列の間隔)。
 
 ## Elevation & Depth
 
 **影は使わない。** `box-shadow` も `drop-shadow` も UI には存在しない。奥行きは次の 3 つだけで作る。
 
 1. **体の背景 3 層。** ベースの `brand` の上に、240px タイルの SVG フラクタルノイズ (`soft-light` 合成、不透明度 0.7) を敷き、左上から `accent` 6% を混ぜた `brand-light` の楕円グラデーション、右下から `brand-dark` の楕円グラデーションを差す。3 層とも `background-attachment: fixed`。
-2. **写真の減光とグラデーション。** 写真は Dimmed Photo Rule で暗くし、その上に `brand` へ溶けるグラデーションを重ねる。Hero は上 60% → 透明 → 下 100%、Experience は下から 100% → 透明 (全体 60%)、BOUTIQUE は上下 100% で中央 40%、Philosophy (モバイル) は上下 85% で中央 50%。
+2. **写真の減光とグラデーション。** 写真は Dimmed Photo Rule で暗くし、その上に `brand` へ溶けるグラデーションを重ねる。Hero は上 70% → 45% 地点で 20% → 下 100%、章は下から 100% → 45% 地点で透明 (全体 60%)、ACCÈS は上下 100% で中央 40%。
 3. **背景ぼかし。** ヘッダーは 2px のバックドロップフィルタで、下の写真を感じさせながら読みやすさを確保する。
 
 **唯一の発光。** ブランドドットだけが `0 0 10px` のグローを持つ (白ドット 50%、色ドット 30%、黒ドットはグローなし)。セクションに散らす光点は 1px のぼかしで滲ませる。
@@ -262,38 +262,39 @@ components:
 
 **角は直角。** ボタン、写真、カード、iframe、すべて `border-radius: 0`。角丸は円形の要素 (ブランドドット、装飾の光点) と WebKit スクロールバーのつまみ (4px) にしか現れない。
 
-**線は 1px。** ボタンの枠とフッターの区切りは、いずれも 1px の細線。太い罫線や塗りの分割線はない。
+**線は 1px。** ボタンの枠、BOUTIQUE の箱の枠 (`line`)、フッターの区切りは、いずれも 1px の細線。太い罫線や塗りの分割線はない。
 
-**写真の比率。** Experience は 16:9 (`aspect-video`)、Philosophy はデスクトップで高さ 700px 固定、Hero と BOUTIQUE は画面いっぱいに `object-fit: cover`。
+**写真の比率。** 章の写真は 4:3 (`aspect-ratio: 4 / 3`)、Hero と ACCÈS の背景は画面いっぱいに `object-fit: cover` (Hero は `object-position: 40% 55%`、ACCÈS は `30% 40%`)。地図の iframe は高さ 320px で `grayscale(100%) brightness(0.85)`。
 
 **アイコンは持たない。** アイコンフォントも SVG アイコンセットも使わない。外部リンクの印は文字の `↗`。
 
-**ブランドモチーフ。** 3×3 の 9 ドット (白・黒・赤 / 青・黄・緑 / 橙・桃・紫 の順) が唯一の図形要素。Hero (12px → 16px、間隔 12px → 16px、開演で 1 つずつ灯る)、Access (8px、間隔 8px、不透明度 50%) の 2 箇所に置く。
+**ブランドモチーフ。** 3×3 の 9 ドット (白・黒・赤 / 青・黄・緑 / 橙・桃・紫 の順) が唯一の図形要素で、公式アイコンの中にだけ現れる (Brand Lockup 参照)。ページ内に単独のドットは置かない。
 
 ## Components
 
 ### Buttons
 - **Shape:** 直角、1px の枠、字間 0.1em、文字は `RESERVATION` のように英字大文字
 - **Outline (`button-outline`):** 透明地に `line-strong` (白 50%) の枠、文字は `text`。ホバーで地・枠ともに `accent`、文字は `brand` に反転
-- **Filled (`button-filled`):** 白 5% の地に `line` (白 20%) の枠。ホバーで地が白、文字が `brand`。Access の予約ボタンで幅 100% にして使う
-- **Sizes:** sm 8px × 24px / 0.75rem (ヘッダー)、md 12px × 32px / 0.875rem (BOUTIQUE、横 40px)、lg 16px × 32px / 0.875rem (Access)
+- **Filled (`button-filled`):** 白 5% の地に `line` (白 20%) の枠。ホバーで地が白、文字が `brand`。現在の LP では未使用 (Access の予約ブロックを 2026-09-12 に廃止。予約導線はヘッダーの RESERVATION だけ)
+- **Sizes:** sm 8px × 24px / 0.75rem (ヘッダー)、md 12px × 32px / 0.875rem (BOUTIQUE、横 40px)、lg 16px × 32px / 0.875rem (未使用)
 - **Transition:** 背景色・枠色・文字色を 500ms で同時に遷移
 - **Focus:** `accent` 2px のアウトライン、offset 2px (全リンク・ボタン共通)
 
 ### Header & Navigation
-- **Desktop:** 左にアイコン + ロゴのロックアップ (高さ 48px)、右に `Access` リンク (`nav-link`、ホバーで `accent` へ 300ms) と sm の Outline ボタン。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
-- **Mobile:** ロックアップは高さ 28px (RESERVATION ボタンと並べて 375px に収める)。`Access` リンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (Access セクションへはスクロールで届く)
+- **Desktop:** 左にアイコン + ロゴのロックアップ (高さ 48px)、右にナビリンク 5 本 (Concept · Saké · Obanzai · Boutique · Access → `#concept #sake #obanzai #shop #access`、`nav-link`、ホバーで `accent` へ 300ms、**1024px 以上だけ**) と sm の Outline ボタン。ブランドのアンカーは `flex-shrink: 0`。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
+- **Mobile:** ロックアップは高さ 28px (RESERVATION ボタンと並べて 375px に収める)。1024px 未満はリンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (各セクションへはスクロールで届く)
 - **Language Switch:** 英語版を追加するまで非表示。追加時は `JP | EN` の静的リンク (0.75rem、字間 0.1em、アクティブは `accent` + 700 + 1px 下線) をナビの右に置く
 
 ### Section Label + Heading
-- **Pattern:** `label-wide` の仏語/英語ラベル (`RIZ` `BOUTIQUE`) を `accent` で置き、8px 下に `headline` の h2、32px 下に本文。Access だけは例外で、h2 としてアイコン + ロゴのロックアップ (高さ 72px、モバイル 52px) を置き、ラベルは持たない
-- **Field Label:** Access の `ADDRESS` `TEL` `HOURS` `RESERVATION` は `field-label` (`text-muted`、0.75rem、字間 0.1em) で、4px 下に値
+- **Pattern:** `label-wide` の仏語ラベル (`BOUTIQUE` `ACCÈS`) を `accent` で置く。BOUTIQUE は 8px 下に `headline` の h2、32px 下に本文。ACCÈS は 24px 下に h2 としてアイコン + ロゴのロックアップ (高さ 72px、モバイル 52px)、64px 下にフィールド
+- **Chapter Kicker:** 章は漢数字の章番号 (`label`、`text-muted`) と仏語ラベル (`label-wide`、`accent`) を baseline 揃えで 16px 空けて横に並べ、40px 下に縦書きブロック (`writing-mode: vertical-rl`、高さ `clamp(420px, 34vw, 440px)`。h2 が右、本文が左、間 40px)。写真が右の章では右寄せ
+- **Field Label:** Access の `ADDRESS` `TEL` `HOURS` は `field-label` (`text-muted`、0.75rem、字間 0.1em) で、4px 下に値
 
 ### Photo Treatment
-- **Hero:** `object-fit: cover`、不透明度 50%、グレースケール、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 60% → 透明 → 100% のグラデーション
-- **Philosophy:** 25% に減光。写真は 1 枚だけ。デスクトップでは左 55% に高さ 700px で置き、右の文章を縦中央に並べる。モバイルは文章の背面に敷き、上下を `brand` 85% のグラデーションで締める
-- **Experience:** 90% に減光、16:9、ホバーで 2 秒かけて 1.05 倍。下から `brand` へ溶かす
-- **BOUTIQUE:** 30% に減光して全面背景に、上下を `brand` で締める
+- **Hero:** `object-fit: cover` (`40% 55%`)、brightness 0.8 × 彩度 0.8、不透明度 0.7、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 70% → 20% (45% 地点) → 100% のグラデーション
+- **Chapter (壱〜四):** 4:3 (`aspect-ratio: 4 / 3`)、brightness 0.75 (壱・弐) / 0.8 (参・四)、ホバーで 2 秒かけて 1.05 倍。下から `brand` → 透明 (45% 地点) を不透明度 0.6 で重ねる。参 (おばんざい) は仮写真で、figcaption (`label`、`text-muted`、上 12px) に注記を添える (正式写真が入ったら外す)
+- **ACCÈS:** brightness 0.3 × 彩度 0.7 で全面背景に (`30% 40%`)、上下を `brand` で締める (中央 40%)
+- **BOUTIQUE:** 写真は置かない。`line` の 1px 枠で囲った 48rem の箱 (padding 縦 `clamp(48px, 8vw, 96px)` × 横 section-x)
 
 ### Brand Lockup (アイコン + ロゴ)
 - **Style:** 公式アイコン SVG (焦茶の四角 + 3×3 ドット) を左、ロゴを右に同じ高さで横並び。間隔は高さの 0.3 倍。アニメーションは付けない (2026-09-12 のユーザー指示。必要になったら指示がある)
@@ -303,7 +304,7 @@ components:
 - **Style:** 上に `line-faint` の 1px 罫線、上 64px / 下 32px、中央揃え。アイコン + ロゴのロックアップ (高さ 40px、ロゴの色は `text-soft`) を置き、32px 下に `footer-text` (`text-muted`、10px、字間 0.1em、`tabular-nums`)。文言は `© {年} Naji la boule. All Rights Reserved.`
 
 ### Motion Grammar
-- **開演 (ページ表示時):** 写真が 0.15 → 0.5 に 1.2s で明るくなり、見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。Hero にアイコンは置かない (2026-09-12 に撤去)。合計約 2.4s、ブロッキングしない
+- **開演 (ページ表示時):** 写真が 0.15 → 0.7 に 1.2s で明るくなり、縦書きの見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。Hero にアイコンは置かない (2026-09-12 に撤去)。合計約 2.4s、ブロッキングしない
 - **スクロール時の浮き上がり:** `animation-timeline: view()` で、要素が視界に入る区間 (entry 0% → 40%) に不透明度 0 → 1、y +30px → 0。`@supports` で段階適用し、非対応では常時表示
 - **ホバー:** 色は 300ms、ボタンの反転は 500ms、写真の拡大は 2 秒。いずれも ease-out
 - **イージング:** ease-out / ease-in-out のみ。スプリング、バウンス、オーバーシュートは使わない
@@ -314,7 +315,7 @@ components:
 
 ### Do:
 - **Do** すべての文字を Zen Old Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ。例外はロゴだけ (アウトライン化した SVG なので書体を読み込まない)
-- **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`RIZ` `SOUPE` `MARIAGE` `BOUTIQUE`)
+- **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS`)
 - **Do** 本文は行間 2、字間 0.1em、色は `text-soft` か `text-muted`
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす
 - **Do** セクション余白は縦 96px / 160px、横 24px / 80px。迷ったら広い方
@@ -325,6 +326,7 @@ components:
 - **Do** 暗背景の小さい文字は `text-muted` (≈ #99a1af) を下限にする
 - **Do** 見出しは h1 を 1 ページに 1 つ (Hero)、各セクションの先頭を h2 にする
 - **Do** 動きは CSS だけで書き、`@supports` と reduced-motion で段階的に落とす
+- **Do** 縦書き (`writing-mode: vertical-rl`) は Hero の h1 と章の見出し・本文だけに使う。列の区切りは文言側の `\n` で明示し、本文は 1 行 23 文字以内に収める
 
 ### Don't:
 - **Don't** サンセリフを使わない。ラベルにも数字にも
@@ -338,6 +340,6 @@ components:
 - **Don't** 太字で強調しない。`font-weight: 300` も使わない
 - **Don't** フェードを 1 秒より速くしない。スプリング・バウンス系のイージングを使わない
 - **Don't** アイコンライブラリを入れない。矢印は `↗` の文字で
-- **Don't** 768px 以外にブレークポイントを増やさない
+- **Don't** 768px 以外にブレークポイントを増やさない (例外はヘッダーのナビリンクを出す 1024px だけ)
 - **Don't** 文言をコンポーネントに直書きしない。ja / en の両方を i18n データに置く (欧文の装飾ラベルと画像 alt は例外)
 - **Don't** 配信 JS を増やさない。アニメーションライブラリも入れない

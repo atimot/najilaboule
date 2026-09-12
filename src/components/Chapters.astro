@@ -1,0 +1,40 @@
+---
+/**
+ * 献立の 4 章 (壱 MARMITE → 弐 L’ATTENTE → 参 OBANZAI → 四 RIZ ET SOUPE) を縦に並べる。
+ * 並びは CHAPTER_KEYS (i18n) が正。壱・参は写真が左、弐・四は右 (交互)。
+ */
+import Chapter from '@/components/Chapter.astro';
+import { CHAPTER_KEYS, type ChapterKey } from '@/i18n';
+
+/** 写真の扱い (handoff §3): object-position と brightness() */
+const PHOTO: Record<ChapterKey, { position: string; brightness: number }> = {
+  concept: { position: '50% 50%', brightness: 0.75 },
+  sake: { position: '50% 50%', brightness: 0.75 },
+  obanzai: { position: '50% 45%', brightness: 0.8 },
+  riz: { position: '50% 50%', brightness: 0.8 },
+};
+---
+
+<div class="chapters">
+  {
+    CHAPTER_KEYS.map((key, i) => (
+      <Chapter chapter={key} reverse={i % 2 === 1} photoPosition={PHOTO[key].position} photoBrightness={PHOTO[key].brightness} />
+    ))
+  }
+</div>
+
+<style>
+  .chapters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-card-gap);
+    padding: var(--space-section-y) var(--space-section-x);
+  }
+
+  @media (min-width: 48rem) {
+    .chapters {
+      gap: var(--space-card-gap-md);
+      padding: var(--space-section-y-md) var(--space-section-x-md);
+    }
+  }
+</style>
