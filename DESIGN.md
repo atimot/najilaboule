@@ -205,7 +205,7 @@ components:
 右列はモバイル (768px 未満) の値。フロントマターの `typography` はデスクトップ値。
 
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。**縦書き** (`writing-mode: vertical-rl`) で、高さに収めるため `min(display, 6.5vh)` を上限にし、行間 1.7 (= 2 列の間隔)。改行は文言側で明示する (右列「銀座の夜、」左列「米と汁を嗜む。」)。モバイル 2.25rem。
-- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、2 列に分ける改行は文言側で明示する (「寄り添う、\nおばんざい。」)。モバイル 1.875rem。
+- **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、2 列に分ける改行は文言側で明示する (「寄り添う、\n駿菜（しゅんさい）。」。「駿菜」は造語で読み仮名つき)。1 列 10 文字以内 (PC の高さ 448px に折り返さずに入る上限)。モバイル 1.875rem。
 - **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): 現在の LP では未使用 (Philosophy を 2026-09-12 に廃止)。姉妹ショップで使えるようトークンは残す。モバイル 1.5rem。
 - **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
@@ -287,12 +287,12 @@ components:
 
 ### Section Label + Heading
 - **Pattern:** `label-wide` の仏語ラベル (`BOUTIQUE` `ACCÈS`) を `accent` で置く。BOUTIQUE は 8px 下に `headline` の h2、32px 下に本文。ACCÈS は 24px 下に h2 としてアイコン + ロゴのロックアップ (高さ 72px、モバイル 52px)、64px 下にフィールド
-- **Chapter Kicker:** 章は漢数字の章番号 (`label`、`text-muted`) と仏語ラベル (`label-wide`、`accent`) を baseline 揃えで 16px 空けて横に並べ、40px 下に縦書きブロック (`writing-mode: vertical-rl`、高さ `clamp(420px, 34vw, 440px)`。h2 が右、本文が左、間 40px)。写真が右の章では右寄せ
+- **Chapter Kicker:** 章は漢数字の章番号 (`label`、`text-muted`) と仏語ラベル (`label-wide`、`accent`) を baseline 揃えで 16px 空けて横に並べ、40px 下に縦書きブロック (`writing-mode: vertical-rl`、高さ 420px、48rem〜は `clamp(448px, 34vw, 468px)`。h2 が右、本文が左、間 40px)。写真が右の章では右寄せ
 - **Field Label:** Access の `ADDRESS` `TEL` `HOURS` は `field-label` (`text-muted`、0.75rem、字間 0.1em) で、4px 下に値
 
 ### Photo Treatment
 - **Hero:** `object-fit: cover` (`40% 55%`)、brightness 0.8 × 彩度 0.8、不透明度 0.7、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 70% → 20% (45% 地点) → 100% のグラデーション
-- **Chapter (壱〜四):** 4:3 (`aspect-ratio: 4 / 3`)、brightness 0.75 (壱・弐) / 0.8 (参・四)、ホバーで 2 秒かけて 1.05 倍。下から `brand` → 透明 (45% 地点) を不透明度 0.6 で重ねる。参 (おばんざい) は仮写真で、figcaption (`label`、`text-muted`、上 12px) に注記を添える (正式写真が入ったら外す)
+- **Chapter (壱〜四):** 4:3 (`aspect-ratio: 4 / 3`)、brightness 0.75 (壱・弐) / 0.8 (参・四)、ホバーで 2 秒かけて 1.05 倍。下から `brand` → 透明 (45% 地点) を不透明度 0.6 で重ねる。参 (おばんざい) は仮写真で、figcaption (`label`、`text-muted`、上 12px) に注記を添える (正式写真が入ったら外す)。写真は章ごとに複数枚 (5 枚まで) 登録でき、2 枚以上のときは 1 秒表示 → 0.4 秒のクロスフェードで順に見せる (Motion Grammar「章の写真スライドショー」)。位置と減光は章の全写真に共通
 - **ACCÈS:** brightness 0.3 × 彩度 0.7 で全面背景に (`30% 40%`)、上下を `brand` で締める (中央 40%)
 - **BOUTIQUE:** 写真は置かない。`line` の 1px 枠で囲った 48rem の箱 (padding 縦 `clamp(48px, 8vw, 96px)` × 横 section-x)
 
@@ -307,8 +307,9 @@ components:
 - **開演 (ページ表示時):** 写真が 0.15 → 0.7 に 1.2s で明るくなり、縦書きの見出し (遅延 0.5s、y +10px、1s) → タグライン (0.9s、1s) → ヘッダー (1.4s、1s) の順に現れる。Hero にアイコンは置かない (2026-09-12 に撤去)。合計約 2.4s、ブロッキングしない
 - **スクロール時の浮き上がり:** `animation-timeline: view()` で、要素が視界に入る区間 (entry 0% → 40%) に不透明度 0 → 1、y +30px → 0。`@supports` で段階適用し、非対応では常時表示
 - **ホバー:** 色は 300ms、ボタンの反転は 500ms、写真の拡大は 2 秒。いずれも ease-out
+- **章の写真スライドショー:** 写真を 2 枚以上登録した章は、各写真を 1 秒見せ、次の写真が 0.4 秒 (ease-in-out) で上に溶けて現れる (1 枚あたり 1.4 秒周期、無限ループ)。前の写真は次が現れきってから消すので、両方が半透明になって焦茶が透ける瞬間はない。ホバー中は止まる (写真の拡大と同時に働く)。JS は使わず、枚数ごとの keyframes (2〜5 枚) で組む
 - **イージング:** ease-out / ease-in-out のみ。スプリング、バウンス、オーバーシュートは使わない
-- **Reduced motion:** 全 animation / transition を無効化し、`scroll-behavior: auto` を強制。即時表示にする
+- **Reduced motion:** 全 animation / transition を無効化し、`scroll-behavior: auto` を強制。即時表示にする。章のスライドショーは 1 枚目を静止表示
 - **JS を使わない:** 動きは CSS だけで書く。JS でしか作れない動きは採用しない
 
 ## Do's and Don'ts
@@ -326,7 +327,7 @@ components:
 - **Do** 暗背景の小さい文字は `text-muted` (≈ #99a1af) を下限にする
 - **Do** 見出しは h1 を 1 ページに 1 つ (Hero)、各セクションの先頭を h2 にする
 - **Do** 動きは CSS だけで書き、`@supports` と reduced-motion で段階的に落とす
-- **Do** 縦書き (`writing-mode: vertical-rl`) は Hero の h1 と章の見出し・本文だけに使う。列の区切りは文言側の `\n` で明示し、本文は 1 行 23 文字以内に収める
+- **Do** 縦書き (`writing-mode: vertical-rl`) は Hero の h1 と章の見出し・本文だけに使う。列の区切りは文言側の `\n` で明示し、見出しは 1 列 10 文字以内、本文は 1 行 23 文字以内に収める
 
 ### Don't:
 - **Don't** サンセリフを使わない。ラベルにも数字にも

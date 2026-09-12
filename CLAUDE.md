@@ -21,11 +21,11 @@ astro.config.ts        site / base / fonts (Astro Fonts API、自前ホスト)
 src/
 ├── pages/index.astro  日本語ページ。Base に各セクションを並べ、Hero の preload を渡す
 ├── layouts/Base.astro <head> 一式 (meta / OGP / JSON-LD / フォント / preload)、skip link
-├── components/        Header / Hero / Chapters (献立 4 章の並び) / Chapter (1 章: 4:3 写真 + 縦書き文章) / Boutique / Access / Footer / Button / BrandLockup (アイコン + ロゴ)
+├── components/        Header / Hero / Chapters (献立 4 章の並び) / Chapter (1 章: 4:3 写真 + 縦書き文章。写真が 2 枚以上なら CSS だけのスライドショー、5 枚まで) / Boutique / Access / Footer / Button / BrandLockup (アイコン + ロゴ)
 ├── content/ja.ts      文言 (型 Copy)。英語版は en.ts を追加
 ├── i18n/              Lang / Copy / Chapter 型、CHAPTER_KEYS (章の並び)、NAV_TARGETS (ナビ 5 本の並びとリンク先)、getCopy(lang)、SUPPORTED_LANGS
 ├── assets/images/     元画像 (JPEG)。hero/ chapters/ access/。<Picture> が AVIF/WebP をビルド時生成。原寸は tmp/najila_top/ (git 未追跡)
-├── assets/images.ts   画像の import と alt (alt の文字列は assets/alts.ts)
+├── assets/images.ts   画像の import と alt (alt の文字列は assets/alts.ts)。章の写真は配列 (1 枚以上)。足すときは import → alts.ts → 配列
 ├── assets/alts.ts     画像 alt (ja/en)。字形サブセットの収集元
 ├── assets/logo.svg    ロゴ (アウトライン化した SVG、fill=currentColor)。BrandLockup.astro が SVG コンポーネントとして inline 展開
 ├── assets/icon.svg    公式アイコン (public/favicon.svg と同一内容。verify-dist が照合)。BrandLockup.astro がロゴの左に inline 展開

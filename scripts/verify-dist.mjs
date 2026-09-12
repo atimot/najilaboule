@@ -16,7 +16,7 @@ const css = readdirSync(assetsDir)
 const CHAPTERS = [
   ['concept', '一釜、一膳。', 'MARMITE', '壱', '湯気を上げる釜'],
   ['sake', '待つという、贅沢。', 'L’ATTENTE', '弐', 'カウンターに置かれたグラスの酒'],
-  ['obanzai', '寄り添う、\\s*おばんざい。', 'OBANZAI', '参', '小鉢に盛られたおばんざい'],
+  ['obanzai', '寄り添う、\\s*駿菜（しゅんさい）。', 'OBANZAI', '参', '小鉢に盛られたおばんざい'],
   ['riz', 'そして、一膳。', 'RIZ ET SOUPE', '四', '釜で炊きあがったご飯と備え付けの汁'],
 ];
 
@@ -47,6 +47,7 @@ const checks = [
   ['章のラベル MARMITE / L’ATTENTE / OBANZAI / RIZ ET SOUPE', CHAPTERS.every(([, , label]) => html.includes(`>${label}</span>`))],
   ['章番号 壱弐参四', CHAPTERS.every(([, , , num]) => html.includes(`>${num}</span>`))],
   ['章の写真 ×4 (alt が 1 回ずつ)', CHAPTERS.every(([, , , , alt]) => count(new RegExp(`alt="${alt}"`, 'g')) === 1)],
+  ['章の写真は .chapter__slide に包まれる (各章 1 枚以上。複数枚ならスライドショー)', CHAPTERS.every(([id]) => /<div class="chapter__slide[^"]*"[^>]*>\s*<picture\b/.test(section(id)))],
   ['弐・四は写真が右 (chapter--reverse)', /id="sake"[^>]*class="[^"]*chapter--reverse/.test(section('sake')) && /id="riz"[^>]*class="[^"]*chapter--reverse/.test(section('riz')) && !/chapter--reverse/.test(section('concept')) && !/chapter--reverse/.test(section('obanzai'))],
   ['#shop セクションに背景写真がない', section('shop') !== '' && !/<picture\b|<img\b/.test(section('shop'))],
   ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/iyahiko\.square\.site\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
@@ -64,6 +65,8 @@ const checks = [
   ['CSS: 縦書き (writing-mode: vertical-rl) が使われている', css.includes('writing-mode:vertical-rl')],
   ['CSS: .reveal の animation-timeline が longhand で残っている', css.includes('animation-timeline:view()')],
   ['CSS: animation ショートハンドに timeline が畳み込まれていない', !/animation:[^;}]*view\(\)/.test(css)],
+  ['CSS: 章のスライドショー keyframes (2〜5 枚ぶん) が残っている', [2, 3, 4, 5].every((n) => css.includes(`@keyframeschapter-slide-${n}{`))],
+  ['CSS: スライドショーはホバーで一時停止する', css.includes('animation-play-state:paused')],
 ];
 
 let failed = 0;
