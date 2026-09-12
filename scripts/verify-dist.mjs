@@ -17,7 +17,7 @@ const CHAPTERS = [
   ['concept', '一釜、一膳。', 'MARMITE', '壱', '湯気を上げる釜'],
   ['sake', '待つという、贅沢。', 'L’ATTENTE', '弐', 'カウンターに置かれたグラスの酒'],
   ['obanzai', '寄り添う、駿菜。', 'OBANZAI', '参', '小鉢に盛られたおばんざい'],
-  ['riz', 'そして、一膳。', 'RIZ ET SOUPE', '四', '釜で炊きあがったご飯と備え付けの汁'],
+  ['riz', 'そして、一膳。', 'RIZ ET SOUPE', '四', 'お膳に揃えた炊きたてのご飯と汁、梅干し'],
 ];
 
 const checks = [
@@ -48,6 +48,7 @@ const checks = [
   ['章番号 壱弐参四', CHAPTERS.every(([, , , num]) => html.includes(`>${num}</span>`))],
   ['章の写真 ×4 (alt が 1 回ずつ)', CHAPTERS.every(([, , , , alt]) => count(new RegExp(`alt="${alt}"`, 'g')) === 1)],
   ['章の写真は .chapter__slide に包まれる (各章 1 枚以上。複数枚ならスライドショー)', CHAPTERS.every(([id]) => /<div class="chapter__slide[^"]*"[^>]*>\s*<picture\b/.test(section(id)))],
+  ['壱・四 (concept / riz) は写真 2 枚以上でスライドショーが付く (chapter__frame--slideshow)', ['concept', 'riz'].every((id) => /class="chapter__frame chapter__frame--slideshow"/.test(section(id)) && (section(id).match(/class="chapter__slide"/g) ?? []).length >= 2)],
   ['弐・四は写真が右 (chapter--reverse)', /id="sake"[^>]*class="[^"]*chapter--reverse/.test(section('sake')) && /id="riz"[^>]*class="[^"]*chapter--reverse/.test(section('riz')) && !/chapter--reverse/.test(section('concept')) && !/chapter--reverse/.test(section('obanzai'))],
   ['#shop セクションに背景写真がない', section('shop') !== '' && !/<picture\b|<img\b/.test(section('shop'))],
   ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/iyahiko\.square\.site\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
@@ -66,7 +67,8 @@ const checks = [
   ['CSS: .reveal の animation-timeline が longhand で残っている', css.includes('animation-timeline:view()')],
   ['CSS: animation ショートハンドに timeline が畳み込まれていない', !/animation:[^;}]*view\(\)/.test(css)],
   ['CSS: 章のスライドショー keyframes (2〜5 枚ぶん) が残っている', [2, 3, 4, 5].every((n) => css.includes(`@keyframeschapter-slide-${n}{`))],
-  ['CSS: スライドショーはホバーで一時停止する', css.includes('animation-play-state:paused')],
+  ['CSS: スライドショーは 1 枚 6 秒周期で、フェードは周期の 1/6 (変数は --slide-period だけ)', css.includes('--slide-period:6s') && css.includes('--slide-fade:calc(var(--slide-period)/6)') && !css.includes('--slide-hold')],
+  ['CSS: 章の写真にホバー効果がない (拡大も一時停止もしない)', !/chapter__frame[^{]*:hover/.test(css) && !css.includes('animation-play-state') && !css.includes('scale:1.05')],
 ];
 
 let failed = 0;
