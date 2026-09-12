@@ -15,15 +15,14 @@
   --color-scrollbar-thumb: #443330;
   --color-dot-white: #FFFFFF;
   --color-dot-black: #000000;
-  --color-dot-red: #E60012;
-  --color-dot-blue: #0099CC;
-  --color-dot-yellow: #FFD700;
-  --color-dot-green: #009944;
-  --color-dot-orange: #F39800;
-  --color-dot-pink: #E6007F;
-  --color-dot-purple: #920783;
-  /* 黒ドットの輪郭 (DESIGN.md Brand Dots: #4a5565 相当) */
-  --color-dot-border: oklch(44.6% 0.03 256.802);
+  /* ドット 9 色は公式アイコン (public/favicon.svg) の値が正。黒ドットの縁取りは dot-white */
+  --color-dot-red: #E70012;
+  --color-dot-blue: #00A0EA;
+  --color-dot-yellow: #FFF100;
+  --color-dot-green: #23AC38;
+  --color-dot-orange: #E95412;
+  --color-dot-pink: #E84191;
+  --color-dot-purple: #611987;
 
   /* typography: --font-zen-old-mincho は Astro Fonts API が定義する (和文も欧文も 1 書体) */
   --font-serif: var(--font-zen-old-mincho), serif;
@@ -37,9 +36,6 @@
   --text-title: 1.875rem;
   --text-title-mobile: 1.5rem;
   --leading-title: 1.625;
-  --text-brand: 1.5rem;
-  --text-brand-mobile: 1.25rem;
-  --leading-brand: 1.33;
   --text-body: 1rem;
   --text-body-mobile: 0.875rem;
   --leading-body: 2;
@@ -65,6 +61,13 @@
   --space-stack-xl: 64px;
   --space-card-gap: 96px;
   --space-card-gap-md: 128px;
+
+  /* logo (アイコン + ロゴのロックアップの高さ。DESIGN.md Brand Lockup) */
+  --logo-height: 48px;
+  --logo-height-mobile: 28px;
+  --logo-height-footer: 40px;
+  --logo-height-access: 72px;
+  --logo-height-access-mobile: 52px;
 
   /* rounded */
   --radius-none: 0px;

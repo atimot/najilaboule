@@ -1,4 +1,5 @@
 ---
+import BrandLockup from '@/components/BrandLockup.astro';
 import Button from '@/components/Button.astro';
 import { SITE } from '@/config';
 import { getCopy } from '@/i18n';
@@ -7,9 +8,8 @@ const t = getCopy(Astro.currentLocale);
 ---
 
 <header class="header">
-  <a href="#top" class="brand">
-    {SITE.name}
-    <span lang="ja" class="brand__kana">{t.header.kana}</span>
+  <a href="#top" class="brand" aria-label={`${SITE.name} ${t.header.kana}`}>
+    <BrandLockup class="brand__lockup" />
   </a>
   <nav class="nav" aria-label={t.common.navLabel}>
     <a href="#access" class="nav__link">{t.header.navAccess}</a>
@@ -37,21 +37,12 @@ const t = getCopy(Astro.currentLocale);
     animation: fade-in 1s var(--ease-out) 1.4s both;
   }
 
+  /* アイコン + ロゴのロックアップ (BrandLockup)。ロゴは currentColor でヘッダーの文字色を継ぐ */
   .brand {
-    display: block;
-    font-size: var(--text-brand-mobile);
-    line-height: 1.4;
-    letter-spacing: var(--tracking-wide);
-    text-align: left;
-  }
+    --lockup-height: var(--logo-height-mobile);
 
-  .brand__kana {
     display: block;
-    margin-top: 4px;
-    font-size: var(--text-label);
-    line-height: var(--leading-label);
-    letter-spacing: var(--tracking-wider);
-    color: var(--color-text-muted);
+    width: fit-content;
   }
 
   .nav {
@@ -79,13 +70,7 @@ const t = getCopy(Astro.currentLocale);
     }
 
     .brand {
-      font-size: var(--text-brand);
-      line-height: var(--leading-brand);
-    }
-
-    .brand__kana {
-      font-size: var(--text-menu);
-      line-height: var(--leading-menu);
+      --lockup-height: var(--logo-height);
     }
 
     .nav__link {

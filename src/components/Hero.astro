@@ -1,6 +1,5 @@
 ---
 import { Picture } from 'astro:assets';
-import BrandDots from '@/components/BrandDots.astro';
 import { images } from '@/assets/images';
 import { getCopy } from '@/i18n';
 
@@ -21,7 +20,6 @@ const t = getCopy(Astro.currentLocale);
     <div class="hero__overlay"></div>
   </div>
   <div class="hero__content">
-    <BrandDots size="md" animated class="hero__dots" />
     <h1 id="hero-title" class="hero__title">{t.hero.title}</h1>
     <p class="hero__tagline">{t.hero.tagline}</p>
   </div>
@@ -77,10 +75,6 @@ const t = getCopy(Astro.currentLocale);
     z-index: 10;
     padding-inline: var(--space-section-x);
     text-align: center;
-  }
-
-  .hero :global(.hero__dots) {
-    margin: 0 auto 40px;
   }
 
   .hero__title {

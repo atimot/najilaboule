@@ -1,5 +1,5 @@
 ---
-import BrandDots from '@/components/BrandDots.astro';
+import BrandLockup from '@/components/BrandLockup.astro';
 import Button from '@/components/Button.astro';
 import { SITE } from '@/config';
 import { getCopy } from '@/i18n';
@@ -12,9 +12,10 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
 <section id="access" class="access section" aria-labelledby="access-title">
   <div class="access__inner container">
     <div class="access__head reveal">
-      <BrandDots size="sm" class="access__dots" />
-      <h2 id="access-title" class="access__title">{SITE.name}</h2>
-      <p class="label label--muted access__place">GINZA</p>
+      <!-- 見出しはアイコン + ロゴのロックアップ。見出し文字列としてはロゴ (role="img") の aria-label が読まれる -->
+      <h2 id="access-title" class="access__title">
+        <BrandLockup label={`${SITE.name} ${SITE.kana}`} />
+      </h2>
     </div>
 
     <div class="info reveal">
@@ -79,20 +80,10 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
     margin-bottom: var(--space-stack-lg);
   }
 
-  .access :global(.access__dots) {
-    margin: 0 auto var(--space-stack);
-    opacity: 0.5;
-  }
-
   .access__title {
-    margin-bottom: 8px;
-    font-size: var(--text-headline-mobile);
-    line-height: var(--leading-headline);
-    letter-spacing: var(--tracking-wide);
-  }
+    --lockup-height: var(--logo-height-access-mobile);
 
-  .access__place {
-    margin-bottom: 0;
+    margin: 0;
   }
 
   .info {
@@ -158,7 +149,7 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
 
   @media (min-width: 48rem) {
     .access__title {
-      font-size: var(--text-headline);
+      --lockup-height: var(--logo-height-access);
     }
 
     .info {

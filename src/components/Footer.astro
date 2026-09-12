@@ -1,21 +1,38 @@
 ---
+import BrandLockup from '@/components/BrandLockup.astro';
 import { SITE } from '@/config';
 
 // 静的サイトなのでビルド時の年 (デプロイのたびに更新される)
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">&copy; {year} {SITE.name}. All Rights Reserved.</footer>
+<footer class="footer">
+  <!-- アイコン + ロゴのロックアップ。店名は著作権表記に文字であるので装飾扱い -->
+  <div class="footer__brand reveal">
+    <BrandLockup />
+  </div>
+  <p class="footer__copy">&copy; {year} {SITE.name}. All Rights Reserved.</p>
+</footer>
 
 <style>
   .footer {
-    padding: 32px 0;
+    padding: var(--space-stack-xl) var(--space-section-x) var(--space-stack);
     border-top: 1px solid var(--color-line-faint);
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
+  .footer__brand {
+    --lockup-height: var(--logo-height-footer);
+
+    margin-bottom: var(--space-stack);
+    color: var(--color-text-soft);
+  }
+
+  .footer__copy {
     font-size: var(--text-caption);
     line-height: var(--leading-caption);
     letter-spacing: var(--tracking-wide);
     font-variant-numeric: tabular-nums;
-    color: var(--color-text-muted);
-    text-align: center;
   }
 </style>
