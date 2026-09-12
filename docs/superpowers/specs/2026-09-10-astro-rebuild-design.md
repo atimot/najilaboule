@@ -1,4 +1,6 @@
-左に店名 (1.25 / 1.5rem、字間 0.1em) とカナ。右に Access リンク (md 以上のみ) と RESERVATION outline sm (blueprint §5.1)。2026-09-12 更新: 店名テキストをアイコン + ロゴの横並びロックアップ (高さ 28 / 48px) に差し替え |# Naji la boule LP — Astro によるゼロからの再構築 設計
+# Naji la boule LP — Astro によるゼロからの再構築 設計
+
+> 2026-09-12 追記: この設計のうち Philosophy / Experience / Boutique の背景写真 / Access の予約ブロックは、B 案「献立」への作り直しで廃止した。現行の構成は `2026-09-12-lp-b-kondate-handoff.md` を参照。
 
 日付: 2026-09-10
 状態: ユーザーレビュー待ち

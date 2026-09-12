@@ -3,8 +3,7 @@ import { getImage } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Header from '@/components/Header.astro';
 import Hero from '@/components/Hero.astro';
-import Philosophy from '@/components/Philosophy.astro';
-import Experience from '@/components/Experience.astro';
+import Chapters from '@/components/Chapters.astro';
 import Boutique from '@/components/Boutique.astro';
 import Access from '@/components/Access.astro';
 import Footer from '@/components/Footer.astro';
@@ -19,8 +18,7 @@ const heroPreload = { srcSet: heroAvif.srcSet.attribute, sizes: '100vw', type: '
   <Header />
   <main id="main" tabindex="-1">
     <Hero />
-    <Philosophy />
-    <Experience />
+    <Chapters />
     <Boutique />
     <Access />
   </main>

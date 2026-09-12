@@ -2,12 +2,11 @@ import type { Lang } from '../i18n/types';
 
 export type AltText = Readonly<Record<Lang, string>>;
 
-/** 画像の alt (ja / en)。astro.config.ts の字形サブセットもここから文字を集める */
+/** 画像の alt (ja / en)。astro.config.ts の字形サブセットもここから文字を集める。
+    Hero と ACCÈS の背景は装飾 (alt="") なのでここには置かない */
 export const imageAlts = {
-  hero: { ja: '銀座のバーカウンターに並ぶおにぎりと汁と酒', en: 'Onigiri, soup and sake on a Ginza bar counter' },
-  slide01: { ja: '指先に乗せた一粒の米', en: 'A single grain of rice on a fingertip' },
-  riceGift: { ja: '水引で結ばれた米の贈り物', en: 'A gift of rice tied with mizuhiki' },
-  riz: { ja: 'おむすびを結ぶ手', en: 'Hands shaping an onigiri' },
-  soupe: { ja: '澄まし汁の椀', en: 'Bowl of clear dashi soup' },
-  mariage: { ja: '盃と酒', en: 'Sake cup' },
+  concept: { ja: '湯気を上げる釜', en: 'A rice pot giving off steam' },
+  sake: { ja: 'カウンターに置かれたグラスの酒', en: 'A glass of sake set on the counter' },
+  obanzai: { ja: '小鉢に盛られたおばんざい', en: 'Obanzai side dishes served in small bowls' },
+  riz: { ja: '釜で炊きあがったご飯と備え付けの汁', en: 'Freshly cooked pot rice with the accompanying soup' },
 } as const satisfies Record<string, AltText>;
