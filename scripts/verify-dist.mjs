@@ -16,7 +16,7 @@ const css = readdirSync(assetsDir)
 const CHAPTERS = [
   ['concept', '一釜、一膳。', 'MARMITE', '壱', '湯気を上げる釜'],
   ['sake', '待つという、贅沢。', 'L’ATTENTE', '弐', 'カウンターに置かれたグラスの酒'],
-  ['obanzai', '寄り添う、\\s*おばんざい。', 'OBANZAI', '参', '小鉢に盛られたおばんざい'],
+  ['obanzai', '寄り添う、\\s*旬菜（しゅんさい）。', 'OBANZAI', '参', '小鉢に盛られたおばんざい'],
   ['riz', 'そして、一膳。', 'RIZ ET SOUPE', '四', '釜で炊きあがったご飯と備え付けの汁'],
 ];
 

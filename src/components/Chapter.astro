@@ -239,12 +239,13 @@ const titleId = `${chapter}-title`;
     color: var(--color-accent);
   }
 
-  /* 縦書きブロック。高さは本文 1 行 (23 文字以内) が折り返さない 420px 以上 */
+  /* 縦書きブロック。高さは本文 1 行 (23 文字以内) が折り返さない 420px 以上。
+     PC (48rem〜) は見出し 1 列 10 文字 (40px × 1.1 × 10 = 440px) も折り返さないよう 448px 以上にする */
   .chapter__vertical {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    height: clamp(420px, 34vw, 440px);
+    height: 420px;
     writing-mode: vertical-rl;
   }
 
@@ -265,6 +266,10 @@ const titleId = `${chapter}-title`;
   }
 
   @media (min-width: 48rem) {
+    .chapter__vertical {
+      height: clamp(448px, 34vw, 468px);
+    }
+
     .chapter__title {
       font-size: var(--text-headline);
     }
