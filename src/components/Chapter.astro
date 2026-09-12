@@ -1,20 +1,24 @@
 ---
 /**
  * 献立の 1 章 (壱〜四)。左右に写真 (4:3) と文章列を並べ、文章は縦書き (h2 が右、本文が左)。
+ * 写真は images.ts に章ごとに 1 枚以上登録し、2 枚以上なら CSS だけのスライドショーで順に見せる。
  * 4 章の並びと写真の扱いは Chapters.astro が持つ。
  */
 import { Picture } from 'astro:assets';
 import { images } from '@/assets/images';
 import { getCopy, type ChapterKey } from '@/i18n';
 
+/** スライドショーの枚数の上限。<style> に keyframes (chapter-slide-2 〜 5) を用意した枚数まで */
+const MAX_SLIDES = 5;
+
 interface Props {
   /** 章のキー = セクションの id (#concept など) */
   chapter: ChapterKey;
   /** 写真を右に置く (弐・四)。文章列は右寄せになる */
   reverse?: boolean;
-  /** 写真の object-position (handoff §3) */
+  /** 写真の object-position (handoff §3)。章の全写真に共通 */
   photoPosition?: string;
-  /** 写真の減光 brightness() (handoff §3) */
+  /** 写真の減光 brightness() (handoff §3)。章の全写真に共通 */
   photoBrightness?: number;
 }
 
@@ -22,7 +26,13 @@ const { chapter, reverse = false, photoPosition = '50% 50%', photoBrightness = 0
 const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
 const t = getCopy(lang);
 const c = t.chapters[chapter];
-const photo = images.chapters[chapter];
+const photos = images.chapters[chapter];
+const slideshow = photos.length > 1;
+if (photos.length > MAX_SLIDES) {
+  throw new Error(
+    `Chapter "${chapter}": 写真は ${MAX_SLIDES} 枚まで (${photos.length} 枚登録されている)。増やすなら Chapter.astro の keyframes を足す`,
+  );
+}
 const titleId = `${chapter}-title`;
 ---
 
@@ -33,14 +43,24 @@ const titleId = `${chapter}-title`;
   style={`--photo-position: ${photoPosition}; --photo-brightness: ${photoBrightness}`}
 >
   <figure class="chapter__photo reveal">
-    <div class="chapter__frame">
-      <Picture
-        src={photo.src}
-        formats={['avif', 'webp']}
-        widths={[800, 1600]}
-        sizes="(min-width: 48rem) 48rem, 100vw"
-        alt={photo.alt[lang]}
-      />
+    <!-- 写真は枠に重ねる。2 枚以上なら --slide-count / --slide-name でスライドショーを動かす -->
+    <div
+      class:list={['chapter__frame', slideshow && 'chapter__frame--slideshow']}
+      style={slideshow ? `--slide-count: ${photos.length}; --slide-name: chapter-slide-${photos.length}` : undefined}
+    >
+      {
+        photos.map((photo, i) => (
+          <div class="chapter__slide" style={`--i: ${i}`}>
+            <Picture
+              src={photo.src}
+              formats={['avif', 'webp']}
+              widths={[800, 1600]}
+              sizes="(min-width: 48rem) 48rem, 100vw"
+              alt={photo.alt[lang]}
+            />
+          </div>
+        ))
+      }
     </div>
     {c.note && <figcaption class="chapter__note">{c.note}</figcaption>}
   </figure>
@@ -87,6 +107,18 @@ const titleId = `${chapter}-title`;
     overflow: hidden;
   }
 
+  /* 写真は枠いっぱいに重ねる。静止状態は 1 枚目だけ見え、2 枚目以降は透明。
+     1 枚のときと reduced-motion (global.css で animation を止める) ではこの静止状態のまま */
+  .chapter__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .chapter__slide:first-child {
+    opacity: 1;
+  }
+
   .chapter__frame :global(img) {
     width: 100%;
     height: 100%;
@@ -100,14 +132,71 @@ const titleId = `${chapter}-title`;
     scale: 1.05;
   }
 
-  /* 下勾配: 写真の下端を brand に溶かす */
+  /* 下勾配: 写真の下端を brand に溶かす。スライド (z-index 0〜2) より上に置く */
   .chapter__frame::after {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 3;
     background: linear-gradient(to top, var(--color-brand), transparent 45%);
     opacity: 0.6;
     pointer-events: none;
+  }
+
+  /* スライドショー (2 枚以上): 各写真を 1 秒見せ、0.4 秒で次の写真が上に溶けて現れ、
+     隠れた前の写真は次が現れきってから瞬時に消える (両方が半透明になる瞬間を作らず、焦茶を透けさせない)。
+     1 枚あたりの周期は hold + fade = 1.4 秒、1 周は枚数 × 周期。
+     i 枚目は i 周期ぶん遅らせて始め、全体を fade ぶん前倒しして 1 枚目が最初から見えているようにする。
+     ホバー中は止める (写真のゆっくりズームと同時に働く) */
+  .chapter__frame--slideshow {
+    --slide-hold: 1s;
+    --slide-fade: 0.4s;
+    --slide-period: calc(var(--slide-hold) + var(--slide-fade));
+  }
+
+  .chapter__frame--slideshow .chapter__slide {
+    animation: var(--slide-name) calc(var(--slide-count) * var(--slide-period)) var(--ease-in-out)
+      calc(var(--i) * var(--slide-period) - var(--slide-fade)) infinite;
+  }
+
+  .chapter__frame--slideshow:hover .chapter__slide {
+    animation-play-state: paused;
+  }
+
+  /* keyframes は枚数 n ごとに割合が変わるので 2〜5 枚ぶんを置く (MAX_SLIDES)。
+     1 周を 100% として、a = fade / 周 (現れきる)、b = 1 / n (次が上に現れ始める)、c = (period + fade) / 周 (次が現れきる)。
+     z-index は現れる間 2、見せている間 1 (次が上に来る)、消えたら 0。c から 100% は step-start で瞬時に消す。
+     n を増やすときは a = 28.5714 / n、b = 100 / n、c = 128.5714 / n (%) */
+  @keyframes chapter-slide-2 {
+    0% { opacity: 0; z-index: 2; }
+    14.2857% { opacity: 1; z-index: 2; }
+    50% { opacity: 1; z-index: 1; }
+    64.2857% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    100% { opacity: 0; z-index: 0; }
+  }
+
+  @keyframes chapter-slide-3 {
+    0% { opacity: 0; z-index: 2; }
+    9.5238% { opacity: 1; z-index: 2; }
+    33.3333% { opacity: 1; z-index: 1; }
+    42.8571% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    100% { opacity: 0; z-index: 0; }
+  }
+
+  @keyframes chapter-slide-4 {
+    0% { opacity: 0; z-index: 2; }
+    7.1429% { opacity: 1; z-index: 2; }
+    25% { opacity: 1; z-index: 1; }
+    32.1429% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    100% { opacity: 0; z-index: 0; }
+  }
+
+  @keyframes chapter-slide-5 {
+    0% { opacity: 0; z-index: 2; }
+    5.7143% { opacity: 1; z-index: 2; }
+    20% { opacity: 1; z-index: 1; }
+    25.7143% { opacity: 1; z-index: 1; animation-timing-function: step-start; }
+    100% { opacity: 0; z-index: 0; }
   }
 
   .chapter__note {
