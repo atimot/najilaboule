@@ -4,7 +4,7 @@ export const ja: Copy = {
   meta: {
     title: 'Naji la boule | Ginza',
     description:
-      '銀座の夜、米と汁を嗜む。おにぎりと汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6228-5803まで。',
+      '銀座の夜、米と汁を嗜む。ご注文のあとに一釜ずつ炊き上げるお米と、おばんざい、汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6228-5803まで。',
   },
   common: {
     skipToContent: '本文へスキップ',
