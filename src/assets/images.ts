@@ -5,7 +5,9 @@ import hero from './images/hero/background.jpg';
 import concept from './images/chapters/concept.jpg';
 import concept2 from './images/chapters/concept-2.jpg';
 import sake from './images/chapters/sake.jpg';
+import sake2 from './images/chapters/sake-2.jpg';
 import obanzai from './images/chapters/obanzai.jpg';
+import obanzai2 from './images/chapters/obanzai-2.jpg';
 import riz from './images/chapters/riz.jpg';
 import riz2 from './images/chapters/riz-2.jpg';
 import accessBg from './images/access/background.jpg';
@@ -24,7 +26,7 @@ export interface DecorativeImage {
 export type ChapterPhotos = readonly [SiteImage, ...SiteImage[]];
 
 // 元データは tmp/najila_top/ (git 未追跡)。hero / access は原寸を長辺 2400px (srcset の最大幅) に縮小、
-// 章の写真は handoff (design_handoff_lp_b) 同梱の長辺 2000px をそのまま置いている。
+// 章の写真は長辺 2000px の JPEG (handoff 同梱のものはそのまま、追加分は sharp で EXIF の向きを焼き込んで縮小)。
 // 章に写真を足すときは: images/chapters/ に置く → 上で import → alts.ts に alt を足す → 配列に要素を足す
 export const images = {
   /** najila_top2 — 炎の写真。全画面 cover */
@@ -35,10 +37,16 @@ export const images = {
       { src: concept, alt: imageAlts.concept },
       { src: concept2, alt: imageAlts.concept2 },
     ],
-    /** najila_top12 — カウンターの酒 */
-    sake: [{ src: sake, alt: imageAlts.sake }],
-    /** obanzai_smp — 仮写真。正式な写真に差し替え予定 (ja.ts の chapters.obanzai.note も一緒に外す) */
-    obanzai: [{ src: obanzai, alt: imageAlts.obanzai }],
+    /** najila_top12 — カウンターの酒 → sake2 — 酒瓶を背にしたグラスの酒 (長辺 2000px に縮小) */
+    sake: [
+      { src: sake, alt: imageAlts.sake },
+      { src: sake2, alt: imageAlts.sake2 },
+    ],
+    /** syunsai — 木枠の箱に並ぶ小鉢 (縦位置 1500×2000。4:3 の枠では上下が切れる) → syunsai2 — ローストビーフや旬菜の小鉢 (いずれも長辺 2000px に縮小) */
+    obanzai: [
+      { src: obanzai, alt: imageAlts.obanzai },
+      { src: obanzai2, alt: imageAlts.obanzai2 },
+    ],
     /** najila_ozen — お膳 (ご飯・汁・梅干し) → najila_shiru1 — ご飯に汁を注ぐ (いずれも長辺 2000px に縮小) */
     riz: [
       { src: riz, alt: imageAlts.riz },
