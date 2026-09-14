@@ -40,7 +40,7 @@ public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドッ�
 ## ルール
 
 - **配信 JS を増やさない**。動きは CSS (keyframes / scroll-driven animations) で書き、`@supports` と `prefers-reduced-motion` で段階的に落とす
-- **文言のハードコード禁止**。表示文字列は `src/content/ja.ts` に置き、`getCopy()` 経由で参照する。例外: 欧文の装飾ラベルのうち BOUTIQUE / ADDRESS / TEL / HOURS / RESERVATION / ONLINE SHOP と画像 alt (`src/assets/alts.ts` に ja/en 併記)。章のラベル (MARMITE / L’ATTENTE / OBANZAI / RIZ ET SOUPE) と ACCÈS、章番号 (壱弐参四)、仮写真の注記は `’` `È` や和文を字形サブセットに入れるため `ja.ts` に置く
+- **文言のハードコード禁止**。表示文字列は `src/content/ja.ts` に置き、`getCopy()` 経由で参照する。例外: 欧文の装飾ラベルのうち BOUTIQUE / ADDRESS / TEL / HOURS / RESERVATION / ONLINE SHOP と画像 alt (`src/assets/alts.ts` に ja/en 併記)。章のラベル (MARMITE / L’ATTENTE / OBANZAI / RIZ ET SOUPE) と ACCÈS、章番号 (壱弐参四)、写真の注記 (`note`、現在は未使用) は `’` `È` や和文を字形サブセットに入れるため `ja.ts` に置く
 - **英語版の継ぎ目を壊さない**。`Copy` 型・`getCopy(lang)`・`Base` の `lang` prop・alt の ja/en 併記を維持する。英語版を足すときは `content/en.ts`、`pages/en/index.astro`、`astro.config.ts` の `i18n`、`SUPPORTED_LANGS` を追加する
 - ブレークポイントは 768px (`48rem`) の 1 本だけ。例外はヘッダーのナビリンク 5 本を出す 1024px (`64rem`、`Header.astro` の `.nav__links` のみ)。ロックアップ + リンク 5 本 + RESERVATION が 768〜1023px に収まらないため
 - `dist/` と `package-lock.json` は直接編集しない

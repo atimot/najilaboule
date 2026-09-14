@@ -182,7 +182,7 @@ components:
 - **浮いた焦茶 (`brand-light`, #2a1d1b)**: body 背景の左上に差す微光の起点 (`accent` を 6% 混ぜる)。カードやホバー面にも使えるが、LP では背景以外に使っていない。
 - **本文の白 (`text`, #f8f8f8)**: 見出し・本文・ボタン文字の既定色。純白 (#fff) は使わない。
 - **やわらかい白 (`text-soft`, oklch(87.2% 0.01 258.338) ≈ #d1d5dc)**: 章 (壱〜四) と BOUTIQUE の本文。長めの段落を白より一段落として読ませる。
-- **沈めた白 (`text-muted`, oklch(70.7% 0.022 261.325) ≈ #99a1af)**: タグライン、章番号 (壱弐参四)、仮写真の注記、`ADDRESS` `TEL` などのフィールドラベル、フッター。暗背景で許容するいちばん薄い文字色。
+- **沈めた白 (`text-muted`, oklch(70.7% 0.022 261.325) ≈ #99a1af)**: タグライン、章番号 (壱弐参四)、写真の注記 (figcaption、現在は未使用)、`ADDRESS` `TEL` などのフィールドラベル、フッター。暗背景で許容するいちばん薄い文字色。
 - **罫線の白 (`line-strong` 50% / `line` 20% / `line-faint` 5%)**: それぞれ outline ボタンの枠、BOUTIQUE の箱の枠 (filled ボタンの枠も同じ)、フッター上の区切り線。白のアルファで引き、実色の罫線は使わない。
 - **スクロールバー (`scrollbar-thumb`, #443330)**: WebKit スクロールバーのつまみ。トラックは `brand`。
 
@@ -210,7 +210,7 @@ components:
 - **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
 - **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)。
-- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、仮写真の注記 (figcaption)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン、営業時間の注記。
+- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、写真の注記 (figcaption、現在は未使用)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン、営業時間の注記。
 - **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` (章番号の右に添える) と `BOUTIQUE` `ACCÈS` のセクションラベル。金。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
@@ -292,7 +292,7 @@ components:
 
 ### Photo Treatment
 - **Hero:** `object-fit: cover` (`40% 55%`)、brightness 0.8 × 彩度 0.8、不透明度 0.7、20 秒かけて 1.1 → 1.2 倍にゆっくりズームし往復 (無限)。上に `brand` 70% → 20% (45% 地点) → 100% のグラデーション
-- **Chapter (壱〜四):** 4:3 (`aspect-ratio: 4 / 3`)、brightness 0.75 (壱・弐) / 0.8 (参・四)。ホバーで拡大しない (2 秒で 1.05 倍の拡大は 2026-09-12 に撤去)。下から `brand` → 透明 (45% 地点) を不透明度 0.6 で重ねる。参 (おばんざい) は仮写真で、figcaption (`label`、`text-muted`、上 12px) に注記を添える (正式写真が入ったら外す)。写真は章ごとに複数枚 (5 枚まで) 登録でき、2 枚以上のときは 5 秒表示 → 1 秒のクロスフェードで順に見せる (Motion Grammar「章の写真スライドショー」)。位置と減光は章の全写真に共通
+- **Chapter (壱〜四):** 4:3 (`aspect-ratio: 4 / 3`)、brightness 0.75 (壱・弐) / 0.8 (参・四)。ホバーで拡大しない (2 秒で 1.05 倍の拡大は 2026-09-12 に撤去)。下から `brand` → 透明 (45% 地点) を不透明度 0.6 で重ねる。写真に注記が要るときは `ja.ts` の `note` に置くと figcaption (`label`、`text-muted`、上 12px) が付く (参の仮写真の注記は 2026-09-14 に正式写真が入って撤去。現在は未使用)。写真は章ごとに複数枚 (5 枚まで) 登録でき、2 枚以上のときは 5 秒表示 → 1 秒のクロスフェードで順に見せる (Motion Grammar「章の写真スライドショー」)。位置と減光は章の全写真に共通
 - **ACCÈS:** brightness 0.3 × 彩度 0.7 で全面背景に (`30% 40%`)、上下を `brand` で締める (中央 40%)
 - **BOUTIQUE:** 写真は置かない。`line` の 1px 枠で囲った 48rem の箱 (padding 縦 `clamp(48px, 8vw, 96px)` × 横 section-x)
 
