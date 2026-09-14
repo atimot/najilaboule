@@ -3,8 +3,10 @@ export const SITE = {
   kana: 'ナジラブール',
   phone: '03-6228-5803',
   phoneHref: 'tel:03-6228-5803',
-  /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ) */
+  /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ)。ヘッダーメニューの Online Shop と BOUTIQUE のボタンが指す */
   riceShopUrl: 'https://iyahiko.square.site/',
+  /** Instagram。仮の URL (2026-09-14)。正式なアカウント URL が届いたら差し替える */
+  instagramUrl: 'https://www.instagram.com/',
   /** Google マップ埋め込みの検索文字列 */
   mapQuery: '東京都中央区銀座6-12-12 銀座ステラビル2階',
 } as const;

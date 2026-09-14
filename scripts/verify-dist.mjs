@@ -5,6 +5,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
 const count = (re) => (html.match(re) ?? []).length;
 const section = (id) => html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))?.[0] ?? '';
+const header = html.match(/<header[\s\S]*?<\/header>/)?.[0] ?? '';
+// Astro のスコープ属性 (data-astro-cid-*) が付くので、タグは [^>]* で属性を許して探す
+const menu = header.match(/<ul id="menu"[^>]*>[\s\S]*?<\/ul>/)?.[0] ?? '';
 
 const assetsDir = new URL('../dist/_astro/', import.meta.url);
 const css = readdirSync(assetsDir)
@@ -34,10 +37,12 @@ const checks = [
   ['SVG favicon の link', html.includes('<link rel="icon" type="image/svg+xml" href="/najilaboule/favicon.svg"')],
   ['<header> がある', /<header\b/.test(html)],
   ['ヘッダーのロゴは inline SVG (currentColor、<img> なし)', (() => { const m = html.match(/<header[\s\S]*?<\/header>/); return !!m && /<svg[^>]*fill="currentColor"/.test(m[0]) && /<svg[^>]*viewBox="/.test(m[0]) && !/<img\b/.test(m[0]); })()],
-  ['ヘッダーに電話予約リンク', /<header[\s\S]*?href="tel:03-6228-5803"[\s\S]*?<\/header>/.test(html)],
-  ['ナビに aria-label', /<nav[^>]*aria-label="メインナビゲーション"/.test(html)],
-  ['ナビリンクは 5 本 (#concept #sake #obanzai #shop #access)', (() => { const m = html.match(/<nav[\s\S]*?<\/nav>/); return !!m && ['#concept', '#sake', '#obanzai', '#shop', '#access'].every((h) => m[0].includes(`href="${h}"`)) && (m[0].match(/class="nav__link"/g) ?? []).length === 5; })()],
-  ['RESERVATION はヘッダーの 1 箇所だけ (Access の予約ブロックは廃止)', count(/>\s*RESERVATION\s*</g) === 1],
+  ['ナビに aria-label', /<nav[^>]*aria-label="メインナビゲーション"/.test(header)],
+  ['ヘッダーのメニューは popover (JS なし): button[popovertarget=menu] に隠しテキスト「メニュー」、ul#menu[popover]', /<button type="button" class="menu__toggle" popovertarget="menu"[^>]*>\s*<span class="sr-only"[^>]*>メニュー<\/span>\s*<span class="menu__glyph" aria-hidden="true"[^>]*><\/span>\s*<\/button>/.test(header) && /^<ul id="menu" class="menu__list" popover[\s>]/.test(menu) && !/<details\b|<summary\b/.test(header)],
+  ['メニューのリンクは Instagram と Online Shop の 2 本 (外部リンク属性つき、↗ を添える)', (() => { const links = menu.match(/<a\b[^>]*class="menu__link"[^>]*>[\s\S]*?<\/a>/g) ?? []; return links.length === 2 && ['Instagram', 'Online Shop'].every((label, i) => new RegExp(`target="_blank"[^>]*rel="noopener noreferrer"[^>]*aria-label="${label}（外部サイト・新しいタブで開きます）"[^>]*>\\s*${label}\\s*<span aria-hidden="true"[^>]*>↗</span>`).test(links[i])); })()],
+  ['メニューの Online Shop は BOUTIQUE のボタンと同じ URL', menu.includes('href="https://iyahiko.square.site/"')],
+  ['ヘッダーにナビリンク 5 本と RESERVATION ボタンが残っていない (2026-09-14 に廃止)', !/nav__link|RESERVATION|href="tel:|href="#(concept|sake|obanzai|shop|access)"/.test(header) && !/RESERVATION/.test(html)],
+  ['電話予約リンク (tel:) は Access の 1 箇所だけ', count(/href="tel:03-6228-5803"/g) === 1 && section('access').includes('href="tel:03-6228-5803"')],
   ['h1 はちょうど 1 つ', count(/<h1\b/g) === 1],
   ['#top セクション', /<section[^>]*id="top"/.test(html)],
   ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
@@ -70,6 +75,8 @@ const checks = [
   ['CSS: 章のスライドショー keyframes (2〜5 枚ぶん) が残っている', [2, 3, 4, 5].every((n) => css.includes(`@keyframeschapter-slide-${n}{`))],
   ['CSS: スライドショーは 1 枚 6 秒周期で、フェードは周期の 1/6 (変数は --slide-period だけ)', css.includes('--slide-period:6s') && css.includes('--slide-fade:calc(var(--slide-period)/6)') && !css.includes('--slide-hold')],
   ['CSS: 章の写真にホバー効果がない (拡大も一時停止もしない)', !/chapter__frame[^{]*:hover/.test(css) && !css.includes('animation-play-state') && !css.includes('scale:1.05')],
+  ['CSS: メニューの開閉は :popover-open で描く (グリフの ×、パネルの transition は @starting-style と allow-discrete で往復)', /:popover-open[^{]*menu__glyph/.test(css) && /\.menu__list[^{]*:popover-open[^{]*\{[^}]*opacity:1/.test(css) && /\.menu__list[^{]*:popover-open[^{]*\{[^}]*display:grid/.test(css) && !(css.match(/\.menu__list\[[^\]]*\]\{[^}]*\}/g) ?? []).some((rule) => rule.includes('display:grid')) && /@starting-style\{[^}]*:popover-open/.test(css) && /transition:[^;}]*display[^;}]*allow-discrete/.test(css)],
+  ['CSS: 1024px (64rem) のブレークポイントが残っていない', !/min-width:64rem|min-width:1024px/.test(css)],
 ];
 
 let failed = 0;

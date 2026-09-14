@@ -17,9 +17,9 @@ export interface Chapter extends TitledText {
 export const CHAPTER_KEYS = ['concept', 'sake', 'obanzai', 'riz'] as const;
 export type ChapterKey = (typeof CHAPTER_KEYS)[number];
 
-/** ヘッダーのナビリンクの並びとリンク先 (セクションの id)。四 (riz) にはリンクを置かない (handoff §4.0) */
-export const NAV_TARGETS = ['concept', 'sake', 'obanzai', 'shop', 'access'] as const;
-export type NavTarget = (typeof NAV_TARGETS)[number];
+/** ヘッダーメニューのリンクの並び。リンク先は SITE (config.ts) で、Header.astro が対応づける */
+export const MENU_LINKS = ['instagram', 'shop'] as const;
+export type MenuLink = (typeof MENU_LINKS)[number];
 
 /** ページの全文言。en.ts を追加するときはこの型を実装する */
 export interface Copy {
@@ -30,12 +30,15 @@ export interface Copy {
   common: {
     skipToContent: string;
     navLabel: string;
-    reserveByPhone: string;
+    /** 外部リンクの aria-label に添える注記 (「外部サイト・新しいタブで開きます」) */
+    externalLinkNote: string;
   };
   header: {
     kana: string;
-    /** ナビリンク (1024px 以上で表示)。キーはリンク先セクションの id (NAV_TARGETS) */
-    nav: Record<NavTarget, string>;
+    /** メニュー開閉ボタンのアクセシブルネーム (見た目は 2 本線のグリフだけ) */
+    menuLabel: string;
+    /** メニューのリンク文言。並びは MENU_LINKS。外部リンクなので ↗ を添えて新しいタブで開く */
+    menu: Record<MenuLink, string>;
   };
   hero: {
     title: string;
