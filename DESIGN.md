@@ -113,9 +113,10 @@ components:
   button-filled-hover:
     backgroundColor: "{colors.dot-white}"
     textColor: "{colors.brand}"
+  # ヘッダーメニュー (Instagram / Online Shop) のリンク。2026-09-14 に menu → title に大きくした
   nav-link:
     textColor: "{colors.text}"
-    typography: "{typography.menu}"
+    typography: "{typography.title}"
   nav-link-hover:
     textColor: "{colors.accent}"
   # 英語版を追加するまで非表示のコンポーネント (Header & Navigation 参照)
@@ -206,11 +207,11 @@ components:
 
 - **Display** (`display`, 400, 3.5rem / 行間 1.11 / 字間 0.2em): Hero の h1 だけ。**縦書き** (`writing-mode: vertical-rl`) で、高さに収めるため `min(display, 6.5vh)` を上限にし、行間 1.7 (= 2 列の間隔)。改行は文言側で明示する (右列「銀座の夜、」左列「米と汁を嗜む。」)。モバイル 2.25rem。
 - **Headline** (`headline`, 400, 2.5rem / 1.2 / 0.1em): 章 (壱〜四) と BOUTIQUE の h2。章の h2 は縦書きで、1 列 9 文字以内 (PC の高さ 420px に折り返さずに入る上限)。2 列に分けるときは改行を文言側で明示する (現在の 4 章はすべて 1 列)。参の「駿菜」は造語 (「旬菜」ではない)。モバイル 1.875rem。
-- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): 現在の LP では未使用 (Philosophy を 2026-09-12 に廃止)。姉妹ショップで使えるようトークンは残す。モバイル 1.5rem。
+- **Title** (`title`, 400, 1.875rem / 1.625 / 0.1em): ヘッダーメニューのリンク (Instagram / Online Shop、`nav-link`)。モバイル 1.5rem。
 - **Logo**: 店名は文字で組まず、ロゴ (`src/assets/logo.svg`、Iowan Old Style のワードマーク + Noto Sans JP Light のカナをアウトライン化した SVG) を、常に公式アイコンを左に添えた横並びロックアップ (`BrandLockup`) で置く。高さはヘッダー 48px / モバイル 28px (`--logo-height` / `--logo-height-mobile`)、Access の見出し (h2、ロゴが `role="img"`) 72px / 52px (`--logo-height-access*`)、Footer 40px (`--logo-height-footer`)。ロゴは `fill: currentColor` で置き場所の文字色を継ぐ (ヘッダー・Access は白、Footer は `text-soft`)。
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
-- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): デスクトップナビ、ボタン文字 (md / lg)。
-- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、写真の注記 (figcaption、現在は未使用)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン、営業時間の注記。
+- **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): ボタン文字 (md / lg)。ヘッダーのナビリンクは 2026-09-14 に廃止し、メニューのリンクは `title` で組む。
+- **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、写真の注記 (figcaption、現在は未使用)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン (未使用)、営業時間の注記。
 - **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` (章番号の右に添える) と `BOUTIQUE` `ACCÈS` のセクションラベル。金。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
@@ -229,7 +230,7 @@ components:
 
 ## Layout
 
-**単一ブレークポイント (+ ナビだけ 1 本)。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない。唯一の例外はヘッダーのナビリンク 5 本で、ロックアップ + リンク 5 本 + RESERVATION が 768〜1023px に収まらないため 1024px (`64rem`) 以上で表示する (`Header.astro` のみ)。
+**単一ブレークポイント。** レスポンシブの分岐は 768px (`md`) の 1 本だけ。モバイルは 1 カラム縦積み、768px 以上で 2 カラムに開く。中間段階は作らない (ヘッダーのナビリンク 5 本を出していた 1024px の例外は、2026-09-14 にリンクごと廃止)。
 
 **セクションの余白。** 縦 96px (`section-y`) / 160px (`section-y-md`)、横 24px (`section-x`) / 80px (`section-x-md`)。Hero は `100vh`。章 4 つは 1 つの列 (padding 縦 section-y / 横 section-x) に `card-gap` で並べ、BOUTIQUE はその直後なので上の余白は 0。「1 セクション = 1 画面ぶんの余白」が基準。
 
@@ -239,7 +240,7 @@ components:
 
 **モバイルの画像の扱い。** 章は wrap で 1 列に積む。写真 (4:3) → 文章の順で、写真が右の章 (`row-reverse`) でも写真が上に来る。文章の縦書きブロックはモバイルでも縦書きのまま (高さ 420px)。
 
-**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 2px の背景ぼかしで写真の上に浮かせる。ブランドのアンカーは `flex-shrink: 0` で潰れないようにする。ナビリンク 5 本 (Concept · Saké · Obanzai · Boutique · Access) は 1024px 以上だけで、それ未満は右上に RESERVATION ボタンだけを置く。
+**固定ヘッダー。** 上端固定、余白 24px (768px 以上で 40px)、`brand` 90% → 透明の下向きグラデーションと 12px の背景ぼかしで写真の上に浮かせる (2026-09-14 に 2px から強めた)。下端の余白ぶん (24px / 40px) は `mask-image` でぼかしごと透明に溶かし、ぼかしが急に切れる線を出さない。ブランドのアンカーは `flex-shrink: 0` で潰れないようにする。右上は 2 本線のメニュー開閉ボタンだけで、押すとヘッダー直下に横いっぱいのパネルが開く (Header & Navigation 参照)。開いている間はヘッダー自体がパネルの高さぶん下に伸び (`padding-bottom` を開閉と同じ速さで遷移)、同じグラデーションとぼかしがその高さに広がる。地の色味は閉じているときと変えない。
 
 **縦の積み方。** 見出し下 32px (`stack`)、段落下 32〜48px (`stack` / `stack-lg`)、地図など補助要素の上 64px (`stack-xl`)。章の間は 96px / 128px (`card-gap` / `card-gap-md`)。章の中は、ラベル行 → 縦書きブロックの間 40px、縦書きの h2 → 本文の間 40px (列の間隔)。
 
@@ -249,11 +250,11 @@ components:
 
 1. **体の背景 3 層。** ベースの `brand` の上に、240px タイルの SVG フラクタルノイズ (`soft-light` 合成、不透明度 0.7) を敷き、左上から `accent` 6% を混ぜた `brand-light` の楕円グラデーション、右下から `brand-dark` の楕円グラデーションを差す。3 層とも `background-attachment: fixed`。
 2. **写真の減光とグラデーション。** 写真は Dimmed Photo Rule で暗くし、その上に `brand` へ溶けるグラデーションを重ねる。Hero は上 70% → 45% 地点で 20% → 下 100%、章は下から 100% → 45% 地点で透明 (全体 60%)、ACCÈS は上下 100% で中央 40%。
-3. **背景ぼかし。** ヘッダーは 2px のバックドロップフィルタで、下の写真を感じさせながら読みやすさを確保する。
+3. **背景ぼかし。** ヘッダーは 12px のバックドロップフィルタで、下の写真を曇りガラス越しに感じさせながら読みやすさを確保する (メニューを開いて伸びた部分にも同じぼかしが効く)。下端は余白ぶんのマスクで溶かす。
 
 **唯一の発光。** ブランドドットだけが `0 0 10px` のグローを持つ (白ドット 50%、色ドット 30%、黒ドットはグローなし)。セクションに散らす光点は 1px のぼかしで滲ませる。
 
-**レイヤー順序。** Hero の写真 0 < Hero の文字 10 < ヘッダー 40。全画面のオーバーレイは持たない。
+**レイヤー順序。** Hero の写真 0 < Hero の文字 10 < ヘッダー 40。メニューのパネルは popover なので最前面 (top layer) に出るが、ヘッダーの下端から始まるので重ならない。全画面のオーバーレイは持たない。
 
 ### Named Rules
 **The Flat-Dark Rule.** 面は平らで、影で持ち上げない。手前にあるものは「暗い地に対して明るい」のではなく「地と同じ色で、光だけが違う」。
@@ -273,16 +274,17 @@ components:
 ## Components
 
 ### Buttons
-- **Shape:** 直角、1px の枠、字間 0.1em、文字は `RESERVATION` のように英字大文字
+- **Shape:** 直角、1px の枠、字間 0.1em、文字は `ONLINE SHOP` のように英字大文字
 - **Outline (`button-outline`):** 透明地に `line-strong` (白 50%) の枠、文字は `text`。ホバーで地・枠ともに `accent`、文字は `brand` に反転
-- **Filled (`button-filled`):** 白 5% の地に `line` (白 20%) の枠。ホバーで地が白、文字が `brand`。現在の LP では未使用 (Access の予約ブロックを 2026-09-12 に廃止。予約導線はヘッダーの RESERVATION だけ)
-- **Sizes:** sm 8px × 24px / 0.75rem (ヘッダー)、md 12px × 32px / 0.875rem (BOUTIQUE、横 40px)、lg 16px × 32px / 0.875rem (未使用)
+- **Filled (`button-filled`):** 白 5% の地に `line` (白 20%) の枠。ホバーで地が白、文字が `brand`。現在の LP では未使用 (Access の予約ブロックを 2026-09-12 に、ヘッダーの RESERVATION を 2026-09-14 に廃止。予約導線は ACCÈS の TEL だけ)
+- **Sizes:** sm 8px × 24px / 0.75rem (未使用。ヘッダーの RESERVATION を 2026-09-14 に廃止)、md 12px × 32px / 0.875rem (BOUTIQUE、横 40px)、lg 16px × 32px / 0.875rem (未使用)
 - **Transition:** 背景色・枠色・文字色を 500ms で同時に遷移
 - **Focus:** `accent` 2px のアウトライン、offset 2px (全リンク・ボタン共通)
 
 ### Header & Navigation
-- **Desktop:** 左にアイコン + ロゴのロックアップ (高さ 48px)、右にナビリンク 5 本 (Concept · Saké · Obanzai · Boutique · Access → `#concept #sake #obanzai #shop #access`、`nav-link`、ホバーで `accent` へ 300ms、**1024px 以上だけ**) と sm の Outline ボタン。ブランドのアンカーは `flex-shrink: 0`。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
-- **Mobile:** ロックアップは高さ 28px (RESERVATION ボタンと並べて 375px に収める)。1024px 未満はリンクを省き、右上に sm の Outline ボタンだけを置く。ハンバーガーメニューは持たない (各セクションへはスクロールで届く)
+- **構成:** 左にアイコン + ロゴのロックアップ (高さ 48px、モバイル 28px)、右に 2 本線のメニュー開閉ボタンだけ。スマホも PC も同じ。ナビリンク 5 本 (Concept 〜 Access) と RESERVATION ボタンは 2026-09-14 に廃止 (予約導線は ACCÈS の TEL)。ブランドのアンカーは `flex-shrink: 0`。ヘッダーは開演の最後 (遅延 1.4s) に 1 秒でフェードイン
+- **開閉ボタン:** `<button popovertarget>` と `<ul popover>` (HTML 標準の popover 属性) で JS なしに開閉する。見た目は 1px の線 2 本 (幅 24px、間 8px、`currentColor`)、タップ領域は 48px 角 (ロックアップとの高さの差は負のマージンで吸収し、ヘッダーの高さは変えない。右端は線がヘッダーの余白の縁に揃う)。ホバーで `accent` へ 300ms。開くと 2 本が中央に寄って × になり、閉じると戻る (500ms、ease-out)。アクセシブルネームは視覚的に隠した「メニュー」(`.sr-only`)、開閉状態 (`aria-expanded`) はブラウザが付ける
+- **パネル:** ヘッダー直下に左右いっぱい (popover は top layer に出るので `position: fixed` で閉じているときのヘッダーの高さの位置に置く)。パネル自体は地を持たず、伸びたヘッダーのグラデーション + ぼかしがそのまま地になる (面が 1 枚なので、地を別に持ったときに出る境目の線や色味の段差がない)。高さは `--menu-height` (モバイル 134px / 170px = 上 8px + リンク 2 本 + 間 8px + 下の余白) で、リンクを増やしたら足す。リンクはロックアップの左端に揃えて縦に積む (`nav-link` = `title`、字間 0.1em、間 8px、ホバーで `accent` へ 300ms)。開くときは不透明度 0 → 1、8px 上から降りてくる (500ms、ease-out)。閉じるときは同じ道を 300ms で戻る (Motion Grammar「メニューの開閉」)。Esc と外側クリックでも閉じる (popover の light dismiss)。項目は Instagram と Online Shop の 2 本 (`MENU_LINKS`、文言は `ja.ts`、URL は `SITE`)。どちらも外部リンクなので `↗` を添えて新しいタブで開く。popover 非対応のブラウザ (iOS 16 以前など) ではパネルを出さない (`@supports not selector(:popover-open)`)
 - **Language Switch:** 英語版を追加するまで非表示。追加時は `JP | EN` の静的リンク (0.75rem、字間 0.1em、アクティブは `accent` + 700 + 1px 下線) をナビの右に置く
 
 ### Section Label + Heading
@@ -308,6 +310,7 @@ components:
 - **スクロール時の浮き上がり:** `animation-timeline: view()` で、要素が視界に入る区間 (entry 0% → 40%) に不透明度 0 → 1、y +30px → 0。`@supports` で段階適用し、非対応では常時表示
 - **ホバー:** 色は 300ms、ボタンの反転は 500ms。いずれも ease-out。写真にはホバー効果を付けない
 - **章の写真スライドショー:** 写真を 2 枚以上登録した章は、各写真を 5 秒見せ、次の写真が 1 秒 (ease-in-out) で上に溶けて現れる (1 枚あたり 6 秒周期、フェードは周期の 1/6 に固定、無限ループ。変える数値は `--slide-period` だけ)。前の写真は次が現れきってから消すので、両方が半透明になって焦茶が透ける瞬間はない。ホバーで止めたり拡大したりはしない (挙動を単純に保つ)。JS は使わず、枚数ごとの keyframes (2〜5 枚) で組む
+- **メニューの開閉:** 開くと、2 本線が × に変わり (500ms)、ヘッダーがパネルの高さぶん下に伸び (500ms)、パネルが不透明度 0 → 1・8px 上から降りてくる (500ms)。閉じるときは同じ 3 つが同じ道を 300ms で戻る (出るときより少し速く)。すべて ease-out、CSS の `transition` だけ。開閉の往復は popover の `:popover-open` と `@starting-style`、`display` / `overlay` の `allow-discrete` で作る (JS も keyframes も使わない)。タップへの応答なのでボタンの反転と同じ長さにし、1 秒のフェードは使わない。Reduced motion では即時
 - **イージング:** ease-out / ease-in-out のみ。スプリング、バウンス、オーバーシュートは使わない
 - **Reduced motion:** 全 animation / transition を無効化し、`scroll-behavior: auto` を強制。即時表示にする。章のスライドショーは 1 枚目を静止表示
 - **JS を使わない:** 動きは CSS だけで書く。JS でしか作れない動きは採用しない
@@ -320,7 +323,7 @@ components:
 - **Do** 本文は行間 2、字間 0.1em、色は `text-soft` か `text-muted`
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす
 - **Do** セクション余白は縦 96px / 160px、横 24px / 80px。迷ったら広い方
-- **Do** 動きは 1 秒のフェード (不透明度、必要なら y +30px) を基本にし、ホバーは 300〜500ms
+- **Do** 動きは 1 秒のフェード (不透明度、必要なら y +30px) を基本にし、ホバーとメニューの開閉は 300〜500ms
 - **Do** `prefers-reduced-motion` を CSS で尊重する (全 animation / transition を無効化)
 - **Do** 数字は `tabular-nums`、約物は `’` `–` `…`、和文の引用は「」
 - **Do** フォーカスリングは `accent` 2px / offset 2px を全リンク・ボタンに
@@ -341,6 +344,6 @@ components:
 - **Don't** 太字で強調しない。`font-weight: 300` も使わない
 - **Don't** フェードを 1 秒より速くしない。スプリング・バウンス系のイージングを使わない
 - **Don't** アイコンライブラリを入れない。矢印は `↗` の文字で
-- **Don't** 768px 以外にブレークポイントを増やさない (例外はヘッダーのナビリンクを出す 1024px だけ)
+- **Don't** 768px 以外にブレークポイントを増やさない
 - **Don't** 文言をコンポーネントに直書きしない。ja / en の両方を i18n データに置く (欧文の装飾ラベルと画像 alt は例外)
 - **Don't** 配信 JS を増やさない。アニメーションライブラリも入れない

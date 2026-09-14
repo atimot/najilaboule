@@ -88,6 +88,16 @@ button:focus-visible {
   border-radius: var(--radius-scrollbar);
 }
 
+/* 視覚的に隠して支援技術にだけ読ませる (メニュー開閉ボタンの名前など) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* skip link: フォーカスされたときだけ左上に現れる */
 .skip-link {
   position: absolute;

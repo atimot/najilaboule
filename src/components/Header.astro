@@ -1,10 +1,11 @@
 ---
 import BrandLockup from '@/components/BrandLockup.astro';
-import Button from '@/components/Button.astro';
 import { SITE } from '@/config';
-import { NAV_TARGETS, getCopy } from '@/i18n';
+import { MENU_LINKS, getCopy, type MenuLink } from '@/i18n';
 
 const t = getCopy(Astro.currentLocale);
+/** メニューのリンク先 (並びは MENU_LINKS)。仮の URL なので正式なものが届いたら SITE を差し替える */
+const hrefs = { instagram: SITE.instagramUrl, shop: SITE.riceShopUrl } as const satisfies Record<MenuLink, string>;
 ---
 
 <header class="header">
@@ -12,39 +13,71 @@ const t = getCopy(Astro.currentLocale);
     <BrandLockup class="brand__lockup" />
   </a>
   <nav class="nav" aria-label={t.common.navLabel}>
-    <!-- Concept · Saké · Obanzai · Boutique · Access の 5 本 (並びとリンク先は NAV_TARGETS)。1024px 以上だけ表示 -->
-    <div class="nav__links">
-      {NAV_TARGETS.map((id) => <a href={`#${id}`} class="nav__link">{t.header.nav[id]}</a>)}
-    </div>
-    <Button href={SITE.phoneHref} ariaLabel={`RESERVATION: ${t.common.reserveByPhone} (${SITE.phone})`} variant="outline" size="sm">
-      RESERVATION
-    </Button>
+    <!-- JS なしの開閉メニュー (popover 属性)。スマホも PC も同じ: 右上の 2 本線を押すとヘッダー直下に横いっぱいのパネルが開く。
+         Esc と外側クリックで閉じる (popover の light dismiss)。開閉状態 (aria-expanded) はブラウザがボタンに付ける -->
+    <button type="button" class="menu__toggle" popovertarget="menu">
+      <span class="sr-only">{t.header.menuLabel}</span>
+      <span class="menu__glyph" aria-hidden="true"></span>
+    </button>
+    <ul id="menu" class="menu__list" popover>
+      {
+        MENU_LINKS.map((key) => (
+          <li>
+            <a
+              href={hrefs[key]}
+              class="menu__link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${t.header.menu[key]}（${t.common.externalLinkNote}）`}
+            >
+              {t.header.menu[key]} <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </nav>
 </header>
 
 <style>
   .header {
+    /* ロックアップ (BrandLockup) の高さとヘッダーの余白。パネルの上端 (ヘッダーの高さ) もここから出す */
+    --lockup-height: var(--logo-height-mobile);
+    --header-pad: var(--space-header);
+    /* メニューのパネルの高さ (上 8px + リンク 2 本 47px + 間 8px + 下 24px)。開くとヘッダーがこのぶん下に伸びる。
+       パネル自体は地を持たず、ヘッダーのグラデーションとぼかしをそのまま使う (面が 1 枚なので継ぎ目も出ない)。
+       リンクを増やしたらここも足す */
+    --menu-height: 134px;
+
     position: fixed;
     top: 0;
     z-index: 40;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: var(--space-header);
+    padding: var(--header-pad);
     background: linear-gradient(to bottom, color-mix(in srgb, var(--color-brand) 90%, transparent), transparent);
     color: var(--color-dot-white);
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    /* 下端の余白ぶんでぼかしを透明に溶かし、ぼかしが急に切れる線を出さない (ロゴやリンクは余白より上なので影響しない) */
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--header-pad)), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - var(--header-pad)), transparent);
+    transition: padding-bottom var(--duration-hover) var(--ease-out);
     /* 開演の最後にヘッダーが現れる (spec §7.1) */
     animation: fade-in 1s var(--ease-out) 1.4s both;
   }
 
-  /* アイコン + ロゴのロックアップ (BrandLockup)。ロゴは currentColor でヘッダーの文字色を継ぐ。
-     flex-shrink: 0 でナビに押されて潰れないようにする */
-  .brand {
-    --lockup-height: var(--logo-height-mobile);
+  /* 開いている間はヘッダーがパネルの高さぶん下に伸びる (開く 500ms / 閉じる 300ms)。グラデーションは伸びた高さに広がる */
+  .header:has(.menu__list:popover-open) {
+    padding-bottom: calc(var(--header-pad) + var(--menu-height));
+    transition-duration: var(--duration-button);
+  }
 
+  /* アイコン + ロゴのロックアップ (BrandLockup)。ロゴは currentColor でヘッダーの文字色を継ぐ。
+     flex-shrink: 0 でメニューに押されて潰れないようにする */
+  .brand {
     display: block;
     flex-shrink: 0;
     width: fit-content;
@@ -53,41 +86,136 @@ const t = getCopy(Astro.currentLocale);
   .nav {
     display: flex;
     align-items: center;
-    gap: 32px;
-    font-size: var(--text-menu);
-    line-height: var(--leading-menu);
-    letter-spacing: var(--tracking-wide);
   }
 
-  /* リンク 5 本は 1024px 以上だけ。ロックアップ + リンク 5 本 + RESERVATION は 768〜1023px に収まらない (handoff §4.0)。
-     それ未満は RESERVATION ボタンだけ (spec §14 #3) */
-  .nav__links {
-    display: none;
-    align-items: center;
-    gap: 32px;
-  }
-
-  .nav__link {
+  /* 開閉ボタン。タップ領域は 48px 角。ロックアップとの高さの差は負のマージンで吸収し、
+     ヘッダーの高さを変えない。右端は 2 本線 (24px) がヘッダーの余白の縁に揃うよう 12px 食い込ませる */
+  .menu__toggle {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-block: calc((var(--lockup-height) - 48px) / 2);
+    margin-inline-end: -12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
     transition: color var(--duration-hover);
   }
 
-  .nav__link:hover {
+  .menu__toggle:hover {
+    color: var(--color-accent);
+  }
+
+  /* 2 本線 (1px、間 8px)。開くと 2 本が中央に寄って × になり、閉じると戻る */
+  .menu__glyph {
+    position: relative;
+    width: 24px;
+    height: 9px;
+  }
+
+  .menu__glyph::before,
+  .menu__glyph::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transition:
+      translate var(--duration-button) var(--ease-out),
+      rotate var(--duration-button) var(--ease-out);
+  }
+
+  .menu__glyph::before {
+    top: 0;
+  }
+
+  .menu__glyph::after {
+    bottom: 0;
+  }
+
+  .header:has(.menu__list:popover-open) .menu__glyph::before {
+    translate: 0 4px;
+    rotate: 45deg;
+  }
+
+  .header:has(.menu__list:popover-open) .menu__glyph::after {
+    translate: 0 -4px;
+    rotate: -45deg;
+  }
+
+  /* パネル: ヘッダーの直下 (閉じているときのヘッダーの高さの位置) に左右いっぱい。リンクはロックアップの左端に揃えて縦に積む。
+     popover は最前面 (top layer) に出るので position: fixed で置く。地は持たない (伸びたヘッダーが地になる)。
+     閉じた状態 (不透明度 0、8px 上) から開くと 500ms で降りてきて、閉じるときは 300ms で同じ道を戻る。
+     display / overlay の allow-discrete で、閉じる遷移が終わるまで要素を残す。
+     display は開いているときだけ指定する (常時 grid にすると、閉じたときにブラウザが当てる display: none を
+     打ち消してしまい、透明なパネルが残って下のタップを奪う) */
+  .menu__list {
+    position: fixed;
+    inset: calc(var(--header-pad) * 2 + var(--lockup-height)) 0 auto;
+    gap: 8px;
+    width: auto;
+    margin: 0;
+    padding: 8px var(--header-pad) var(--header-pad);
+    border: 0;
+    background: none;
+    color: inherit;
+    opacity: 0;
+    translate: 0 -8px;
+    transition:
+      opacity var(--duration-hover) var(--ease-out),
+      translate var(--duration-hover) var(--ease-out),
+      display var(--duration-hover) allow-discrete,
+      overlay var(--duration-hover) allow-discrete;
+  }
+
+  .menu__list:popover-open {
+    display: grid;
+    opacity: 1;
+    translate: 0 0;
+    transition-duration: var(--duration-button);
+  }
+
+  @starting-style {
+    .menu__list:popover-open {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+
+  /* popover 非対応 (iOS 16 以前など) ではボタンが効かないので、パネルを出さない */
+  @supports not selector(:popover-open) {
+    .menu__list {
+      display: none !important;
+    }
+  }
+
+  .menu__link {
+    display: inline-block;
+    padding-block: 4px;
+    font-size: var(--text-title-mobile);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-wide);
+    transition: color var(--duration-hover);
+  }
+
+  .menu__link:hover {
     color: var(--color-accent);
   }
 
   @media (min-width: 48rem) {
     .header {
-      padding: var(--space-header-md);
-    }
-
-    .brand {
       --lockup-height: var(--logo-height);
+      --header-pad: var(--space-header-md);
+      /* 上 8px + リンク 2 本 56.75px + 間 8px + 下 40px */
+      --menu-height: 170px;
     }
-  }
 
-  @media (min-width: 64rem) {
-    .nav__links {
-      display: flex;
+    .menu__link {
+      font-size: var(--text-title);
     }
   }
 </style>

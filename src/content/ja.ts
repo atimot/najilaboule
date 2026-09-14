@@ -9,11 +9,12 @@ export const ja: Copy = {
   common: {
     skipToContent: '本文へスキップ',
     navLabel: 'メインナビゲーション',
-    reserveByPhone: '電話で予約する',
+    externalLinkNote: '外部サイト・新しいタブで開きます',
   },
   header: {
     kana: 'ナジラブール',
-    nav: { concept: 'Concept', sake: 'Saké', obanzai: 'Obanzai', shop: 'Boutique', access: 'Access' },
+    menuLabel: 'メニュー',
+    menu: { instagram: 'Instagram', shop: 'Online Shop' },
   },
   hero: {
     // 縦書き。\n で右列「銀座の夜、」左列「米と汁を嗜む。」の 2 列になる
