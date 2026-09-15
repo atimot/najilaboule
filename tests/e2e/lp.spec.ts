@@ -58,3 +58,33 @@ test('ヘッダーメニューが開閉し、パネルが伸びたヘッダー�
   await expect(menu).toBeHidden();
   await expect.poll(async () => Math.abs((await header.boundingBox())!.height - closedHeight), 'ヘッダーの高さが閉じた値に戻らない').toBeLessThan(1);
 });
+
+/** 章の並び (src/i18n の CHAPTER_KEYS と同じ id) */
+const CHAPTERS = ['concept', 'sake', 'obanzai', 'riz'] as const;
+
+test('4 章の見出しと写真が描かれる', async ({ page }) => {
+  for (const id of CHAPTERS) {
+    const section = page.locator(`#${id}`);
+    await section.scrollIntoViewIfNeeded();
+    await expect(section.getByRole('heading', { level: 2 }), `${id} の見出しが見えない`).toBeVisible();
+
+    // 写真は loading="lazy"。スクロールで表示してから描画を待つ (最初のスライドの img)
+    const photo = section.locator('img').first();
+    await photo.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => photo.evaluate((img: HTMLImageElement) => (img.complete ? img.naturalWidth : 0)), `${id} の写真が描かれていない`)
+      .toBeGreaterThan(0);
+  }
+});
+
+test('BOUTIQUE のボタンと TEL のリンクが見える', async ({ page }) => {
+  const cta = page.locator('#shop').getByRole('link', { name: /ONLINE SHOP/ });
+  await cta.scrollIntoViewIfNeeded();
+  await expect(cta).toBeVisible();
+
+  // 電話番号は変わることがあるので値は見ない (Access に tel: リンクが 1 本あって見えること)
+  const tel = page.locator('#access a[href^="tel:"]');
+  await expect(tel).toHaveCount(1);
+  await tel.scrollIntoViewIfNeeded();
+  await expect(tel).toBeVisible();
+});

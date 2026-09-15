@@ -7,7 +7,8 @@ import { defineConfig, devices } from '@playwright/test';
  * 設計: docs/superpowers/specs/2026-09-15-playwright-e2e-design.md
  */
 const CI = !!process.env.CI;
-const PORT = 4173;
+/** 既定 4173。別のチェックアウトで同時に回すときは E2E_PORT で変える (本体側の preview を拾わないように) */
+const PORT = Number(process.env.E2E_PORT ?? 4173);
 /** base パス (/najilaboule/) を含む。テストは page.goto('./') で開く ('/' だと base パスが消える) */
 const BASE_URL = `http://localhost:${PORT}/najilaboule/`;
 
