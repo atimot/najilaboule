@@ -4,7 +4,7 @@ export const ja: Copy = {
   meta: {
     title: 'Naji la boule | Ginza',
     description:
-      '銀座の夜、米と汁を嗜む。ご注文のあとに一釜ずつ炊き上げるお米と、おばんざい、汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6228-5803まで。',
+      '銀座の夜、米と汁を嗜む。ご注文のあとに一釜ずつ炊き上げるお米と、おばんざい、汁、そして少しの酒。銀座6丁目の和食店「Naji la boule (ナジラブール)」公式サイト。ご予約は03-6274-6608まで。',
   },
   common: {
     skipToContent: '本文へスキップ',
@@ -27,7 +27,7 @@ export const ja: Copy = {
     concept: {
       number: '壱',
       label: 'MARMITE',
-      title: '一釜、一膳。',
+      title: '一合、一会。',
       body: 'ご注文のあとに火を入れ、一釜ずつ炊き上げます。\n蓋を開けた瞬間の湯気と、粒の艶。\n炊きたてのお米を、そのままお楽しみください。',
     },
     sake: {
@@ -38,7 +38,7 @@ export const ja: Copy = {
     },
     obanzai: {
       number: '参',
-      label: 'OBANZAI',
+      label: 'SYUNSAI',
       // 「駿菜」は造語 (あえて「旬菜」ではない)。本文の「旬菜」は普通の語
       title: '寄り添う、駿菜。',
       body: '盃の肴に、炊きたての米の相手に。\n旬菜を、小鉢にひとつずつ仕立てました。\nお好みのものを、お選びください。',

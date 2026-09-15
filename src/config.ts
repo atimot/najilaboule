@@ -1,8 +1,8 @@
 export const SITE = {
   name: 'Naji la boule',
   kana: 'ナジラブール',
-  phone: '03-6228-5803',
-  phoneHref: 'tel:03-6228-5803',
+  phone: '03-6274-6608',
+  phoneHref: 'tel:03-6274-6608',
   /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ)。ヘッダーメニューの Online Shop と BOUTIQUE のボタンが指す */
   riceShopUrl: 'https://iyahiko.square.site/',
   /** Instagram。仮の URL (2026-09-14)。正式なアカウント URL が届いたら差し替える */
@@ -20,7 +20,7 @@ export function buildJsonLd(url: string, image: string) {
     alternateName: SITE.kana,
     url,
     image,
-    telephone: '+81-3-6228-5803',
+    telephone: '+81-3-6274-6608',
     servesCuisine: 'Japanese',
     acceptsReservations: 'True',
     address: {
