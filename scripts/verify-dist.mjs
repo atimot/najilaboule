@@ -64,6 +64,7 @@ const checks = [
   ['ACCÈS ラベル', section('access').includes('>ACCÈS</span>')],
   ['Access の見出しはロックアップ (ロゴが role=img、GINZA ラベルなし)', /<h2[^>]*id="access-title"[^>]*>[\s\S]*?<svg[^>]*role="img"[^>]*aria-label="Naji la boule ナジラブール"[\s\S]*?<\/h2>/.test(html) && !/>GINZA</.test(html)],
   ['地図 iframe に title と lazy', (() => { const m = html.match(/<iframe[^>]*>/); return !!m && /title="店舗の地図[^"]*"/.test(m[0]) && /loading="lazy"/.test(m[0]); })()],
+  ['地図は Google マップの掲載「Naji la boule」の埋め込み (共有→地図を埋め込む の URL。ftid と店名を照合)', (() => { const m = html.match(/<iframe[^>]*>/); return !!m && /src="https:\/\/www\.google\.com\/maps\/embed\?pb=[^"]*!1s0x60188baa66ba6b1f%3A0xc672e7499dfbb371!2sNaji%20la%20boule[^"]*!1sja!2sjp[^"]*"/.test(m[0]); })()],
   ['<footer> に著作権表記', /<footer[^>]*>[\s\S]*All Rights Reserved\.[\s\S]*<\/footer>/.test(html)],
   ['フッターにロゴ SVG (currentColor)', (() => { const m = html.match(/<footer[\s\S]*?<\/footer>/); return !!m && /<svg[^>]*fill="currentColor"/.test(m[0]); })()],
   ['アイコン + ロゴのロックアップが Header / Access / Footer (rect ×3)、Hero にはない', count(/<rect\b/g) === 3 && count(/<circle\b/g) === 27 && /<header[\s\S]*?<rect\b[\s\S]*?<\/header>/.test(html) && /<rect\b/.test(section('access')) && /<footer[\s\S]*?<rect\b[\s\S]*?<\/footer>/.test(html) && !/<rect\b/.test(section('top'))],
