@@ -7,8 +7,8 @@ export const SITE = {
   phoneHref: 'tel:03-6274-6608',
   /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ)。ヘッダーメニューの Online Shop と BOUTIQUE のボタンが指す */
   riceShopUrl: 'https://iyahiko.square.site/',
-  /** Instagram。仮の URL (2026-09-14)。正式なアカウント URL が届いたら差し替える */
-  instagramUrl: 'https://www.instagram.com/',
+  /** Instagram の公式アカウント (@najilaboule)。2026-09-15 に仮 URL から差し替え。verify-dist が href を照合する */
+  instagramUrl: 'https://www.instagram.com/najilaboule/',
 } as const;
 
 /**
