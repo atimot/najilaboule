@@ -25,7 +25,7 @@ playwright.config.ts          プロジェクト 4 つ、webServer (astro previe
 tests/e2e/fixtures.ts         page を拡張: Google Maps の iframe を空応答に差し替え、console error / pageerror を集めて teardown で 0 件を確認
 tests/e2e/lp.spec.ts          テスト本体 (下記 4 本)
 scripts/e2e-legacy.mjs        旧 WebKit で回す手順を 1 か所に (ピン版の定数、ブラウザの隔離、node_modules の復元)
-.github/workflows/ci.yml      verify が dist を artifact に上げ、新 job e2e (matrix: latest / webkit-18.5) が受け取って実行
+.github/workflows/ci.yml      verify が dist を artifact に上げ、新 job e2e (matrix: latest / webkit-legacy) が受け取って実行
 src/components/Header.astro   修正: .menu__list に height: auto
 CLAUDE.md / .gitignore        コマンド・構造・ルールの追記、生成物の除外
 ```
@@ -70,8 +70,9 @@ fixture (tests/e2e/fixtures.ts): `page.route(/google\.com\/maps/)` を `200` の
 
 - `verify` (既存): build の後に `dist/` を artifact `dist` (保持 1 日) に上げる
 - `e2e` (新規、`needs: verify`、`fail-fast: false`):
+  - job 名に版を埋めないのは、ピン版を `scripts/e2e-legacy.mjs` の 1 か所で管理するため
   - matrix `latest`: `npm ci` → `npx playwright install --with-deps chromium webkit` → artifact を `dist/` に展開 → `npx playwright test`
-  - matrix `webkit-18.5`: `npm ci` → artifact 展開 → `node scripts/e2e-legacy.mjs` (CI では `--with-deps` を付け、`npm ci` の復元は省く)
+  - matrix `webkit-legacy`: `npm ci` → artifact 展開 → `node scripts/e2e-legacy.mjs` (CI では `--with-deps` を付け、`npm ci` の復元は省く)
   - 失敗時のみ `playwright-report/` を artifact `playwright-report-<name>` (保持 7 日) に上げる
 - ビルドは verify の 1 回だけ。PR と main への push で走り、マージ前に両方の緑を確認する運用は従来どおり
 
@@ -88,6 +89,6 @@ fixture (tests/e2e/fixtures.ts): `page.route(/google\.com\/maps/)` を `200` の
 
 - `npm run lint`、`npm run build`、`npm run test:e2e` が 4 プロジェクトすべて緑
 - `npm run test:e2e:legacy` が Header.astro の修正前は赤 (テスト 2 の li 高さ)、修正後は緑
-- CI の `verify` / `e2e (latest)` / `e2e (webkit-18.5)` が緑
+- CI の `verify` / `e2e (latest)` / `e2e (webkit-legacy)` が緑
 - `package-lock.json` は `npx -y npm@latest` 経由で更新し、`npm run check:lockfile` が通る
 - verify-dist の 52 件はそのまま通る

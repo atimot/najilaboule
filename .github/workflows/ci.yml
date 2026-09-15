@@ -1,4 +1,4 @@
-# PR の検証用ワークフロー (build / lint)。public リポジトリの標準ランナーで無料。
+# PR の検証用ワークフロー (build / lint / e2e)。public リポジトリの標準ランナーで無料。
 # Linux の npm ci が lockfile 不整合 (wasm optional 依存の脱落含む) を検出する。
 name: CI
 
@@ -41,3 +41,60 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # e2e job が同じ dist を使う (ビルドは 1 回だけ)
+      - name: Upload dist for e2e
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  # ブラウザで描いた結果の回帰検査 (Playwright)。latest は同梱の Chromium / WebKit で 4 プロジェクト、
+  # webkit-legacy は iOS の 1 つ前のメジャー相当の WebKit で webkit 系 2 プロジェクト (ピン版は scripts/e2e-legacy.mjs)
+  e2e:
+    name: e2e (${{ matrix.name }})
+    needs: verify
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [latest, webkit-legacy]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download dist
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - name: Install browsers
+        if: matrix.name == 'latest'
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Run E2E (latest Chromium / WebKit)
+        if: matrix.name == 'latest'
+        run: npm run test:e2e
+
+      - name: Run E2E (legacy WebKit)
+        if: matrix.name == 'webkit-legacy'
+        run: npm run test:e2e:legacy
+
+      - name: Upload report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-${{ matrix.name }}
+          path: playwright-report
+          retention-days: 7
