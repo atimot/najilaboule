@@ -2,12 +2,12 @@
 import { Picture } from 'astro:assets';
 import BrandLockup from '@/components/BrandLockup.astro';
 import { images } from '@/assets/images';
-import { SITE } from '@/config';
+import { SITE, mapEmbedSrc } from '@/config';
 import { getCopy } from '@/i18n';
 
 const lang = Astro.currentLocale === 'en' ? 'en' : 'ja';
 const t = getCopy(lang);
-const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery)}&output=embed&hl=${lang}`;
+const mapSrc = mapEmbedSrc(lang);
 ---
 
 <section id="access" class="access section" aria-labelledby="access-title">
@@ -57,7 +57,7 @@ const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(SITE.mapQuery
         height="100%"
         allowfullscreen
         loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
+        referrerpolicy="strict-origin-when-cross-origin"
       ></iframe>
     </div>
   </div>
