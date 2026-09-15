@@ -175,7 +175,7 @@ components:
 パレットは「焦茶の階調 + 白の階調 + 金 1 色」で構成し、それ以外の彩度のある色はブランドドットの装飾にしか現れない。
 
 ### Primary
-- **金 (`accent` / `primary`, #C8A67B)**: 唯一の差し色。ボタンのホバー反転面、リンクのホバー色、フォーカスリング (2px / offset 2px)、`MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS` などの仏語小ラベル、言語スイッチのアクティブ表示に使う。静止状態の面を塗ることはない。
+- **金 (`accent` / `primary`, #C8A67B)**: 唯一の差し色。ボタンのホバー反転面、リンクのホバー色、フォーカスリング (2px / offset 2px)、`MARMITE` `L’ATTENTE` `SYUNSAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS` などの仏語小ラベル、言語スイッチのアクティブ表示に使う。静止状態の面を塗ることはない。
 
 ### Neutral
 - **焦茶 (`brand`, #241816)**: 全体の背景。写真の下端を溶かすグラデーションの終点も同じ色。
@@ -212,14 +212,14 @@ components:
 - **Body** (`body`, 400, 1rem / 2 / 0.1em): 本文。行間 2 は意図的に広い。モバイル 0.875rem (行間はそのまま)。章の本文は縦書きで、行間 2 が列の間隔になる。1 行 23 文字以内 (高さ 420px に折り返さずに入る上限)。
 - **Menu** (`menu`, 400, 0.875rem / 1.43 / 0.1em): ボタン文字 (md / lg)。ヘッダーのナビリンクは 2026-09-14 に廃止し、メニューのリンクは `title` で組む。
 - **Label** (`label`, 400, 0.75rem / 1.33 / 0.1em): 言語スイッチ、章番号 (壱弐参四、`text-muted`)、写真の注記 (figcaption、現在は未使用)、`ADDRESS` `TEL` `HOURS` のフィールドラベル、sm ボタン (未使用)、営業時間の注記。
-- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` (章番号の右に添える) と `BOUTIQUE` `ACCÈS` のセクションラベル。金。
+- **Label Wide** (`label-wide`, 400, 0.75rem / 1.33 / 0.3em): `MARMITE` `L’ATTENTE` `SYUNSAI` `RIZ ET SOUPE` (章番号の右に添える) と `BOUTIQUE` `ACCÈS` のセクションラベル。金。
 - **Caption** (`caption`, 400, 10px / 1.5 / 0.1em): フッターの著作権表記のみ。
 
 ### 数字と約物
 - 電話番号・営業時間・年号は `font-variant-numeric: tabular-nums` を数字を含む要素に直接付ける (継承に頼らず、数字を含む要素に直接)
 - アポストロフィは曲線 `’`、レンジは en dash `–` (`18:30 – 23:30`)、三点リーダーは `…`
 - 引用符は和文で「」、欧文で曲線の “ ”
-- 体言止め + 読点のブランド語感 (「一釜、一膳。」「待つという、贅沢。」「そして、一膳。」) を新規コピーでも維持する。章には漢数字の章番号 (壱弐参四) と仏語の小ラベルを添える
+- 体言止め + 読点のブランド語感 (「一合、一会。」「待つという、贅沢。」「そして、一膳。」) を新規コピーでも維持する。章には漢数字の章番号 (壱弐参四) と仏語の小ラベルを添える
 
 ### Named Rules
 **The Serif-Only Rule.** すべての文字が明朝体。ラベルも数字もボタンも例外はない。
@@ -319,7 +319,7 @@ components:
 
 ### Do:
 - **Do** すべての文字を Zen Old Mincho の明朝で組む。ウェイトは 400、Google Fonts の読み込みも 400 と 700 だけ。例外はロゴだけ (アウトライン化した SVG なので書体を読み込まない)
-- **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`MARMITE` `L’ATTENTE` `OBANZAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS`)
+- **Do** 小ラベルは英字大文字で字間 0.1em 以上。主要カテゴリは仏語 (`MARMITE` `L’ATTENTE` `SYUNSAI` `RIZ ET SOUPE` `BOUTIQUE` `ACCÈS`)
 - **Do** 本文は行間 2、字間 0.1em、色は `text-soft` か `text-muted`
 - **Do** 写真は必ず減光し、`brand` へのグラデーションで下端を地に溶かす
 - **Do** セクション余白は縦 96px / 160px、横 24px / 80px。迷ったら広い方

@@ -17,9 +17,9 @@ const css = readdirSync(assetsDir)
   .replace(/\s+/g, '');
 
 const CHAPTERS = [
-  ['concept', '一釜、一膳。', 'MARMITE', '壱', '湯気を上げる釜'],
+  ['concept', '一合、一会。', 'MARMITE', '壱', '湯気を上げる釜'],
   ['sake', '待つという、贅沢。', 'L’ATTENTE', '弐', 'カウンターに置かれたグラスの酒'],
-  ['obanzai', '寄り添う、駿菜。', 'OBANZAI', '参', '木枠の箱に小鉢で並ぶおばんざい'],
+  ['obanzai', '寄り添う、駿菜。', 'SYUNSAI', '参', '木枠の箱に小鉢で並ぶおばんざい'],
   ['riz', 'そして、一膳。', 'RIZ ET SOUPE', '四', 'お膳に揃えた炊きたてのご飯と汁、梅干し'],
 ];
 
@@ -42,14 +42,14 @@ const checks = [
   ['メニューのリンクは Instagram と Online Shop の 2 本 (外部リンク属性つき、↗ を添える)', (() => { const links = menu.match(/<a\b[^>]*class="menu__link"[^>]*>[\s\S]*?<\/a>/g) ?? []; return links.length === 2 && ['Instagram', 'Online Shop'].every((label, i) => new RegExp(`target="_blank"[^>]*rel="noopener noreferrer"[^>]*aria-label="${label}（外部サイト・新しいタブで開きます）"[^>]*>\\s*${label}\\s*<span aria-hidden="true"[^>]*>↗</span>`).test(links[i])); })()],
   ['メニューの Online Shop は BOUTIQUE のボタンと同じ URL', menu.includes('href="https://iyahiko.square.site/"')],
   ['ヘッダーにナビリンク 5 本と RESERVATION ボタンが残っていない (2026-09-14 に廃止)', !/nav__link|RESERVATION|href="tel:|href="#(concept|sake|obanzai|shop|access)"/.test(header) && !/RESERVATION/.test(html)],
-  ['電話予約リンク (tel:) は Access の 1 箇所だけ', count(/href="tel:03-6228-5803"/g) === 1 && section('access').includes('href="tel:03-6228-5803"')],
+  ['電話予約リンク (tel:) は Access の 1 箇所だけ', count(/href="tel:03-6274-6608"/g) === 1 && section('access').includes('href="tel:03-6274-6608"')],
   ['h1 はちょうど 1 つ', count(/<h1\b/g) === 1],
   ['#top セクション', /<section[^>]*id="top"/.test(html)],
   ['Hero 画像は AVIF source + fetchpriority=high', /<source[^>]*type="image\/avif"/.test(html) && /<img[^>]*fetchpriority="high"/.test(html)],
   ['Hero 画像の preload (avif)', (() => { const tags = html.match(/<link[^>]*rel="preload"[^>]*>/g) ?? []; return tags.some((tag) => /as="image"/.test(tag) && /type="image\/avif"/.test(tag) && /imagesrcset="[^"]+"/.test(tag) && /imagesizes="100vw"/.test(tag) && /fetchpriority="high"/.test(tag)); })()],
   ['章のセクション ×4 (#concept #sake #obanzai #riz) が aria-labelledby つき', CHAPTERS.every(([id]) => new RegExp(`<section[^>]*id="${id}"[^>]*aria-labelledby="${id}-title"`).test(section(id)))],
   ['章の h2 ×4', CHAPTERS.every(([id, title]) => new RegExp(`<h2[^>]*id="${id}-title"[^>]*>\\s*${title}\\s*</h2>`).test(html))],
-  ['章のラベル MARMITE / L’ATTENTE / OBANZAI / RIZ ET SOUPE', CHAPTERS.every(([, , label]) => html.includes(`>${label}</span>`))],
+  ['章のラベル MARMITE / L’ATTENTE / SYUNSAI / RIZ ET SOUPE', CHAPTERS.every(([, , label]) => html.includes(`>${label}</span>`))],
   ['章番号 壱弐参四', CHAPTERS.every(([, , , num]) => html.includes(`>${num}</span>`))],
   ['章の写真 ×4 (alt が 1 回ずつ)', CHAPTERS.every(([, , , , alt]) => count(new RegExp(`alt="${alt}"`, 'g')) === 1)],
   ['章の写真は .chapter__slide に包まれる (各章 1 枚以上。複数枚ならスライドショー)', CHAPTERS.every(([id]) => /<div class="chapter__slide[^"]*"[^>]*>\s*<picture\b/.test(section(id)))],
