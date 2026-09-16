@@ -31,10 +31,14 @@ export default defineConfig({
     { name: 'mobile-safari', use: { ...devices['iPhone 15'] } },
   ],
   webServer: {
-    command: `npx astro preview --port ${PORT}`,
+    // --ignore-lock: 手動の `npm run preview` (4173) が動いていても並走できる (.astro/preview.json は触らない)
+    command: `npx astro preview --port ${PORT} --ignore-lock`,
     url: BASE_URL,
     // 起動中のサーバーは再利用しない (別のチェックアウトの dist を検査してしまうため)。ポートが使用中なら Playwright がエラーで止まる
     reuseExistingServer: false,
+    // Astro 7 はエージェント環境 (Claude Code など) を検知すると preview をバックグラウンドにデーモン化し、
+    // Playwright には「早期終了」に見える。このマーカーで前面実行を強制する (cli/preview/index.js の agentDetected)
+    env: { ASTRO_PREVIEW_BACKGROUND: '1' },
     timeout: 30_000,
   },
 });

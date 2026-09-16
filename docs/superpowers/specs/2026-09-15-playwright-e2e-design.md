@@ -45,7 +45,7 @@ package.json                  devDependencies に @playwright/test と @types/no
 - `testDir: 'tests/e2e'`、`fullyParallel: true`、`forbidOnly` と `retries: 1` は CI のみ、`trace: 'retain-on-failure'`
 - `reporter`: ローカルは `list`、CI は `list` + `html` (開かない)
 - `use.baseURL`: `http://localhost:4174/najilaboule/` (base パスつき)
-- `webServer`: `npx astro preview --port 4174`、`url` は baseURL、起動中のサーバーは再利用しない (別のチェックアウトの dist を検査する事故を防ぐ)。ポートは既定 4174、`E2E_PORT` で上書き。**dist は事前ビルド前提** (`npm run build` → `npm run test:e2e`)。dist がなければ preview が失敗して止まる
+- `webServer`: `npx astro preview --port 4174`、`url` は baseURL、起動中のサーバーは再利用しない (別のチェックアウトの dist を検査する事故を防ぐ)。ポートは既定 4174、`E2E_PORT` で上書き。**dist は事前ビルド前提** (`npm run build` → `npm run test:e2e`)。dist がなければ preview が失敗して止まる。`--ignore-lock` で手動の preview と並走し、`ASTRO_PREVIEW_BACKGROUND=1` を子プロセスに渡してエージェント環境でのデーモン化 (Astro 7 の自動検知) を止める
 
 ## テスト (tests/e2e/lp.spec.ts)
 

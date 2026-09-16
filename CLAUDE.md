@@ -10,7 +10,7 @@ npm run build        # astro build → scripts/verify-dist.mjs (dist/index.html 
 npm run lint         # astro check (型チェック)
 npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
 npm run preview      # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
-npm run test:e2e        # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。preview は自分で 4174 に立てる (4173 の手動 preview は使わない)。別のチェックアウトと同時に回すときは E2E_PORT=4175 のように変える
+npm run test:e2e        # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。preview は自分で 4174 に立てる (4173 の手動 preview は使わない)。別のチェックアウトと同時に回すときは E2E_PORT=4175 のように変える。手動の preview と並走でき、Claude Code から実行しても前面で立つ (--ignore-lock と ASTRO_PREVIEW_BACKGROUND)
 npm run test:e2e:legacy # 旧 WebKit (iOS の 1 つ前のメジャー相当) で webkit 系 2 プロジェクトだけ。@playwright/test を一時的に差し替え、最後に npm ci で戻す。ポートは test:e2e と同じ (E2E_PORT も効く)
 ```
 
