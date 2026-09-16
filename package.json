@@ -12,10 +12,14 @@
     "preview": "astro preview",
     "lint": "astro check",
     "lint:design": "npx -y @google/design.md@0.4.0 lint DESIGN.md",
-    "check:lockfile": "node scripts/check-lockfile.mjs"
+    "check:lockfile": "node scripts/check-lockfile.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:legacy": "node scripts/e2e-legacy.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.2",
     "astro": "^7.3.2",
     "typescript": "^6.0.3"
   }

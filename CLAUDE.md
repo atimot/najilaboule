@@ -10,9 +10,11 @@ npm run build        # astro build → scripts/verify-dist.mjs (dist/index.html 
 npm run lint         # astro check (型チェック)
 npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
 npm run preview      # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
+npm run test:e2e        # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。preview は自分で 4174 に立てる (4173 の手動 preview は使わない)。別のチェックアウトと同時に回すときは E2E_PORT=4175 のように変える。手動の preview と並走でき、Claude Code から実行しても前面で立つ (--ignore-lock と ASTRO_PREVIEW_BACKGROUND)
+npm run test:e2e:legacy # 旧 WebKit (iOS の 1 つ前のメジャー相当) で webkit 系 2 プロジェクトだけ。@playwright/test を一時的に差し替え、最後に npm ci で戻す。ポートは test:e2e と同じ (E2E_PORT も効く)
 ```
 
-`.astro` / `.ts` / `.css` を編集したら `npm run lint` と `npm run build` を自分で実行して検証する。エラーはその場で直してから先に進む。
+`.astro` / `.ts` / `.css` を編集したら `npm run lint`、`npm run build`、`npm run test:e2e` を自分で実行して検証する。エラーはその場で直してから先に進む。ヘッダーや popover など WebKit で挙動が変わりやすい箇所を触ったら `npm run test:e2e:legacy` も通す。
 
 ## 構造
 
@@ -34,6 +36,9 @@ src/
     ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
     └── global.css     リセット、body 背景 3 層、focus ring、.container/.section/.label/.reveal、共通 keyframes、reduced-motion
 scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、外部フォントなし、h1 が 1 つ、preload 等)
+scripts/e2e-legacy.mjs   旧 WebKit で E2E を回す (ピン版 LEGACY_VERSION はここだけ。年 1 回、9 月の iOS メジャー後に 1 つ前のメジャーへ上げる。26.5 以上に上げると height: auto の回帰は検知できなくなるので、上げるときは赤を再確認)
+playwright.config.ts     E2E の設定 (4 プロジェクト、webServer は astro preview を 4174 に毎回立てる、baseURL は base パスつき。ポートは E2E_PORT で上書き可)
+tests/e2e/               fixtures.ts (Google Maps の遮断、console error / pageerror の収集) と lp.spec.ts (読み込み / ヘッダーメニュー / 4 章 / BOUTIQUE と TEL)
 public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドット)。favicon-*.png / apple-touch-icon.png / android-chrome-*.png はここから生成したもの (手編集しない)。ドット色の正でもある (tokens.css の --color-dot-* と同値)
 ```
 
@@ -47,6 +52,8 @@ public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドッ�
 - Performance / Accessibility / SEO のスコアを下げる回帰を出さない (`verify-dist.mjs` が最低限を守る)
 - `astro.config.ts` の `vite.build.cssMinify` は `esbuild` 固定。Lightning CSS は `animation-timeline` を `animation` ショートハンドに畳み込んで無効な宣言を出す (`.reveal` の浮き上がりが止まる)
 - Zen Old Mincho は `astro.config.ts` の `collectGlyphs` が `src/content/ja.ts`・`src/config.ts`・`src/assets/alts.ts` から集めた文字と印刷可能な ASCII だけにサブセットされる (欧文ラベルはコンポーネント直書きでも描ける)。日本語の文字列をそれ以外の場所に置くとフォールバック書体で描かれるので、文言は必ずそこに置く
+- **popover / dialog など top layer の要素は UA スタイルに頼らずサイズを明示する** (`height: auto` など)。UA の `height: fit-content` は WebKit 17.4〜26.4 で fixed + grid の要素がビューポート高に解決される (2026-09-15 のメニューの不具合)。`margin: auto` / `border` / `padding` / `overflow: auto` / `color` / `background-color` も UA 既定があることを忘れない
+- E2E のセレクタは role と id を優先し、クラス名は使わない。href や DOM 構造の検査は `verify-dist.mjs`、描いた結果の検査は Playwright と分担する
 
 ## デザイン決め事 (重要)
 
@@ -58,7 +65,7 @@ public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドッ�
 
 ## CI とデプロイ
 
-- PR と main への push で軽量 CI (`.github/workflows/ci.yml`: check:lockfile → `npm ci` → lint → build) が走る。**緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)
+- PR と main への push で CI (`.github/workflows/ci.yml`) が走る: `verify` (check:lockfile → `npm ci` → lint → build → dist を artifact に) と `e2e` (matrix `latest` = 同梱の Chromium / WebKit で 4 プロジェクト、`webkit-legacy` = 旧 WebKit で webkit 系 2 プロジェクト)。**両方の緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)。失敗時は artifact `playwright-report-<name>` にレポートが残る
 - main マージで `deploy.yml` が GitHub Pages へデプロイ
 - `package-lock.json` は手編集しない。lockfile 変更は必ず `npx -y npm@latest` 経由 (ローカル npm は wasm 系 optional 依存を脱落させ CI が落ちる)。`npm run check:lockfile` で脱落を検査できる
 - Dependabot PR は CI が緑になったことを確認してから手動でマージする

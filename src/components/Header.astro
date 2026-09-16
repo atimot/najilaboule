@@ -155,6 +155,9 @@ const hrefs = { instagram: SITE.instagramUrl, shop: SITE.riceShopUrl } as const 
      打ち消してしまい、透明なパネルが残って下のタップを奪う) */
   .menu__list {
     position: fixed;
+    /* UA の height: fit-content を打ち消す。WebKit 17.4〜26.4 は position: fixed + display: grid の要素の fit-content を
+       包含ブロック (ビューポート) の高さに解決し、パネルが画面いっぱいに伸びて li が 400px 前後になる (26.5 で修正済み) */
+    height: auto;
     inset: calc(var(--header-pad) * 2 + var(--lockup-height)) 0 auto;
     gap: 8px;
     width: auto;
