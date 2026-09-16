@@ -32,7 +32,7 @@ src/
 ├── assets/alts.ts     画像 alt (ja/en)。字形サブセットの収集元
 ├── assets/logo.svg    ロゴ (アウトライン化した SVG、fill=currentColor)。BrandLockup.astro が SVG コンポーネントとして inline 展開
 ├── assets/icon.svg    公式アイコン (public/favicon.svg と同一内容。verify-dist が照合)。BrandLockup.astro がロゴの左に inline 展開
-├── config.ts          SITE (店名・電話・ショップと Instagram の URL・地図) と JSON-LD。Instagram は仮 URL
+├── config.ts          SITE (店名・電話・ショップと Instagram の URL・地図) と JSON-LD
 └── styles/
     ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
     └── global.css     リセット、body 背景 3 層、focus ring、.container/.section/.label/.reveal、共通 keyframes、reduced-motion
