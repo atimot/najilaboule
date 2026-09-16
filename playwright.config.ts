@@ -7,8 +7,10 @@ import { defineConfig, devices } from '@playwright/test';
  * 設計: docs/superpowers/specs/2026-09-15-playwright-e2e-design.md
  */
 const CI = !!process.env.CI;
-/** 既定 4173。別のチェックアウトで同時に回すときは E2E_PORT で変える (本体側の preview を拾わないように) */
-const PORT = Number(process.env.E2E_PORT ?? 4173);
+/** テスト専用の preview のポート。手で立てる `npm run preview` (4173) とは分け、テストは毎回自分で立てる
+    (別のチェックアウトの dist を拾って偽の緑になるのを防ぐ)。別ポートにしたいときは E2E_PORT */
+const PORT = Number(process.env.E2E_PORT ?? 4174);
+if (!Number.isInteger(PORT) || PORT <= 0) throw new Error(`E2E_PORT が不正です: ${process.env.E2E_PORT}`);
 /** base パス (/najilaboule/) を含む。テストは page.goto('./') で開く ('/' だと base パスが消える) */
 const BASE_URL = `http://localhost:${PORT}/najilaboule/`;
 
@@ -31,8 +33,8 @@ export default defineConfig({
   webServer: {
     command: `npx astro preview --port ${PORT}`,
     url: BASE_URL,
-    // ローカルは起動中の preview (4173) を再利用する。CI は毎回起動
-    reuseExistingServer: !CI,
+    // 起動中のサーバーは再利用しない (別のチェックアウトの dist を検査してしまうため)。ポートが使用中なら Playwright がエラーで止まる
+    reuseExistingServer: false,
     timeout: 30_000,
   },
 });

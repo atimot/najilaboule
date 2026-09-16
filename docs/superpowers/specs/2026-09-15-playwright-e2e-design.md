@@ -21,13 +21,14 @@ Firefox、axe (アクセシビリティ自動検査)、スクリーンショッ�
 ## 構成
 
 ```
-playwright.config.ts          プロジェクト 4 つ、webServer (astro preview --port 4173)、baseURL
+playwright.config.ts          プロジェクト 4 つ、webServer (astro preview --port 4174、E2E_PORT で上書き可、reuseExistingServer: false)、baseURL
 tests/e2e/fixtures.ts         page を拡張: Google Maps の iframe を空応答に差し替え、console error / pageerror を集めて teardown で 0 件を確認
 tests/e2e/lp.spec.ts          テスト本体 (下記 4 本)
 scripts/e2e-legacy.mjs        旧 WebKit で回す手順を 1 か所に (ピン版の定数、ブラウザの隔離、node_modules の復元)
 .github/workflows/ci.yml      verify が dist を artifact に上げ、新 job e2e (matrix: latest / webkit-legacy) が受け取って実行
 src/components/Header.astro   修正: .menu__list に height: auto
 CLAUDE.md / .gitignore        コマンド・構造・ルールの追記、生成物の除外
+package.json                  devDependencies に @playwright/test と @types/node (playwright.config.ts の process.env の型)
 ```
 
 `tsconfig.json` は `**/*` を含むので、`npm run lint` (astro check) が `playwright.config.ts` と `tests/` も型検査する。
@@ -43,8 +44,8 @@ CLAUDE.md / .gitignore        コマンド・構造・ルールの追記、生�
 
 - `testDir: 'tests/e2e'`、`fullyParallel: true`、`forbidOnly` と `retries: 1` は CI のみ、`trace: 'retain-on-failure'`
 - `reporter`: ローカルは `list`、CI は `list` + `html` (開かない)
-- `use.baseURL`: `http://localhost:4173/najilaboule/` (base パスつき)
-- `webServer`: `npx astro preview --port 4173`、`url` は baseURL、ローカルは起動中のサーバーを再利用 (`reuseExistingServer: !CI`)。**dist は事前ビルド前提** (`npm run build` → `npm run test:e2e`)。dist がなければ preview が失敗して止まる
+- `use.baseURL`: `http://localhost:4174/najilaboule/` (base パスつき)
+- `webServer`: `npx astro preview --port 4174`、`url` は baseURL、起動中のサーバーは再利用しない (別のチェックアウトの dist を検査する事故を防ぐ)。ポートは既定 4174、`E2E_PORT` で上書き。**dist は事前ビルド前提** (`npm run build` → `npm run test:e2e`)。dist がなければ preview が失敗して止まる
 
 ## テスト (tests/e2e/lp.spec.ts)
 

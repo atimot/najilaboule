@@ -7,6 +7,8 @@
 //   4. ローカルでは最後に npm ci で node_modules を復元する (CI では省く)
 // ピン版の見直し: 年 1 回 (9 月の iOS メジャーリリース後)、iOS の 1 つ前のメジャーに合わせて上げる。
 // Playwright と WebKit の対応は https://playwright.dev/docs/release-notes の各版の Browser Versions を見る。
+// 注意: ピン版を WebKit 26.5 以上に上げると、Header.astro の .menu__list { height: auto } が直している fit-content バグを
+// 再現するブラウザがなくなり、テスト 2 はその回帰を検知しなくなる。上げるときは height: auto を一時的に外して赤になる版かを確かめる。
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
@@ -22,7 +24,7 @@ function run(command, args, extraEnv = {}) {
   return result.status ?? 1;
 }
 
-let status = run('npm', ['i', '--no-save', `@playwright/test@${LEGACY_VERSION}`]);
+let status = run('npm', ['i', '--no-save', '--no-package-lock', `@playwright/test@${LEGACY_VERSION}`]);
 if (status === 0) {
   status = run('npx', ['playwright', 'install', ...(CI ? ['--with-deps'] : []), 'webkit'], { PLAYWRIGHT_BROWSERS_PATH: browsersPath });
 }

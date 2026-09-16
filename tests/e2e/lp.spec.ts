@@ -29,8 +29,8 @@ test('ヘッダーメニューが開閉し、パネルが伸びたヘッダー�
   await toggle.click();
   await expect(menu).toBeVisible();
   // 開く transition (500ms) が終わるのを待つ。ヘッダーの padding-bottom も同じ 500ms で伸びる
-  await expect.poll(() => menu.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
-  expect(await menu.evaluate((el) => el.matches(':popover-open'))).toBe(true);
+  await expect.poll(() => menu.evaluate((el) => getComputedStyle(el).opacity), 'パネルの不透明度が 1 にならない (開く transition が終わらない)').toBe('1');
+  expect(await menu.evaluate((el) => el.matches(':popover-open')), 'パネルが :popover-open になっていない').toBe(true);
 
   const links = menu.getByRole('link');
   await expect(links).toHaveCount(2);
@@ -38,6 +38,7 @@ test('ヘッダーメニューが開閉し、パネルが伸びたヘッダー�
 
   // 各 li の高さ。WebKit 17.4〜26.4 は popover の UA `height: fit-content` を fixed + grid でビューポート高に解決し、
   // li が 402px (スマホ) / 372px (PC) に伸びる。正常なら 47px / 56.75px
+  // li は CSS セレクタで探す (WebKit は list-style: none の ul で listitem ロールを落とすので getByRole は使えない)
   const items = menu.locator('li');
   await expect(items).toHaveCount(2);
   for (const item of await items.all()) {
@@ -80,11 +81,11 @@ test('4 章の見出しと写真が描かれる', async ({ page }) => {
 test('BOUTIQUE のボタンと TEL のリンクが見える', async ({ page }) => {
   const cta = page.locator('#shop').getByRole('link', { name: /ONLINE SHOP/ });
   await cta.scrollIntoViewIfNeeded();
-  await expect(cta).toBeVisible();
+  await expect(cta, 'BOUTIQUE の ONLINE SHOP ボタンが見えない').toBeVisible();
 
   // 電話番号は変わることがあるので値は見ない (Access に tel: リンクが 1 本あって見えること)
   const tel = page.locator('#access a[href^="tel:"]');
-  await expect(tel).toHaveCount(1);
+  await expect(tel, 'Access の tel: リンクは 1 本のはず').toHaveCount(1);
   await tel.scrollIntoViewIfNeeded();
-  await expect(tel).toBeVisible();
+  await expect(tel, 'Access の TEL リンクが見えない').toBeVisible();
 });

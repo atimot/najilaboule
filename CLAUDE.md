@@ -10,9 +10,8 @@ npm run build        # astro build → scripts/verify-dist.mjs (dist/index.html 
 npm run lint         # astro check (型チェック)
 npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
 npm run preview      # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
-npm run test:e2e     # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。起動中の preview (4173) があれば再利用
-                         # 別のチェックアウトで同時に回すときは E2E_PORT=4174 npm run test:e2e のようにポートを変える (本体側の preview 4173 を拾わない)
-npm run test:e2e:legacy  # 旧 WebKit (iOS の 1 つ前のメジャー相当) で webkit 系 2 プロジェクトだけ。@playwright/test を一時的に差し替え、最後に npm ci で戻す
+npm run test:e2e        # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。preview は自分で 4174 に立てる (4173 の手動 preview は使わない)。別のチェックアウトと同時に回すときは E2E_PORT=4175 のように変える
+npm run test:e2e:legacy # 旧 WebKit (iOS の 1 つ前のメジャー相当) で webkit 系 2 プロジェクトだけ。@playwright/test を一時的に差し替え、最後に npm ci で戻す。ポートは test:e2e と同じ (E2E_PORT も効く)
 ```
 
 `.astro` / `.ts` / `.css` を編集したら `npm run lint`、`npm run build`、`npm run test:e2e` を自分で実行して検証する。エラーはその場で直してから先に進む。ヘッダーや popover など WebKit で挙動が変わりやすい箇所を触ったら `npm run test:e2e:legacy` も通す。
@@ -37,8 +36,8 @@ src/
     ├── tokens.css     DESIGN.md フロントマターを :root 変数に写したもの
     └── global.css     リセット、body 背景 3 層、focus ring、.container/.section/.label/.reveal、共通 keyframes、reduced-motion
 scripts/verify-dist.mjs  ビルド成果物の不変条件 (配信 JS ゼロ、外部フォントなし、h1 が 1 つ、preload 等)
-scripts/e2e-legacy.mjs   旧 WebKit で E2E を回す (ピン版 LEGACY_VERSION はここだけ。年 1 回、9 月の iOS メジャー後に 1 つ前のメジャーへ上げる)
-playwright.config.ts     E2E の設定 (4 プロジェクト、webServer は astro preview --port 4173、baseURL は base パスつき。ポートは E2E_PORT で上書き可)
+scripts/e2e-legacy.mjs   旧 WebKit で E2E を回す (ピン版 LEGACY_VERSION はここだけ。年 1 回、9 月の iOS メジャー後に 1 つ前のメジャーへ上げる。26.5 以上に上げると height: auto の回帰は検知できなくなるので、上げるときは赤を再確認)
+playwright.config.ts     E2E の設定 (4 プロジェクト、webServer は astro preview を 4174 に毎回立てる、baseURL は base パスつき。ポートは E2E_PORT で上書き可)
 tests/e2e/               fixtures.ts (Google Maps の遮断、console error / pageerror の収集) と lp.spec.ts (読み込み / ヘッダーメニュー / 4 章 / BOUTIQUE と TEL)
 public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドット)。favicon-*.png / apple-touch-icon.png / android-chrome-*.png はここから生成したもの (手編集しない)。ドット色の正でもある (tokens.css の --color-dot-* と同値)
 ```
