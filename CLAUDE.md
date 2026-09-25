@@ -66,6 +66,6 @@ public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドッ�
 ## CI とデプロイ
 
 - PR と main への push で CI (`.github/workflows/ci.yml`) が走る: `verify` (check:lockfile → `npm ci` → lint → build → dist を artifact に) と `e2e` (matrix `latest` = 同梱の Chromium / WebKit で 4 プロジェクト、`webkit-legacy` = 旧 WebKit で webkit 系 2 プロジェクト)。**両方の緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)。失敗時は artifact `playwright-report-<name>` にレポートが残る
-- main マージで `deploy.yml` が GitHub Pages へデプロイ。公開 URL は https://najilaboule.com/ (2026-09-25 に独自ドメインへ移行し `base` は `/`。旧 https://atimot.github.io/najilaboule/ は GitHub が転送する)。ドメインは GitHub の Settings > Pages で設定してある (Actions デプロイでは `public/CNAME` は無視されるので置かない)。DNS は お名前.com レンタルサーバー (RS プラン) のコントロールパネルで管理: apex の A / AAAA ×4 を GitHub Pages の IP に、www は CNAME で `atimot.github.io` に、所有確認の TXT `_github-pages-challenge-atimot`。ネームサーバー (`gmoserver.jp`) は Google Workspace のメールと Shopify が使っているので変えない
+- main マージで `deploy.yml` が GitHub Pages へデプロイ。公開 URL は https://najilaboule.com/ (2026-09-25 に独自ドメインへ移行し `base` は `/`。旧 https://atimot.github.io/najilaboule/ と www は GitHub が 301 で転送する)。ドメインは GitHub の Settings > Pages で設定し Enforce HTTPS を有効にしてある (Actions デプロイでは `public/CNAME` は無視されるので置かない)。DNS は Cloudflare (無料プラン。レジストラは お名前.com のまま): apex と www を CNAME で `atimot.github.io` に向け、どちらも **DNS only (プロキシをオンにしない。オンにすると GitHub の証明書が更新できない)**。MX / SPF / DKIM は Google Workspace 用なので触らない
 - `package-lock.json` は手編集しない。lockfile 変更は必ず `npx -y npm@latest` 経由 (ローカル npm は wasm 系 optional 依存を脱落させ CI が落ちる)。`npm run check:lockfile` で脱落を検査できる
 - Dependabot PR は CI が緑になったことを確認してから手動でマージする

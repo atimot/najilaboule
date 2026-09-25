@@ -20,6 +20,6 @@ npm run preview  # ビルド成果物のローカル配信 (http://localhost:417
 
 main ブランチへのマージで GitHub Actions (`.github/workflows/deploy.yml`) が GitHub Pages へ自動デプロイする。PR には CI (lint / build / E2E) が走る。
 
-独自ドメイン `najilaboule.com` は、お名前.com 側の DNS (apex の A / AAAA を GitHub Pages の IP に、www を CNAME で `atimot.github.io` に向ける) と、GitHub の Settings > Pages のカスタムドメイン設定で結び付けている。Actions でデプロイしているので `public/CNAME` は使わない。
+独自ドメイン `najilaboule.com` は、Cloudflare の DNS (apex と www を CNAME で `atimot.github.io` に向け、プロキシはオフ) と、GitHub の Settings > Pages のカスタムドメイン設定で結び付けている。Actions でデプロイしているので `public/CNAME` は使わない。
 
 開発の決め事は [CLAUDE.md](./CLAUDE.md)、デザインシステム (Google Labs の DESIGN.md 仕様準拠) は [DESIGN.md](./DESIGN.md) を参照。
