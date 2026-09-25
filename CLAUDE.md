@@ -5,11 +5,11 @@
 ## コマンド
 
 ```bash
-npm run dev          # dev サーバー起動 (http://localhost:4321/najilaboule/ — base パスに注意)
+npm run dev          # dev サーバー起動 (http://localhost:4321/)
 npm run build        # astro build → scripts/verify-dist.mjs (dist/index.html の不変条件チェック)。完了報告前に必ず通すこと
 npm run lint         # astro check (型チェック)
 npm run lint:design  # DESIGN.md を Google design.md CLI で検証 (エラー 0 を維持)
-npm run preview      # build 成果物をローカル配信 (http://localhost:4173/najilaboule/)
+npm run preview      # build 成果物をローカル配信 (http://localhost:4173/)
 npm run test:e2e        # Playwright (Chromium / WebKit × PC / スマホ)。dist を使うので先に npm run build。preview は自分で 4174 に立てる (4173 の手動 preview は使わない)。別のチェックアウトと同時に回すときは E2E_PORT=4175 のように変える。手動の preview と並走でき、Claude Code から実行しても前面で立つ (--ignore-lock と ASTRO_PREVIEW_BACKGROUND)
 npm run test:e2e:legacy # 旧 WebKit (iOS の 1 つ前のメジャー相当) で webkit 系 2 プロジェクトだけ。@playwright/test を一時的に差し替え、最後に npm ci で戻す。ポートは test:e2e と同じ (E2E_PORT も効く)
 ```
@@ -66,6 +66,6 @@ public/favicon.svg       正式アイコン (焦茶の正方形に 3×3 ドッ�
 ## CI とデプロイ
 
 - PR と main への push で CI (`.github/workflows/ci.yml`) が走る: `verify` (check:lockfile → `npm ci` → lint → build → dist を artifact に) と `e2e` (matrix `latest` = 同梱の Chromium / WebKit で 4 プロジェクト、`webkit-legacy` = 旧 WebKit で webkit 系 2 プロジェクト)。**両方の緑を確認してからマージする**(ブランチ保護・auto-merge は使わない手動運用)。失敗時は artifact `playwright-report-<name>` にレポートが残る
-- main マージで `deploy.yml` が GitHub Pages へデプロイ
+- main マージで `deploy.yml` が GitHub Pages へデプロイ。公開 URL は https://najilaboule.com/ (2026-09-25 に独自ドメインへ移行し `base` は `/`。旧 https://atimot.github.io/najilaboule/ は GitHub が転送する)。ドメインは GitHub の Settings > Pages で設定してある (Actions デプロイでは `public/CNAME` は無視されるので置かない)。DNS は お名前.com レンタルサーバー (RS プラン) のコントロールパネルで管理: apex の A / AAAA ×4 を GitHub Pages の IP に、www は CNAME で `atimot.github.io` に、所有確認の TXT `_github-pages-challenge-atimot`。ネームサーバー (`gmoserver.jp`) は Google Workspace のメールと Shopify が使っているので変えない
 - `package-lock.json` は手編集しない。lockfile 変更は必ず `npx -y npm@latest` 経由 (ローカル npm は wasm 系 optional 依存を脱落させ CI が落ちる)。`npm run check:lockfile` で脱落を検査できる
 - Dependabot PR は CI が緑になったことを確認してから手動でマージする
