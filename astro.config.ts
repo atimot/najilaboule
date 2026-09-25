@@ -20,8 +20,9 @@ function collectGlyphs(...sources: unknown[]): string[] {
 }
 
 export default defineConfig({
-  site: 'https://atimot.github.io',
-  base: '/najilaboule',
+  // 独自ドメイン (apex)。DNS は お名前.com、ドメインは GitHub の Settings > Pages で設定 (Actions デプロイでは public/CNAME は無視される)
+  site: 'https://najilaboule.com',
+  base: '/',
   // v7 の既定 'jsx' はインライン要素間の空白を落とすため、旧既定に戻す
   compressHTML: true,
   fonts: [

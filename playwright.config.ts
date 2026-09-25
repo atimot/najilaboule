@@ -11,8 +11,8 @@ const CI = !!process.env.CI;
     (別のチェックアウトの dist を拾って偽の緑になるのを防ぐ)。別ポートにしたいときは E2E_PORT */
 const PORT = Number(process.env.E2E_PORT ?? 4174);
 if (!Number.isInteger(PORT) || PORT <= 0) throw new Error(`E2E_PORT が不正です: ${process.env.E2E_PORT}`);
-/** base パス (/najilaboule/) を含む。テストは page.goto('./') で開く ('/' だと base パスが消える) */
-const BASE_URL = `http://localhost:${PORT}/najilaboule/`;
+/** base は '/' (2026-09-25 の独自ドメイン移行で /najilaboule/ を廃止)。テストは page.goto('./') で開く (base が付いても壊れない書き方) */
+const BASE_URL = `http://localhost:${PORT}/`;
 
 export default defineConfig({
   testDir: 'tests/e2e',

@@ -12,7 +12,7 @@ interface Props {
 
 const { lang, preload } = Astro.props;
 const t = getCopy(lang);
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // '/najilaboule/'
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/'); // '/' (2026-09-25 まで '/najilaboule/')
 const canonical = new URL(base, Astro.site).href;
 const ogImage = new URL(`${base}images/ogp.jpg`, Astro.site).href;
 const ogLocale = lang === 'ja' ? 'ja_JP' : 'en_US';
