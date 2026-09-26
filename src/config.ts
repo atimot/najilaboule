@@ -5,8 +5,8 @@ export const SITE = {
   kana: 'ナジラブール',
   phone: '03-6274-6608',
   phoneHref: 'tel:03-6274-6608',
-  /** 店で使う米「伊彌彦米」の EC ショップ (外部サイト・日本語のみ)。ヘッダーメニューの Online Shop と BOUTIQUE のボタンが指す */
-  riceShopUrl: 'https://iyahiko.square.site/',
+  /** 公式オンラインショップ (Shopify、外部サイト・日本語のみ)。ヘッダーメニューの Online Shop と BOUTIQUE のボタンが指す */
+  riceShopUrl: 'https://shop.najilaboule.com/',
   /** Instagram の公式アカウント (@najilaboule)。2026-09-15 に仮 URL から差し替え。verify-dist が href を照合する */
   instagramUrl: 'https://www.instagram.com/najilaboule/',
 } as const;

@@ -41,7 +41,7 @@ const checks = [
   ['ナビに aria-label', /<nav[^>]*aria-label="メインナビゲーション"/.test(header)],
   ['ヘッダーのメニューは popover (JS なし): button[popovertarget=menu] に隠しテキスト「メニュー」、ul#menu[popover]', /<button type="button" class="menu__toggle" popovertarget="menu"[^>]*>\s*<span class="sr-only"[^>]*>メニュー<\/span>\s*<span class="menu__glyph" aria-hidden="true"[^>]*><\/span>\s*<\/button>/.test(header) && /^<ul id="menu" class="menu__list" popover[\s>]/.test(menu) && !/<details\b|<summary\b/.test(header)],
   ['メニューのリンクは Instagram と Online Shop の 2 本 (外部リンク属性つき、↗ を添える)', (() => { const links = menu.match(/<a\b[^>]*class="menu__link"[^>]*>[\s\S]*?<\/a>/g) ?? []; return links.length === 2 && ['Instagram', 'Online Shop'].every((label, i) => new RegExp(`target="_blank"[^>]*rel="noopener noreferrer"[^>]*aria-label="${label}（外部サイト・新しいタブで開きます）"[^>]*>\\s*${label}\\s*<span aria-hidden="true"[^>]*>↗</span>`).test(links[i])); })()],
-  ['メニューの Online Shop は BOUTIQUE のボタンと同じ URL', menu.includes('href="https://iyahiko.square.site/"')],
+  ['メニューの Online Shop は BOUTIQUE のボタンと同じ URL', menu.includes('href="https://shop.najilaboule.com/"')],
   ['メニューの Instagram は公式アカウント @najilaboule', menu.includes('href="https://www.instagram.com/najilaboule/"')],
   ['ヘッダーにナビリンク 5 本と RESERVATION ボタンが残っていない (2026-09-14 に廃止)', !/nav__link|RESERVATION|href="tel:|href="#(concept|sake|obanzai|shop|access)"/.test(header) && !/RESERVATION/.test(html)],
   ['電話予約リンク (tel:) は Access の 1 箇所だけ', count(/href="tel:03-6274-6608"/g) === 1 && section('access').includes('href="tel:03-6274-6608"')],
@@ -59,7 +59,7 @@ const checks = [
   ['仮写真の注記 (figcaption) が残っていない', !/仮写真/.test(html) && !/<figcaption\b/.test(html)],
   ['弐・四は写真が右 (chapter--reverse)', /id="sake"[^>]*class="[^"]*chapter--reverse/.test(section('sake')) && /id="riz"[^>]*class="[^"]*chapter--reverse/.test(section('riz')) && !/chapter--reverse/.test(section('concept')) && !/chapter--reverse/.test(section('obanzai'))],
   ['#shop セクションに背景写真がない', section('shop') !== '' && !/<picture\b|<img\b/.test(section('shop'))],
-  ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/iyahiko\.square\.site\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
+  ['ONLINE SHOP は外部リンク属性つき', /<a[^>]*href="https:\/\/shop\.najilaboule\.com\/"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/.test(html)],
   ['#access セクション', section('access') !== ''],
   // 空の alt は compressHTML で alt="" ではなく alt と出る
   ['#access に背景写真 (装飾、alt が空)', /<picture\b/.test(section('access')) && /<img[^>]*\salt(?:=""|(?=[\s>]))/.test(section('access'))],
