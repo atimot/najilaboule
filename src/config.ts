@@ -46,7 +46,7 @@ export function buildJsonLd(url: string, image: string) {
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '18:30',
+        opens: '20:00',
         closes: '23:30',
       },
     ],
