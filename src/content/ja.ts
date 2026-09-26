@@ -58,7 +58,7 @@ export const ja: Copy = {
   access: {
     label: 'ACCÈS',
     address: '東京都中央区銀座6-12-12\n銀座ステラビル2階',
-    hoursMain: '営業時間 18:30 – 23:30',
+    hoursMain: '営業時間 20:00 – 23:30',
     hoursClosed: '定休日 土日祝日',
     mapTitle: '店舗の地図 — 東京都中央区銀座6-12-12 銀座ステラビル2階',
   },
