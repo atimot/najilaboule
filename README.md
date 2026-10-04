@@ -22,4 +22,4 @@ main ブランチへのマージで GitHub Actions (`.github/workflows/deploy.ym
 
 独自ドメイン `najilaboule.com` は、Cloudflare の DNS (apex と www を CNAME で `atimot.github.io` に向け、プロキシはオフ) と、GitHub の Settings > Pages のカスタムドメイン設定で結び付けている。Actions でデプロイしているので `public/CNAME` は使わない。
 
-開発の決め事は [CLAUDE.md](./CLAUDE.md)、デザインシステム (Google Labs の DESIGN.md 仕様準拠) は [DESIGN.md](./DESIGN.md) を参照。
+デザインシステム (Google Labs の DESIGN.md 仕様準拠) は [DESIGN.md](./DESIGN.md) を参照。
