@@ -20,3 +20,7 @@ updates:
       # @astrojs/check が TS 7 に対応したら外す
       - dependency-name: typescript
         update-types: ['version-update:semver-major']
+      # @types/node はサポートする最低の Node (package.json の engines: >=22.12.0) のメジャーに合わせる。
+      # 上げると Node 22 にない API も型チェックを通ってしまう。engines を上げるときに手動で揃える
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
